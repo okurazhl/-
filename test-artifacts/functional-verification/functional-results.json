@@ -1,0 +1,759 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "name": "1. 打开侧边栏后绑定当前网页",
+      "pass": true,
+      "detail": {
+        "statusTitle": "当前页面：示例文章：网页阅读与笔记",
+        "disabled": [
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "name": "2. 获取当前网页主要内容并创建提取笔记",
+      "pass": true,
+      "detail": {
+        "editorOpen": true,
+        "noteTitle": "示例文章：网页阅读与笔记",
+        "notes": [
+          {
+            "categoryId": "cat_3",
+            "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+            "createdAt": 1781700778226,
+            "excerpt": "这是一篇用于验证网页内容提取的文章。",
+            "id": "n_20260617_3e3bc8443113",
+            "pinned": false,
+            "sourceTitle": "示例文章：网页阅读与笔记",
+            "summary": "",
+            "tags": [],
+            "title": "示例文章：网页阅读与笔记",
+            "type": "extracted",
+            "updatedAt": 1781700778226,
+            "url": "https://example.com/article.html"
+          }
+        ]
+      }
+    },
+    {
+      "name": "3. 生成摘要并写入摘要编辑区",
+      "pass": true,
+      "detail": {
+        "noteSummary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+        "notes": [
+          {
+            "categoryId": "cat_3",
+            "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+            "createdAt": 1781700778226,
+            "excerpt": "这是一篇用于验证网页内容提取的文章。",
+            "id": "n_20260617_3e3bc8443113",
+            "pinned": false,
+            "sourceTitle": "示例文章：网页阅读与笔记",
+            "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+            "tags": [],
+            "title": "示例文章：网页阅读与笔记",
+            "type": "extracted",
+            "updatedAt": 1781700779739,
+            "url": "https://example.com/article.html"
+          }
+        ]
+      }
+    },
+    {
+      "name": "4. 编辑摘要/标签/分类后保存至本地",
+      "pass": true,
+      "detail": {
+        "categoryId": "cat_1",
+        "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+        "createdAt": 1781700778226,
+        "excerpt": "第一段：这是一篇用于验证网页内容提取的文章。 第二段：插件应该能把主要正文保存为笔记，并保留来源链接。 第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+        "id": "n_20260617_3e3bc8443113",
+        "pinned": false,
+        "sourceTitle": "示例文章：网页阅读与笔记",
+        "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+        "tags": [
+          "网页",
+          "阅读",
+          "AI"
+        ],
+        "title": "示例文章：网页阅读与笔记",
+        "type": "extracted",
+        "updatedAt": 1781700781527,
+        "url": "https://example.com/article.html"
+      }
+    },
+    {
+      "name": "5. 快速添加当前网页标题和链接",
+      "pass": true,
+      "detail": [
+        {
+          "categoryId": "cat_1",
+          "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "createdAt": 1781700778226,
+          "excerpt": "第一段：这是一篇用于验证网页内容提取的文章。 第二段：插件应该能把主要正文保存为笔记，并保留来源链接。 第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "id": "n_20260617_3e3bc8443113",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+          "tags": [
+            "网页",
+            "阅读",
+            "AI"
+          ],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "extracted",
+          "updatedAt": 1781700781527,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_3",
+          "content": "https://example.com/article.html",
+          "createdAt": 1781700783508,
+          "excerpt": "https://example.com/article.html",
+          "id": "n_20260617_f04144303025",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "",
+          "tags": [],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "quick-url",
+          "updatedAt": 1781700783508,
+          "url": "https://example.com/article.html"
+        }
+      ]
+    },
+    {
+      "name": "6. 快速添加网页选中文本",
+      "pass": true,
+      "detail": [
+        {
+          "categoryId": "cat_1",
+          "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "createdAt": 1781700778226,
+          "excerpt": "第一段：这是一篇用于验证网页内容提取的文章。 第二段：插件应该能把主要正文保存为笔记，并保留来源链接。 第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "id": "n_20260617_3e3bc8443113",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+          "tags": [
+            "网页",
+            "阅读",
+            "AI"
+          ],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "extracted",
+          "updatedAt": 1781700781527,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_3",
+          "content": "https://example.com/article.html",
+          "createdAt": 1781700783508,
+          "excerpt": "https://example.com/article.html",
+          "id": "n_20260617_f04144303025",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "",
+          "tags": [],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "quick-url",
+          "updatedAt": 1781700783508,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_3",
+          "content": "这是网页中的一段选中文本，用于快速添加到笔记。",
+          "createdAt": 1781700784553,
+          "excerpt": "这是网页中的一段选中文本，用于快速添加到笔记。",
+          "id": "n_20260617_3c68ca38f3af",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "",
+          "tags": [],
+          "title": "这是网页中的一段选中文本，用于快速添加到笔记。",
+          "type": "quick-selection",
+          "updatedAt": 1781700784553,
+          "url": "https://example.com/article.html"
+        }
+      ]
+    },
+    {
+      "name": "7. 手动输入笔记并保存分类标签",
+      "pass": true,
+      "detail": [
+        {
+          "categoryId": "cat_1",
+          "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "createdAt": 1781700778226,
+          "excerpt": "第一段：这是一篇用于验证网页内容提取的文章。 第二段：插件应该能把主要正文保存为笔记，并保留来源链接。 第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "id": "n_20260617_3e3bc8443113",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+          "tags": [
+            "网页",
+            "阅读",
+            "AI"
+          ],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "extracted",
+          "updatedAt": 1781700781527,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_3",
+          "content": "https://example.com/article.html",
+          "createdAt": 1781700783508,
+          "excerpt": "https://example.com/article.html",
+          "id": "n_20260617_f04144303025",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "",
+          "tags": [],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "quick-url",
+          "updatedAt": 1781700783508,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_3",
+          "content": "这是网页中的一段选中文本，用于快速添加到笔记。",
+          "createdAt": 1781700784553,
+          "excerpt": "这是网页中的一段选中文本，用于快速添加到笔记。",
+          "id": "n_20260617_3c68ca38f3af",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "",
+          "tags": [],
+          "title": "这是网页中的一段选中文本，用于快速添加到笔记。",
+          "type": "quick-selection",
+          "updatedAt": 1781700784553,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_2",
+          "content": "这是一条手动输入的个人笔记，用于验证手动记录、标签和分类。",
+          "createdAt": 1781700787119,
+          "excerpt": "这是一条手动输入的个人笔记，用于验证手动记录、标签和分类。",
+          "id": "n_20260617_33925056631a",
+          "pinned": false,
+          "sourceTitle": "",
+          "summary": "",
+          "tags": [
+            "个人",
+            "想法"
+          ],
+          "title": "个人阅读想法",
+          "type": "manual",
+          "updatedAt": 1781700787119,
+          "url": ""
+        }
+      ]
+    },
+    {
+      "name": "8. 关键词搜索过滤笔记",
+      "pass": true,
+      "detail": [
+        "个人阅读想法"
+      ]
+    },
+    {
+      "name": "9. 分类筛选笔记",
+      "pass": true,
+      "detail": [
+        "个人阅读想法"
+      ]
+    },
+    {
+      "name": "10. 自动保存编辑内容",
+      "pass": true,
+      "detail": {
+        "categoryId": "cat_2",
+        "content": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+        "createdAt": 1781700787119,
+        "excerpt": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+        "id": "n_20260617_33925056631a",
+        "pinned": false,
+        "sourceTitle": "",
+        "summary": "",
+        "tags": [
+          "个人",
+          "想法"
+        ],
+        "title": "个人阅读想法",
+        "type": "manual",
+        "updatedAt": 1781700863342,
+        "url": ""
+      }
+    },
+    {
+      "name": "11. 删除笔记",
+      "pass": true,
+      "detail": [
+        {
+          "categoryId": "cat_1",
+          "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "createdAt": 1781700778226,
+          "excerpt": "第一段：这是一篇用于验证网页内容提取的文章。 第二段：插件应该能把主要正文保存为笔记，并保留来源链接。 第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+          "id": "n_20260617_3e3bc8443113",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+          "tags": [
+            "网页",
+            "阅读",
+            "AI"
+          ],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "extracted",
+          "updatedAt": 1781700781527,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_3",
+          "content": "https://example.com/article.html",
+          "createdAt": 1781700783508,
+          "excerpt": "https://example.com/article.html",
+          "id": "n_20260617_f04144303025",
+          "pinned": false,
+          "sourceTitle": "示例文章：网页阅读与笔记",
+          "summary": "",
+          "tags": [],
+          "title": "示例文章：网页阅读与笔记",
+          "type": "quick-url",
+          "updatedAt": 1781700783508,
+          "url": "https://example.com/article.html"
+        },
+        {
+          "categoryId": "cat_2",
+          "content": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+          "createdAt": 1781700787119,
+          "excerpt": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+          "id": "n_20260617_33925056631a",
+          "pinned": false,
+          "sourceTitle": "",
+          "summary": "",
+          "tags": [
+            "个人",
+            "想法"
+          ],
+          "title": "个人阅读想法",
+          "type": "manual",
+          "updatedAt": 1781700863342,
+          "url": ""
+        }
+      ]
+    },
+    {
+      "name": "12. 导出 Markdown 触发下载",
+      "pass": true,
+      "detail": [
+        {
+          "fileName": "笔记导出_2026-06-17.md",
+          "href": "blob:http://127.0.0.1:52962/68e615fb-69f6-4da6-92a3-195340b1f494"
+        }
+      ]
+    }
+  ],
+  "finalState": {
+    "buttonDisabled": [
+      false,
+      false,
+      false
+    ],
+    "categories": [
+      {
+        "color": "#4A90D9",
+        "id": "cat_1",
+        "name": "工作",
+        "order": 0
+      },
+      {
+        "color": "#7B61FF",
+        "id": "cat_2",
+        "name": "个人",
+        "order": 1
+      },
+      {
+        "color": "#2ECC71",
+        "id": "cat_3",
+        "name": "学习",
+        "order": 2
+      },
+      {
+        "color": "#F39C12",
+        "id": "cat_4",
+        "name": "灵感",
+        "order": 3
+      },
+      {
+        "color": "#95A5A6",
+        "id": "cat_5",
+        "name": "归档",
+        "order": 4
+      }
+    ],
+    "downloads": [
+      {
+        "fileName": "笔记导出_2026-06-17.md",
+        "href": "blob:http://127.0.0.1:52962/68e615fb-69f6-4da6-92a3-195340b1f494"
+      }
+    ],
+    "editorOpen": false,
+    "messages": [
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "extractPage",
+        "tabId": 171
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "summarize",
+        "config": {
+          "length": "medium"
+        },
+        "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+        "mode": "tfidf",
+        "noteId": "n_20260617_3e3bc8443113",
+        "title": "示例文章：网页阅读与笔记",
+        "url": "https://example.com/article.html"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getSelectedText",
+        "tabId": 171
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      },
+      {
+        "action": "getActiveTab"
+      }
+    ],
+    "metadata": {
+      "lastBackup": null,
+      "noteCount": 3,
+      "version": 1
+    },
+    "noteCards": [
+      "个人阅读想法",
+      "示例文章：网页阅读与笔记",
+      "示例文章：网页阅读与笔记"
+    ],
+    "noteContent": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+    "noteSummary": "",
+    "noteTitle": "个人阅读想法",
+    "notes": [
+      {
+        "categoryId": "cat_1",
+        "content": "第一段：这是一篇用于验证网页内容提取的文章。\n\n第二段：插件应该能把主要正文保存为笔记，并保留来源链接。\n\n第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+        "createdAt": 1781700778226,
+        "excerpt": "第一段：这是一篇用于验证网页内容提取的文章。 第二段：插件应该能把主要正文保存为笔记，并保留来源链接。 第三段：用户可以继续编辑、生成摘要、添加标签并分类管理。",
+        "id": "n_20260617_3e3bc8443113",
+        "pinned": false,
+        "sourceTitle": "示例文章：网页阅读与笔记",
+        "summary": "模拟摘要：文章说明了网页内容提取、摘要生成、笔记编辑与本地保存流程。",
+        "tags": [
+          "网页",
+          "阅读",
+          "AI"
+        ],
+        "title": "示例文章：网页阅读与笔记",
+        "type": "extracted",
+        "updatedAt": 1781700781527,
+        "url": "https://example.com/article.html"
+      },
+      {
+        "categoryId": "cat_3",
+        "content": "https://example.com/article.html",
+        "createdAt": 1781700783508,
+        "excerpt": "https://example.com/article.html",
+        "id": "n_20260617_f04144303025",
+        "pinned": false,
+        "sourceTitle": "示例文章：网页阅读与笔记",
+        "summary": "",
+        "tags": [],
+        "title": "示例文章：网页阅读与笔记",
+        "type": "quick-url",
+        "updatedAt": 1781700783508,
+        "url": "https://example.com/article.html"
+      },
+      {
+        "categoryId": "cat_2",
+        "content": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+        "createdAt": 1781700787119,
+        "excerpt": "这是一条已经编辑过的个人笔记，自动保存应该写回本地存储。",
+        "id": "n_20260617_33925056631a",
+        "pinned": false,
+        "sourceTitle": "",
+        "summary": "",
+        "tags": [
+          "个人",
+          "想法"
+        ],
+        "title": "个人阅读想法",
+        "type": "manual",
+        "updatedAt": 1781700863342,
+        "url": ""
+      }
+    ],
+    "settings": {
+      "autoSummarize": false,
+      "defaultCategoryId": "cat_3",
+      "exportFormat": "markdown",
+      "fontSize": 14,
+      "llm": {
+        "apiEndpoint": "",
+        "apiKey": "",
+        "enabled": false,
+        "model": "gpt-4o-mini"
+      },
+      "summaryLength": "medium",
+      "theme": "light"
+    },
+    "settingsOpen": false,
+    "statusDetail": "example.com",
+    "statusTitle": "当前页面：示例文章：网页阅读与笔记"
+  },
+  "screenshot": "C:/Users/okura/Desktop/code/chrome插件日记/test-artifacts/functional-verification/functional-final-list.png"
+}

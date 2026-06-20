@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "checks": [
+    "新增分类写入 storage 并显示在管理列表",
+    "按 Enter 重命名后同步到 storage、筛选下拉、编辑器下拉",
+    "默认分类保存成功",
+    "隐藏面板不再造成横向溢出",
+    "新建笔记自动使用默认分类",
+    "保存按钮保持在可点击区域",
+    "删除分类后笔记迁移到回退分类",
+    "删除后 UI 与 storage 同步"
+  ],
+  "final": {
+    "categories": [
+      "工作",
+      "个人",
+      "学习",
+      "灵感",
+      "归档"
+    ],
+    "defaultCategoryId": "cat_1",
+    "noteCategoryId": "cat_1",
+    "noteCount": 1,
+    "scrollWidth": 430,
+    "innerWidth": 430
+  }
+}

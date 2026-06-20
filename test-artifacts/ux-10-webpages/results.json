@@ -1,0 +1,633 @@
+[
+  {
+    "index": 1,
+    "name": "MDN Fetch API 文档",
+    "category": "长技术文档",
+    "userTask": "用户想保存一篇长英文开发文档并稍后总结",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+    "actualUrl": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+    "docTitle": "Using the Fetch API - Web APIs | MDN",
+    "bodySample": "Skip to main content Skip to search HTML CSS JavaScript Web APIs All Learn Tools About Blog Web Web APIs Fetch API Using the Fetch API Using the Fetch API The Fetch API provides a ",
+    "rawSuccess": true,
+    "uxStatus": "usable",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "Fetch",
+      "request"
+    ],
+    "actualTitle": "Using the Fetch API",
+    "method": "readability",
+    "pageType": "article",
+    "confidence": 0.72,
+    "classifyReason": "article-structure",
+    "qualityWarnings": [],
+    "contentLength": 13813,
+    "excerpt": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XMLHttpRequest, which",
+    "contentPreview": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XMLHttpRequest, which uses callbacks, Fetch is promise-based and is integrated with features of the modern web such as service workers and Cro",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 3155,
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "Using the Fetch API",
+      "editorOpen": true,
+      "noteTitle": "Using the Fetch API",
+      "noteContentLength": 13813,
+      "noteContentPreview": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XMLHttpRequest, which uses callbacks, Fetc",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 Using the Fetch API 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 13813 字 已",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1200
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\01-sidepanel.png"
+  },
+  {
+    "index": 2,
+    "name": "共产党员网图片文章",
+    "category": "中文图片型正文",
+    "userTask": "用户想保存一篇正文主要在长图里的中文文章",
+    "url": "https://www.12371.cn/2026/06/15/ARTI1781514058487480.shtml",
+    "actualUrl": "https://www.12371.cn/2026/06/15/ARTI1781514058487480.shtml",
+    "docTitle": "习近平党建思想内涵要义_共产党员网",
+    "bodySample": "共产党员网首页 手机版 组工软件下载 登录/注册 思想理论 党章党规 党的历史 先进典型 培训工作 观摩交流 课件资源 专题课件 党务问答 先锋文汇 最新 热搜 习近平党建思想 发展党员 习近平党建思想内涵要义 共产党员网 分享 打印 纠错 发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 分享 打印 关于我们 联系我们 用户调查 共产",
+    "rawSuccess": true,
+    "uxStatus": "problem",
+    "okForUx": false,
+    "extractionReason": "possible-boilerplate-or-gate-text",
+    "expectHits": [
+      "习近平",
+      "党建思想"
+    ],
+    "actualTitle": "习近平党建思想内涵要义",
+    "method": "fallback",
+    "pageType": "unknown",
+    "confidence": 0.35,
+    "classifyReason": "no-strong-signal",
+    "qualityWarnings": [
+      "页面类型不明确，已使用通用正文提取。",
+      "页面正文可能主要在图片中；当前只记录了图片信息，未读取图片文字。",
+      "当前页面未匹配专用提取器，已使用通用回退提取。"
+    ],
+    "contentLength": 240,
+    "excerpt": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶\n习近平党建思想内涵要义\n共产党员网\n打印\n纠错\n请先登录\n微信扫一扫\n×\n收听本文\n00:00/00:00\n图片内容：\n- 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/conte",
+    "contentPreview": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 习近平党建思想内涵要义 共产党员网 打印 纠错 请先登录 微信扫一扫 × 收听本文 00:00/00:00 发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 图片内容： - 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/contentimg/2026/06/15/2026061517005871012.jpg",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 3744,
+    "display": {
+      "statusTitle": "已提取部分页面内容",
+      "statusDetail": "习近平党建思想内涵要义",
+      "editorOpen": true,
+      "noteTitle": "习近平党建思想内涵要义",
+      "noteContentLength": 240,
+      "noteContentPreview": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 习近平党建思想内涵要义 共产党员网 打印 纠错 请先登录 微信扫一扫 × 收听本文 00:00/00:00 发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 图片内容： - 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/contentimg/2026/06/15/20260",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": true,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 已提取部分页面内容 习近平党建思想内涵要义 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 提取质量提示 页面类型不明确，已使",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1201
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\02-sidepanel.png"
+  },
+  {
+    "index": 3,
+    "name": "Wikipedia Readability",
+    "category": "百科长文",
+    "userTask": "用户想保存百科条目，避免导航和目录污染正文",
+    "url": "https://en.wikipedia.org/wiki/Readability",
+    "actualUrl": "https://en.wikipedia.org/wiki/Readability",
+    "docTitle": "Readability - Wikipedia",
+    "bodySample": "Jump to content Main menu Search Donate Create account Log in Contents hide (Top) Definition Applications History Toggle History subsection Early research Reading ease Readability ",
+    "rawSuccess": true,
+    "uxStatus": "usable",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "Readability",
+      "reader"
+    ],
+    "actualTitle": "Readability",
+    "method": "readability",
+    "pageType": "article",
+    "confidence": 0.72,
+    "classifyReason": "article-structure",
+    "qualityWarnings": [],
+    "contentLength": 50791,
+    "excerpt": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with whi",
+    "contentPreview": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with which a reader can understand a written text. The concept exists in both natural language and programming languages, though",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 3724,
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "Readability",
+      "editorOpen": true,
+      "noteTitle": "Readability",
+      "noteContentLength": 50791,
+      "noteContentPreview": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with which a reader can unde",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 Readability 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 50791 字 已自动保存 摘要（",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1202
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\03-sidepanel.png"
+  },
+  {
+    "index": 4,
+    "name": "Example.com",
+    "category": "短网页",
+    "userTask": "用户误点或保存很短页面时，应收到合理反馈",
+    "url": "https://example.com/",
+    "actualUrl": "https://example.com/",
+    "docTitle": "Example Domain",
+    "bodySample": "Example Domain This domain is for use in documentation examples without needing permission. Avoid use in operations. Learn more",
+    "rawSuccess": true,
+    "uxStatus": "usable-with-warning",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "Example Domain"
+    ],
+    "actualTitle": "Example Domain",
+    "method": "readability",
+    "pageType": "unknown",
+    "confidence": 0.35,
+    "classifyReason": "no-strong-signal",
+    "qualityWarnings": [
+      "页面类型不明确，已使用通用正文提取。",
+      "提取内容较短，摘要可能不完整。"
+    ],
+    "contentLength": 115,
+    "excerpt": "Example DomainThis domain is for use in documentation examples without needing permission. Avoid use in operations.",
+    "contentPreview": "Example DomainThis domain is for use in documentation examples without needing permission. Avoid use in operations.",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 2417,
+    "display": {
+      "statusTitle": "已提取部分页面内容",
+      "statusDetail": "Example Domain",
+      "editorOpen": true,
+      "noteTitle": "Example Domain",
+      "noteContentLength": 115,
+      "noteContentPreview": "Example DomainThis domain is for use in documentation examples without needing permission. Avoid use in operations.",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": true,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 已提取部分页面内容 Example Domain 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 提取质量提示 页面类型不明确",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1203
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\04-sidepanel.png"
+  },
+  {
+    "index": 5,
+    "name": "Hacker News 首页",
+    "category": "列表/聚合页",
+    "userTask": "用户想保存当天资讯列表，应知道摘要只基于列表条目",
+    "url": "https://news.ycombinator.com/",
+    "actualUrl": "https://news.ycombinator.com/",
+    "docTitle": "Hacker News",
+    "bodySample": "Hacker Newsnew | past | comments | ask | show | jobs | submit login 1. I Stored a Website in a Favicon (timwehrle.de) 68 points by theanonymousone 2 hours ago | hide | 25 comments ",
+    "rawSuccess": true,
+    "uxStatus": "usable-with-warning",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "Hacker News"
+    ],
+    "actualTitle": "Hacker News",
+    "method": "listing",
+    "pageType": "listing",
+    "confidence": 0.68,
+    "classifyReason": "dense-link-list",
+    "qualityWarnings": [
+      "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
+    ],
+    "contentLength": 1497,
+    "excerpt": "页面类型：列表/聚合页\n页面标题：Hacker News\n以下为页面中的主要列表条目：\n1. I Stored a Website in a Favicon\n说明：68 points · 25 comments\n2. Data Compression Explained (2012)\n说明：92 points · 7 comments\n3. There are no instances in AT",
+    "contentPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目： 1. I Stored a Website in a Favicon 说明：68 points · 25 comments 2. Data Compression Explained (2012) 说明：92 points · 7 comments 3. There are no instances in ATProto 说明：416 points · 216 comments 4. The discovery that changed how scientists think about memory 说明：31 points · 3 comm",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 3224,
+    "display": {
+      "statusTitle": "已提取部分页面内容",
+      "statusDetail": "Hacker News",
+      "editorOpen": true,
+      "noteTitle": "Hacker News",
+      "noteContentLength": 1497,
+      "noteContentPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目： 1. I Stored a Website in a Favicon 说明：68 points · 25 comments 2. Data Compression Explained (2012) 说明：92 points · 7 comments 3. There are no instances in ATProto 说明：416 points ",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": true,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 已提取部分页面内容 Hacker News 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 提取质量提示 当前页面更像列表/聚",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1204
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\05-sidepanel.png"
+  },
+  {
+    "index": 6,
+    "name": "Hacker News Dropbox 讨论",
+    "category": "论坛/评论页",
+    "userTask": "用户想保存一串讨论和评论观点",
+    "url": "https://news.ycombinator.com/item?id=8863",
+    "actualUrl": "https://news.ycombinator.com/item?id=8863",
+    "docTitle": "My YC app: Dropbox - Throw away your USB drive | Hacker News",
+    "bodySample": "Hacker Newsnew | past | comments | ask | show | jobs | submit login My YC app: Dropbox - Throw away your USB drive (getdropbox.com) 104 points by dhouston on April 4, 2007 | hide |",
+    "rawSuccess": true,
+    "uxStatus": "usable",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "Dropbox",
+      "Comments"
+    ],
+    "actualTitle": "My YC app: Dropbox",
+    "method": "readability",
+    "pageType": "forum-qa",
+    "confidence": 0.72,
+    "classifyReason": "forum-or-qa-structure",
+    "qualityWarnings": [],
+    "contentLength": 23810,
+    "excerpt": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or",
+    "contentPreview": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or CVS on the mounted filesystem. From Windows or Mac, this FTP account could be accessed through built-in software.2. It ",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 2933,
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "My YC app: Dropbox",
+      "editorOpen": true,
+      "noteTitle": "My YC app: Dropbox",
+      "noteContentLength": 23810,
+      "noteContentPreview": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or CVS on the mounted ",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 My YC app: Dropbox 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 23810 字 已自",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1205
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\06-sidepanel.png"
+  },
+  {
+    "index": 7,
+    "name": "GitHub OpenAI Codex 仓库",
+    "category": "项目/README 页",
+    "userTask": "用户想保存一个项目页的 README 和关键信息",
+    "url": "https://github.com/openai/codex",
+    "actualUrl": "https://github.com/openai/codex",
+    "docTitle": "GitHub - openai/codex: Lightweight coding agent that runs in your terminal · GitHub",
+    "bodySample": "Skip to content Navigation Menu Platform Solutions Resources Open Source Enterprise Pricing Sign in Sign up openai / codex Public Notifications Fork 13.6k Star 92.2k Code Issues 5k",
+    "rawSuccess": true,
+    "uxStatus": "usable",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "Codex",
+      "OpenAI"
+    ],
+    "actualTitle": "openai/codex",
+    "method": "github-readme",
+    "pageType": "article",
+    "confidence": 0.86,
+    "classifyReason": "github-readme",
+    "qualityWarnings": [],
+    "contentLength": 1916,
+    "excerpt": "仓库：openai/codex\n\nCodex CLI is a coding agent from OpenAI that runs locally on your computer.\nIf you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE.\nIf you want the des",
+    "contentPreview": "仓库：openai/codex Codex CLI is a coding agent from OpenAI that runs locally on your computer. If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE. If you want the desktop app experience, run codex app or visit the Codex App page. If you are looking for the cloud-based agent from OpenAI,",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 4970,
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "openai/codex",
+      "editorOpen": true,
+      "noteTitle": "openai/codex",
+      "noteContentLength": 1916,
+      "noteContentPreview": "仓库：openai/codex Codex CLI is a coding agent from OpenAI that runs locally on your computer. If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE. If you want the desktop app experience, ",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 openai/codex 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 1916 字 已自动保存 摘要（",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1206
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\07-sidepanel.png"
+  },
+  {
+    "index": 8,
+    "name": "YouTube 视频页",
+    "category": "视频页",
+    "userTask": "用户想总结视频页，应明确没有字幕时只能总结页面可见信息",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "actualUrl": "https://www.google.com/sorry/index?continue=https://www.youtube.com/watch%3Fv%3DdQw4w9WgXcQ&q=EgQ0TsD3GO2F2dEGIjCCev2osJ3Jeda8eXcy7JUWb090CxfbcB-B_Ox6aLm2hjAUxlAsityyMwvCNmVeLzYyAnJSWgFD",
+    "docTitle": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "bodySample": "关于此网页 我们的系统检测到您的计算机网络中存在异常流量。此网页用于确认这些请求是由您而不是自动程序发出的。为什么会这样？ IP 地址：52.78.192.247 时间：2026-06-20T07:36:14Z 网址：https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "rawSuccess": false,
+    "uxStatus": "failed",
+    "okForUx": false,
+    "extractionReason": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "expectHits": [],
+    "actualTitle": "https://www.youtube.com/watch? v=dQw4w9WgXcQ",
+    "method": "login",
+    "pageType": "login",
+    "confidence": 0.84,
+    "classifyReason": "login-or-captcha",
+    "qualityWarnings": [],
+    "contentLength": 0,
+    "excerpt": "",
+    "contentPreview": "",
+    "error": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "errorCode": "",
+    "extractionMs": 4278,
+    "display": {
+      "statusTitle": "提取失败",
+      "statusDetail": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+      "editorOpen": false,
+      "noteTitle": "",
+      "noteContentLength": 0,
+      "noteContentPreview": "",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 提取失败 当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 0 ",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1207
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\08-sidepanel.png"
+  },
+  {
+    "index": 9,
+    "name": "Apple MacBook Air 产品页",
+    "category": "商品/营销页",
+    "userTask": "用户想保存商品卖点，正文不应只剩导航或促销按钮",
+    "url": "https://www.apple.com/macbook-air/",
+    "actualUrl": "https://www.apple.com/macbook-air/",
+    "docTitle": "MacBook Air 13-inch and MacBook Air 15-inch - Apple",
+    "bodySample": "Apple Store Mac iPad iPhone Watch Vision AirPods TV & Home Entertainment Accessories Support 0 + MacBook Air Overview Tech Specs Compare Switch from PC to Mac Buy MacBook Air Buy M",
+    "rawSuccess": true,
+    "uxStatus": "usable",
+    "okForUx": true,
+    "extractionReason": "usable",
+    "expectHits": [
+      "MacBook Air",
+      "Apple"
+    ],
+    "actualTitle": "MacBook Air 13-inch and MacBook Air 15-inch",
+    "method": "readability",
+    "pageType": "product",
+    "confidence": 0.74,
+    "classifyReason": "product-schema-or-price",
+    "qualityWarnings": [],
+    "contentLength": 11073,
+    "excerpt": "Buy MacBook Air starting at $999 with education savings.ShopFrom $1099 or $91.58/mo. for 12 mo.The M5 chip isn’t just an upgrade, it’s a game changer, delivering phenomenal performance. Prepare for li",
+    "contentPreview": "Buy MacBook Air starting at $999 with education savings.ShopFrom $1099 or $91.58/mo. for 12 mo.The M5 chip isn’t just an upgrade, it’s a game changer, delivering phenomenal performance. Prepare for liftoff.Up to 18 hours of battery life. Won’t call it a day until you do.A powerful platform for AI. And Apple Intelligenc",
+    "error": "",
+    "errorCode": "",
+    "extractionMs": 3769,
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "MacBook Air 13-inch and MacBook Air 15-inch",
+      "editorOpen": true,
+      "noteTitle": "MacBook Air 13-inch and MacBook Air 15-inch",
+      "noteContentLength": 11073,
+      "noteContentPreview": "Buy MacBook Air starting at $999 with education savings.ShopFrom $1099 or $91.58/mo. for 12 mo.The M5 chip isn’t just an upgrade, it’s a game changer, delivering phenomenal performance. Prepare for liftoff.Up to 18 hours",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 MacBook Air 13-inch and MacBook Air 15-inch 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1208
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\09-sidepanel.png"
+  },
+  {
+    "index": 10,
+    "name": "阮一峰周刊文章",
+    "category": "受限/反爬页面",
+    "userTask": "用户遇到防护页时，应得到可理解、可行动的提示",
+    "url": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-306.html",
+    "actualUrl": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-306.html",
+    "docTitle": "请稍候…",
+    "bodySample": "www.ruanyifeng.com 正在进行安全验证 本网站使用安全服务防护恶意自动程序。在验证您不是自动程序期间，将显示此页面。 Ray ID: a0e91a1fd959d946 由 Cloudflare 提供的性能和安全服务 隐私",
+    "rawSuccess": false,
+    "uxStatus": "expected-failure",
+    "okForUx": true,
+    "extractionReason": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "expectHits": [],
+    "actualTitle": "请稍候…",
+    "method": "login",
+    "pageType": "login",
+    "confidence": 0.84,
+    "classifyReason": "login-or-captcha",
+    "qualityWarnings": [],
+    "contentLength": 0,
+    "excerpt": "",
+    "contentPreview": "",
+    "error": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "errorCode": "",
+    "extractionMs": 2959,
+    "display": {
+      "statusTitle": "提取失败",
+      "statusDetail": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+      "editorOpen": false,
+      "noteTitle": "",
+      "noteContentLength": 0,
+      "noteContentPreview": "",
+      "hasHorizontalOverflow": false,
+      "actionRowOverflows": false,
+      "toolbarOverflows": false,
+      "warningVisible": false,
+      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 提取失败 当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 0 ",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 1209
+        },
+        {
+          "action": "getActiveTab"
+        }
+      ]
+    },
+    "displaySuccess": true,
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\ux-10-webpages\\screenshots\\10-sidepanel.png"
+  }
+]

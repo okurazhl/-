@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-06-16T00:00:45.343Z",
+  "shots": [
+    {
+      "name": "Example",
+      "slug": "example",
+      "url": "https://example.com/",
+      "title": "Example Domain",
+      "finalUrl": "https://example.com/",
+      "fileName": "01-example.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\01-example.png"
+    },
+    {
+      "name": "Wikipedia",
+      "slug": "wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Google_Chrome",
+      "title": "Google Chrome - Wikipedia",
+      "finalUrl": "https://en.wikipedia.org/wiki/Google_Chrome",
+      "fileName": "02-wikipedia.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\02-wikipedia.png"
+    },
+    {
+      "name": "Chrome Docs",
+      "slug": "chrome-docs",
+      "url": "https://developer.chrome.com/docs/extensions/develop/concepts/activeTab",
+      "title": "“activeTab”权限  |  Chrome Extensions  |  Chrome for Developers",
+      "finalUrl": "https://developer.chrome.com/docs/extensions/develop/concepts/activeTab?hl=zh-cn",
+      "fileName": "03-chrome-docs.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\03-chrome-docs.png"
+    },
+    {
+      "name": "GitHub Docs",
+      "slug": "github-docs",
+      "url": "https://docs.github.com/en/get-started/start-your-journey/about-github-and-git",
+      "title": "About GitHub and Git - GitHub Docs",
+      "finalUrl": "https://docs.github.com/en/get-started/start-your-journey/about-github-and-git",
+      "fileName": "04-github-docs.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\04-github-docs.png"
+    },
+    {
+      "name": "web.dev",
+      "slug": "web-dev",
+      "url": "https://web.dev/articles/vitals",
+      "title": "Web Vitals  |  Articles  |  web.dev",
+      "finalUrl": "https://web.dev/articles/vitals?hl=zh-cn",
+      "fileName": "05-web-dev.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\05-web-dev.png"
+    },
+    {
+      "name": "Hacker News",
+      "slug": "hacker-news",
+      "url": "https://news.ycombinator.com/",
+      "title": "Hacker News",
+      "finalUrl": "https://news.ycombinator.com/",
+      "fileName": "06-hacker-news.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\06-hacker-news.png"
+    },
+    {
+      "name": "BBC News",
+      "slug": "bbc-news",
+      "url": "https://www.bbc.com/news",
+      "title": "BBC News - Breaking news, video and the latest top stories from the U.S. and around the world",
+      "finalUrl": "https://www.bbc.com/news",
+      "fileName": "07-bbc-news.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\07-bbc-news.png"
+    },
+    {
+      "name": "Reuters",
+      "slug": "reuters",
+      "url": "https://www.reuters.com/world/",
+      "title": "World News | Latest Top Stories | Reuters",
+      "finalUrl": "https://www.reuters.com/world/",
+      "fileName": "08-reuters.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\08-reuters.png"
+    },
+    {
+      "name": "?????",
+      "slug": "ruanyifeng-weekly",
+      "url": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-305.html",
+      "title": "科技爱好者周刊（第 305 期）：随机数，这是一个问题 - 阮一峰的网络日志",
+      "finalUrl": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-305.html",
+      "fileName": "09-ruanyifeng-weekly.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\09-ruanyifeng-weekly.png"
+    },
+    {
+      "name": "?????",
+      "slug": "gov-cn",
+      "url": "https://www.gov.cn/yaowen/liebiao/202406/content_6956686.htm",
+      "title": "中国政府网_中央人民政府门户网站",
+      "finalUrl": "https://www.gov.cn/",
+      "fileName": "10-gov-cn.png",
+      "filePath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\10-gov-cn.png"
+    }
+  ],
+  "contact": {
+    "htmlPath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\00-contact-sheet.html",
+    "contactPath": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\screenshots\\00-contact-sheet.png"
+  }
+}

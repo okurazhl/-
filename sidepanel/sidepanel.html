@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网页笔记助手</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部工具栏 -->
+    <header id="toolbar">
+      <div class="toolbar-brand">
+        <div class="brand-mark">记</div>
+        <div class="brand-copy">
+          <div class="brand-title">网页笔记助手</div>
+          <div class="brand-subtitle">提取、整理、总结当前网页</div>
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <input type="text" id="searchInput" class="search-input" placeholder="搜索笔记..." />
+        <div class="toolbar-actions">
+          <select id="exportSelect" class="toolbar-btn" title="导出">
+            <option value="" disabled selected>导出 ▼</option>
+            <option value="markdown">导出 Markdown</option>
+            <option value="json">导出 JSON</option>
+            <option value="csv">导出 CSV</option>
+            <option value="text">导出纯文本</option>
+          </select>
+          <button id="settingsBtn" class="toolbar-btn" title="设置">⚙</button>
+        </div>
+      </div>
+      <!-- 快捷操作按钮 -->
+      <div class="toolbar-row action-row">
+        <button id="extractPageBtn" class="action-btn primary" disabled aria-disabled="true">📄 提取页面</button>
+        <button id="summarizePageBtn" class="action-btn primary" disabled aria-disabled="true">✨ 总结当前网页</button>
+        <button id="quickUrlBtn" class="action-btn" disabled aria-disabled="true">🔗 快速添加 URL</button>
+        <button id="quickSelectionBtn" class="action-btn" disabled aria-disabled="true">✂ 添加选中文本</button>
+      </div>
+      <div id="pageStatus" class="page-status warning" role="status" aria-live="polite">
+        <span id="pageStatusIcon" class="page-status-icon">!</span>
+        <div class="page-status-body">
+          <div id="pageStatusTitle" class="page-status-title">未绑定网页</div>
+          <div id="pageStatusDetail" class="page-status-detail">请在目标网页点击扩展图标打开侧边栏</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 筛选栏 -->
+    <div id="filterBar">
+      <select id="categoryFilter" class="filter-select">
+        <option value="">全部分类</option>
+      </select>
+      <select id="sortOrder" class="filter-select">
+        <option value="newest">最新优先</option>
+        <option value="oldest">最早优先</option>
+        <option value="updated">最近更新</option>
+        <option value="title">标题排序</option>
+      </select>
+      <button id="newNoteBtn" class="action-btn primary">+ 新建笔记</button>
+    </div>
+
+    <!-- 笔记列表 -->
+    <main id="noteList">
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">📝</div>
+        <p>还没有笔记</p>
+        <p class="empty-hint">点击上方按钮开始记录</p>
+      </div>
+    </main>
+
+    <!-- 笔记编辑器（默认隐藏） -->
+    <div id="editorPanel" class="editor-panel hidden">
+      <div class="editor-header">
+        <button id="backToListBtn" class="toolbar-btn">← 返回列表</button>
+        <div class="editor-header-actions">
+          <button id="saveNoteBtn" class="action-btn primary">💾 保存</button>
+          <button id="previewSummaryPayloadBtn" class="action-btn hidden">查看发送内容</button>
+          <button id="insertSummaryBtn" class="action-btn hidden">插入到正文</button>
+          <button id="summarizeNoteBtn" class="action-btn">✨ 生成摘要</button>
+          <button id="cancelSummaryBtn" class="action-btn hidden">取消生成</button>
+        </div>
+      </div>
+      <div class="editor-body">
+        <input type="text" id="noteTitle" class="editor-title" placeholder="笔记标题" />
+        <div class="editor-meta">
+          <select id="noteCategory" class="filter-select">
+            <option value="">选择分类</option>
+          </select>
+          <input type="text" id="noteTags" class="tag-input" placeholder="标签，用逗号分隔" />
+          <label class="pinned-toggle" title="置顶笔记">
+            <input type="checkbox" id="notePinned" /> 📌 置顶
+          </label>
+        </div>
+        <textarea id="noteContent" class="editor-content" placeholder="在此输入笔记内容..."></textarea>
+        <div id="noteQualityWarnings" class="quality-warnings hidden" role="status" aria-live="polite"></div>
+        <div class="editor-content-footer">
+          <span id="charCount" class="char-count">0 字</span>
+          <span id="autoSaveIndicator" class="auto-save-indicator hidden">已自动保存</span>
+        </div>
+        <div class="editor-summary-section">
+          <label class="summary-label">摘要（可直接编辑）：</label>
+          <textarea id="noteSummary" class="editor-summary" placeholder="摘要尚未生成，点击“生成摘要”按钮..."></textarea>
+        </div>
+        <div id="noteSource" class="note-source hidden">
+          来源：<a id="sourceLink" href="#" target="_blank"></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 设置面板（默认隐藏） -->
+    <div id="settingsPanel" class="settings-panel hidden">
+      <div class="settings-header">
+        <button id="closeSettingsBtn" class="toolbar-btn">← 返回列表</button>
+        <h3>设置</h3>
+      </div>
+      <div class="settings-body">
+        <div class="setting-group">
+          <h4>LLM API 配置</h4>
+          <p class="setting-hint">配置云端大模型进行文章摘要（兼容 OpenAI 接口）</p>
+          <label class="checkbox-label">
+            <input type="checkbox" id="llmEnabled" /> 启用云端摘要
+          </label>
+          <label>API 地址</label>
+          <input type="text" id="llmEndpoint" placeholder="https://api.deepseek.com/chat/completions" />
+          <label>API 密钥</label>
+          <div class="api-key-row">
+            <input type="password" id="llmApiKey" placeholder="sk-..." />
+            <button id="toggleApiKeyVisibility" class="toolbar-btn">👁</button>
+          </div>
+          <p class="setting-note">⚠ 密钥仅保存在本地浏览器中；调用云端摘要时会作为 Authorization 发送给你配置的 API 地址。</p>
+          <label>模型名称</label>
+          <input type="text" id="llmModel" placeholder="gpt-4o-mini" />
+        </div>
+        <div class="setting-group">
+          <h4>显示</h4>
+          <label>主题</label>
+          <select id="themeSelect">
+            <option value="light">浅色</option>
+            <option value="dark">深色</option>
+          </select>
+          <label>字号</label>
+          <input type="range" id="fontSizeRange" min="12" max="20" value="14" />
+        </div>
+        <div class="setting-group category-settings">
+          <div class="setting-group-header">
+            <div>
+              <h4>分类管理</h4>
+              <p class="setting-hint">新增、重命名或删除分类；已有笔记会继续通过分类 ID 关联。</p>
+            </div>
+          </div>
+          <label>默认分类</label>
+          <select id="defaultCategorySelect"></select>
+          <div id="categoryManager" class="category-manager" aria-live="polite"></div>
+          <div class="category-add-row">
+            <input type="text" id="newCategoryName" placeholder="新分类名称" maxlength="24" />
+            <input type="color" id="newCategoryColor" value="#4A6CF7" title="分类颜色" />
+            <button id="addCategoryBtn" class="action-btn">+ 添加分类</button>
+          </div>
+          <p class="setting-hint category-delete-hint">删除分类时，该分类下的笔记会自动移动到当前默认分类。</p>
+        </div>
+        <div class="setting-group">
+          <h4>摘要</h4>
+          <label>默认摘要长度</label>
+          <select id="summaryLengthSelect">
+            <option value="short">短</option>
+            <option value="medium">中</option>
+            <option value="long">长</option>
+          </select>
+          <label class="checkbox-label">
+            <input type="checkbox" id="autoSummarizeCheck" /> 提取页面后自动生成摘要
+          </label>
+        </div>
+        <button id="saveSettingsBtn" class="action-btn primary">保存设置</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../lib/utils.js"></script>
+  <script type="module" src="../lib/storage.js"></script>
+  <script type="module" src="../lib/export.js"></script>
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

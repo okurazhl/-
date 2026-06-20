@@ -1,0 +1,445 @@
+[
+  {
+    "index": 1,
+    "name": "共产党员网文章",
+    "url": "https://www.12371.cn/2026/06/15/ARTI1781514058487480.shtml",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://www.12371.cn/2026/06/15/ARTI1781514058487480.shtml",
+    "docTitle": "习近平党建思想内涵要义_共产党员网",
+    "actualTitle": "习近平党建思想内涵要义",
+    "method": "fallback",
+    "contentLength": 240,
+    "excerpt": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶\n习近平党建思想内涵要义\n共产党员网\n打印\n纠错\n请先登录\n微信扫一扫\n×\n收听本文\n00:00/00:00\n图片内容：\n- 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/conte",
+    "contentPreview": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 习近平党建思想内涵要义 共产党员网 打印 纠错 请先登录 微信扫一扫 × 收听本文 00:00/00:00 发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 图片内容： - 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/contentimg/2026/06/15/2026061517005871012.jpg",
+    "containsImageInfo": true,
+    "extractionReason": "ok:image-only-content",
+    "expectHits": [
+      "习近平",
+      "党建思想"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "习近平党建思想内涵要义",
+      "editorOpen": true,
+      "noteTitle": "习近平党建思想内涵要义",
+      "noteContentLength": 240,
+      "noteContentPreview": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 习近平党建思想内涵要义 共产党员网 打印 纠错 请先登录 微信扫一扫 × 收听本文 00:00/00:00 发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 图片内容： - 图片 1（1000x4071）: https://p5.img.cctvpic.com/ph",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 900
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\01-sidepanel.png"
+  },
+  {
+    "index": 2,
+    "name": "Chrome Extensions Docs",
+    "url": "https://developer.chrome.com/docs/extensions/get-started",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://developer.chrome.com/docs/extensions/get-started?hl=zh-cn",
+    "docTitle": "扩展程序 / 开始使用  |  Get started  |  Chrome for Developers",
+    "actualTitle": "扩展程序 / 开始使用",
+    "method": "readability",
+    "contentLength": 1151,
+    "excerpt": "开始使用 欢迎开始学习 Chrome 扩展程序开发。 了解开始构建和分发首个 Chrome 扩展程序所需的一切信息。 概览 什么是扩展程序？ Chrome 扩展程序可通过自定义界面、监控浏览器事件和修改网页来提升浏览体验。 如需查看更多扩展程序功能示例，请访问 Chrome 应用商店。 它们是如何构建的？ 您可以使用创建 Web 应用时所用的 Web 技术构建扩展程序：HTML、CSS 和 Jav",
+    "contentPreview": "开始使用 欢迎开始学习 Chrome 扩展程序开发。 了解开始构建和分发首个 Chrome 扩展程序所需的一切信息。 概览 什么是扩展程序？ Chrome 扩展程序可通过自定义界面、监控浏览器事件和修改网页来提升浏览体验。 如需查看更多扩展程序功能示例，请访问 Chrome 应用商店。 它们是如何构建的？ 您可以使用创建 Web 应用时所用的 Web 技术构建扩展程序：HTML、CSS 和 JavaScript。 他们可以做些什么？ 除了 Web API 之外，扩展程序还可以使用 Chrome 扩展程序 API 来",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "Chrome"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "扩展程序 / 开始使用",
+      "editorOpen": true,
+      "noteTitle": "扩展程序 / 开始使用",
+      "noteContentLength": 1151,
+      "noteContentPreview": "开始使用 欢迎开始学习 Chrome 扩展程序开发。 了解开始构建和分发首个 Chrome 扩展程序所需的一切信息。 概览 什么是扩展程序？ Chrome 扩展程序可通过自定义界面、监控浏览器事件和修改网页来提升浏览体验。 如需查看更多扩展程序功能示例，请访问 Chrome 应用商店。 它们是如何构建的？ 您可以使用创建 Web 应用时所用的 Web 技术构",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 901
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\02-sidepanel.png"
+  },
+  {
+    "index": 3,
+    "name": "MDN Fetch API",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+    "docTitle": "Using the Fetch API - Web APIs | MDN",
+    "actualTitle": "Using the Fetch API",
+    "method": "readability",
+    "contentLength": 13813,
+    "excerpt": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XMLHttpRequest, which",
+    "contentPreview": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XMLHttpRequest, which uses callbacks, Fetch is promise-based and is integrated wit",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "Fetch",
+      "request"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "Using the Fetch API",
+      "editorOpen": true,
+      "noteTitle": "Using the Fetch API",
+      "noteContentLength": 12000,
+      "noteContentPreview": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XM",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 902
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\03-sidepanel.png"
+  },
+  {
+    "index": 4,
+    "name": "web.dev Article",
+    "url": "https://web.dev/articles/critical-rendering-path/render-tree-construction",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://web.dev/articles/critical-rendering-path/render-tree-construction?hl=zh-cn",
+    "docTitle": "渲染树构建、布局和绘制  |  Articles  |  web.dev",
+    "actualTitle": "渲染树构建、布局和绘制",
+    "method": "readability",
+    "contentLength": 1921,
+    "excerpt": "渲染树构建、布局和绘制 Ilya Grigorik 发布时间：2014 年 3 月 31 日\nCSSOM 树和 DOM 树会合并为渲染树，然后用于计算每个可见元素的布局，并作为绘制流程的输入，将像素渲染到屏幕上。 优化这些步骤中的每一个对于实现最佳渲染性能至关重要。 在上一节中，我们基于 HTML 和 CSS 输入构建了 DOM 和 CSSOM 树。 不过，这两者都是独立的对象，分别捕获文档的不同",
+    "contentPreview": "渲染树构建、布局和绘制 Ilya Grigorik 发布时间：2014 年 3 月 31 日 CSSOM 树和 DOM 树会合并为渲染树，然后用于计算每个可见元素的布局，并作为绘制流程的输入，将像素渲染到屏幕上。 优化这些步骤中的每一个对于实现最佳渲染性能至关重要。 在上一节中，我们基于 HTML 和 CSS 输入构建了 DOM 和 CSSOM 树。 不过，这两者都是独立的对象，分别捕获文档的不同方面：一个描述内容，另一个描述需要应用于文档的样式规则。 如何合并这两个部分，并让浏览器在屏幕上渲染像素？ 摘要DOM ",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "CSSOM"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "渲染树构建、布局和绘制",
+      "editorOpen": true,
+      "noteTitle": "渲染树构建、布局和绘制",
+      "noteContentLength": 1921,
+      "noteContentPreview": "渲染树构建、布局和绘制 Ilya Grigorik 发布时间：2014 年 3 月 31 日 CSSOM 树和 DOM 树会合并为渲染树，然后用于计算每个可见元素的布局，并作为绘制流程的输入，将像素渲染到屏幕上。 优化这些步骤中的每一个对于实现最佳渲染性能至关重要。 在上一节中，我们基于 HTML 和 CSS 输入构建了 DOM 和 CSSOM 树。 不过，",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 903
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\04-sidepanel.png"
+  },
+  {
+    "index": 5,
+    "name": "Wikipedia Readability",
+    "url": "https://en.wikipedia.org/wiki/Readability",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://en.wikipedia.org/wiki/Readability",
+    "docTitle": "Readability - Wikipedia",
+    "actualTitle": "Readability",
+    "method": "readability",
+    "contentLength": 50791,
+    "excerpt": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with whi",
+    "contentPreview": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with which a reader can understand a written text. The concept exist",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "Readability",
+      "reader"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "Readability",
+      "editorOpen": true,
+      "noteTitle": "Readability",
+      "noteContentLength": 12000,
+      "noteContentPreview": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability ",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 904
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\05-sidepanel.png"
+  },
+  {
+    "index": 6,
+    "name": "RFC 9110",
+    "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://www.rfc-editor.org/rfc/rfc9110.html",
+    "docTitle": "RFC 9110: HTTP Semantics",
+    "actualTitle": "RFC 9110",
+    "method": "readability",
+    "contentLength": 45397,
+    "excerpt": "The status code of a response is a three-digit integer code that describes\nthe result of the request and the semantics of the response, including\nwhether the request was successful and what content is",
+    "contentPreview": "The status code of a response is a three-digit integer code that describes the result of the request and the semantics of the response, including whether the request was successful and what content is enclosed (if any). All valid status codes are within the ra",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "HTTP",
+      "Semantics"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "RFC 9110",
+      "editorOpen": true,
+      "noteTitle": "RFC 9110",
+      "noteContentLength": 12000,
+      "noteContentPreview": "The status code of a response is a three-digit integer code that describes the result of the request and the semantics of the response, including whether the request was successful",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 905
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\06-sidepanel.png"
+  },
+  {
+    "index": 7,
+    "name": "Python Tutorial",
+    "url": "https://docs.python.org/3/tutorial/introduction.html",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://docs.python.org/3/tutorial/introduction.html",
+    "docTitle": "3. An Informal Introduction to Python — Python 3.14.6 documentation",
+    "actualTitle": "3. An Informal Introduction to Python",
+    "method": "readability",
+    "contentLength": 15676,
+    "excerpt": "3. An Informal Introduction to PythonIn the following examples, input and output are distinguished by the presence or\nabsence of prompts (>>> and …): to repeat the example, you must type\neverything af",
+    "contentPreview": "3. An Informal Introduction to PythonIn the following examples, input and output are distinguished by the presence or absence of prompts (>>> and …): to repeat the example, you must type everything after the prompt, when the prompt appears; lines that do not b",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "Python",
+      "interpreter"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "3. An Informal Introduction to Python",
+      "editorOpen": true,
+      "noteTitle": "3. An Informal Introduction to Python",
+      "noteContentLength": 12000,
+      "noteContentPreview": "3. An Informal Introduction to PythonIn the following examples, input and output are distinguished by the presence or absence of prompts (>>> and …): to repeat the example, you mus",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 906
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\07-sidepanel.png"
+  },
+  {
+    "index": 8,
+    "name": "Node.js Intro",
+    "url": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://nodejs.org/learn/getting-started/introduction-to-nodejs",
+    "docTitle": "Introduction to Node.js | Node.js Learn",
+    "actualTitle": "Introduction to Node.js",
+    "method": "readability",
+    "contentLength": 3433,
+    "excerpt": "Introduction to Node.jsNode.js is an open-source and cross-platform JavaScript runtime environment. It is a popular tool for almost any kind of project! Node.js runs the V8 JavaScript engine, the core",
+    "contentPreview": "Introduction to Node.jsNode.js is an open-source and cross-platform JavaScript runtime environment. It is a popular tool for almost any kind of project! Node.js runs the V8 JavaScript engine, the core of Google Chrome, outside of the browser. This allows Node.",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "Node.js",
+      "JavaScript"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "Introduction to Node.js",
+      "editorOpen": true,
+      "noteTitle": "Introduction to Node.js",
+      "noteContentLength": 3433,
+      "noteContentPreview": "Introduction to Node.jsNode.js is an open-source and cross-platform JavaScript runtime environment. It is a popular tool for almost any kind of project! Node.js runs the V8 JavaScr",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 907
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\08-sidepanel.png"
+  },
+  {
+    "index": 9,
+    "name": "阮一峰周刊",
+    "url": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-306.html",
+    "extractionSuccess": false,
+    "displaySuccess": false,
+    "actualUrl": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-306.html",
+    "docTitle": "请稍候…",
+    "actualTitle": "请稍候…",
+    "method": "login",
+    "contentLength": 0,
+    "excerpt": "",
+    "contentPreview": "",
+    "containsImageInfo": false,
+    "extractionReason": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "expectHits": [],
+    "error": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "display": {
+      "statusTitle": "提取失败",
+      "statusDetail": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+      "editorOpen": false,
+      "noteTitle": "",
+      "noteContentLength": 0,
+      "noteContentPreview": "",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 908
+        }
+      ]
+    }
+  },
+  {
+    "index": 10,
+    "name": "Hacker News Item",
+    "url": "https://news.ycombinator.com/item?id=8863",
+    "extractionSuccess": true,
+    "displaySuccess": true,
+    "actualUrl": "https://news.ycombinator.com/item?id=8863",
+    "docTitle": "My YC app: Dropbox - Throw away your USB drive | Hacker News",
+    "actualTitle": "My YC app: Dropbox",
+    "method": "readability",
+    "contentLength": 23810,
+    "excerpt": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or",
+    "contentPreview": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or CVS on the mounted filesystem. From Windows or Mac, this FT",
+    "containsImageInfo": false,
+    "extractionReason": "ok",
+    "expectHits": [
+      "Comments"
+    ],
+    "error": "",
+    "display": {
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "My YC app: Dropbox",
+      "editorOpen": true,
+      "noteTitle": "My YC app: Dropbox",
+      "noteContentLength": 12000,
+      "noteContentPreview": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, a",
+      "messages": [
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "getActiveTab"
+        },
+        {
+          "action": "extractPage",
+          "tabId": 909
+        }
+      ]
+    },
+    "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\extraction-10-webpages\\screenshots\\10-sidepanel.png"
+  }
+]
