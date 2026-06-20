@@ -8,6 +8,7 @@ import { initStorage, getAllNotes, getNoteById, createNote, updateNote, deleteNo
          deleteCategory, getSettings, updateSettings } from '../lib/storage.js';
 import { formatDate, escapeHtml, truncate, normalizeTags, debounce } from '../lib/utils.js';
 import { exportNotes } from '../lib/export.js';
+import { prepareSummaryContent } from '../lib/summary-content.js';
 
 // ===================== DOM 引用缓存 =====================
 const $ = (sel) => document.querySelector(sel);
@@ -751,7 +752,8 @@ async function saveCurrentNote() {
         extractionMethod: extraData.extractionMethod || extraData.method || '',
         extractionConfidence: typeof extraData.extractionConfidence === 'number' ? extraData.extractionConfidence : null,
         extractionReason: extraData.extractionReason || extraData.reason || '',
-        qualityWarnings: Array.isArray(extraData.qualityWarnings) ? extraData.qualityWarnings : []
+        qualityWarnings: Array.isArray(extraData.qualityWarnings) ? extraData.qualityWarnings : [],
+        imageOcr: extraData.imageOcr || null
       });
       state._extractedData = null;
       state.editingNoteId = note.id;
@@ -1025,11 +1027,27 @@ function getExtractionWarnings(noteOrData = {}) {
   }
 
   const nonImageText = trimmed
-    .replace(/图片内容：[\s\S]*$/m, '')
+    .replace(/图片内容：[\s\S]*?(?=\n\n图片 OCR 文字：|$)/, '')
+    .replace(/图片 OCR 文字：/g, '')
     .replace(/https?:\/\/\S+/g, '')
     .trim();
-  if (/图片内容：/.test(content) && nonImageText.length < 220) {
-    warnings.push('页面正文可能主要在图片中；当前只记录了图片信息，未读取图片文字。');
+  if (/图片内容：/.test(content) && !/图片 OCR 文字：/.test(content) && nonImageText.length < 220) {
+    warnings.push('页面正文可能主要在图片中；当前未能读取图片文字。');
+  }
+
+  const imageOcr = noteOrData.imageOcr || null;
+  if (imageOcr && imageOcr.imageCount > 0) {
+    const recognized = Number(imageOcr.recognizedCount || 0);
+    const failed = Number(imageOcr.failedCount || 0);
+    if (recognized > 0) {
+      warnings.push(failed > 0
+        ? `已识别 ${recognized} 张图片文字，${failed} 张图片识别失败。`
+        : `已识别 ${recognized} 张图片文字。`);
+    } else if (imageOcr.supported === false && nonImageText.length < 220) {
+      warnings.push('当前浏览器未提供可用 OCR 能力，图片文字可能无法读取。');
+    } else if (imageOcr.attempted && failed > 0) {
+      warnings.push(`已尝试识别图片文字，但 ${failed} 张图片识别失败或超时。`);
+    }
   }
 
   if (method === 'fallback' && !warnings.some(w => /回退|通用/.test(w))) {
@@ -1195,6 +1213,7 @@ async function showCloudSummaryPreview(note, llmConfig, options = {}) {
   const settings = getSettings();
   const viewOnly = !!options.viewOnly;
   const force = !!options.force;
+  const summaryContent = prepareSummaryContent(note.content || '');
 
   if (!viewOnly && !force && settings.privacy?.cloudSummaryNoticeAccepted) {
     return { confirmed: true };
@@ -1224,7 +1243,7 @@ async function showCloudSummaryPreview(note, llmConfig, options = {}) {
       ['标题', note.title || '未命名笔记'],
       ['页面类型', getPageTypeLabel(getPageTypeForNote(note))],
       ['正文长度', `${(note.content || '').length} 字`],
-      ['发送正文', `前 ${Math.min((note.content || '').length, LLM_CONTENT_LIMIT)} 字`],
+      ['发送正文', `清洗后前 ${Math.min(summaryContent.length, LLM_CONTENT_LIMIT)} 字`],
       ['质量提示', getSummaryNoticeForNote(note) || '无'],
       ['API 密钥', '作为 Authorization header 发送，不会在此显示']
     ];
@@ -1237,7 +1256,7 @@ async function showCloudSummaryPreview(note, llmConfig, options = {}) {
     const preview = document.createElement('textarea');
     preview.className = 'privacy-preview-text';
     preview.readOnly = true;
-    preview.value = `标题：${note.title || '未命名笔记'}\n页面类型：${getPageTypeLabel(getPageTypeForNote(note))}\n\n正文预览：\n${(note.content || '').slice(0, PREVIEW_CONTENT_LIMIT)}`;
+    preview.value = `标题：${note.title || '未命名笔记'}\n页面类型：${getPageTypeLabel(getPageTypeForNote(note))}\n\n正文预览：\n${summaryContent.slice(0, PREVIEW_CONTENT_LIMIT)}`;
     dialog.appendChild(preview);
 
     let dontShowAgain = null;
@@ -1363,7 +1382,8 @@ async function createNoteFromExtractedPage(data, tab) {
     extractionMethod: data.method || '',
     extractionConfidence: typeof data.confidence === 'number' ? data.confidence : null,
     extractionReason: data.reason || '',
-    qualityWarnings: Array.isArray(data.qualityWarnings) ? data.qualityWarnings : []
+    qualityWarnings: Array.isArray(data.qualityWarnings) ? data.qualityWarnings : [],
+    imageOcr: data.imageOcr || null
   });
 
   state._extractedData = null;
@@ -1756,6 +1776,10 @@ async function tryChromeSummarizer(title, content, length, options = {}) {
   if (!SummarizerApi || typeof SummarizerApi.create !== 'function') {
     return { success: false, error: '当前浏览器未提供 Summarizer API', method: 'chrome-ai' };
   }
+  const summaryContent = prepareSummaryContent(content);
+  if (!summaryContent) {
+    return { success: false, error: '内容为空，无法生成摘要', method: 'chrome-ai' };
+  }
 
   const summarizeOptions = {
     type: 'key-points',
@@ -1785,7 +1809,7 @@ async function tryChromeSummarizer(title, content, length, options = {}) {
       summarizer = await SummarizerApi.create();
     }
 
-    const inputText = title ? `标题：${title}\n\n${content}` : content;
+    const inputText = title ? `标题：${title}\n\n${summaryContent}` : summaryContent;
     const summary = await summarizer.summarize(inputText.slice(0, 12000));
     if (summary && summary.trim()) {
       return {

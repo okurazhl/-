@@ -375,7 +375,7 @@ function makeImageHeavyCase(i) {
     expectSuccess: true,
     expectedPageType: 'unknown',
     minLength: 120,
-    expectedWarnings: ['未读取图片文字'],
+    expectedWarnings: ['未能读取图片文字'],
     expectedTokens: ['图片内容', 'Long article image']
   };
 }

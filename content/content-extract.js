@@ -97,6 +97,13 @@
   const BAIDU_RESULT_SKIP_RE = /(?:大家还在搜|相关搜索|视频大全|查看更多视频|换一换热搜榜|热搜榜|民生榜|财经榜|帮助举报用户反馈|您确定要退出吗|退出后，个人中心)/;
   const BLOCKED_PAGE_TYPES = new Set(['restricted', 'login', 'error']);
   const SEARCH_RESULT_HOST_RE = /(^|\.)((google|bing|sogou|so|duckduckgo)\.com|google\.[a-z.]+)$/i;
+  const OCR_MAX_IMAGES = 5;
+  const OCR_TOTAL_TIMEOUT_MS = 8000;
+  const OCR_PER_IMAGE_TIMEOUT_MS = 3000;
+  const OCR_IMAGE_READY_TIMEOUT_MS = 1200;
+  const IMAGE_OCR_TITLE = '图片 OCR 文字：';
+  const IMAGE_INFO_TITLE = '图片内容：';
+  const STALE_IMAGE_OCR_WARNING_RE = /未读取图片文字|只记录了图片信息|OCR 不可用|未能从正文图片识别出文字|未能读取图片文字/;
 
   /**
    * 提取页面主要内容
@@ -173,6 +180,12 @@
       excerpt: cleanExtractedText(best.excerpt || best.content.slice(0, 200)).slice(0, 200),
       url
     }, classification);
+  }
+
+  async function extractPageContentWithOcr() {
+    const result = extractPageContent();
+    if (!result || !result.success) return result;
+    return enhanceResultWithImageOcr(result);
   }
 
   function classifyPage(url) {
@@ -405,13 +418,25 @@
   }
 
   function getImageOnlyTextLength(content) {
-    return normalizeText(String(content || '')
-      .replace(/图片内容：[\s\S]*$/m, '')
+    return normalizeText(removeImageInfoBlock(content)
+      .replace(IMAGE_OCR_TITLE, '')
       .replace(/https?:\/\/\S+/g, ''));
   }
 
   function isImageHeavyExtraction(content) {
-    return /图片内容：/.test(content || '') && getImageOnlyTextLength(content).length < 220;
+    return hasImageInfoBlock(content) && !hasImageOcrText(content) && getImageOnlyTextLength(content).length < 220;
+  }
+
+  function hasImageInfoBlock(content) {
+    return String(content || '').includes(IMAGE_INFO_TITLE);
+  }
+
+  function hasImageOcrText(content) {
+    return String(content || '').includes(IMAGE_OCR_TITLE);
+  }
+
+  function removeImageInfoBlock(content) {
+    return String(content || '').replace(/图片内容：[\s\S]*?(?=\n\n图片 OCR 文字：|$)/, '');
   }
 
   function getProductSignals(parsed) {
@@ -537,7 +562,7 @@
     }
 
     if (content && isImageHeavyExtraction(content)) {
-      warnings.push('页面正文可能主要在图片中；当前只记录了图片信息，未读取图片文字。');
+      warnings.push('页面正文可能主要在图片中；当前未能读取图片文字。');
     }
 
     if (content && looksNoisy(content)) {
@@ -1092,19 +1117,30 @@
     return cleanTitle(title);
   }
 
-  function getImportantImages(root) {
+  function getImportantImageCandidates(root, options = {}) {
     const images = Array.from(root.querySelectorAll('img'));
     return images.map(img => {
       const width = img.naturalWidth || img.width || 0;
       const height = img.naturalHeight || img.height || 0;
       const src = toAbsoluteUrl(img.currentSrc || img.getAttribute('src') || img.src || '');
       const alt = normalizeText(img.alt || img.title || '');
-      return { width, height, src, alt };
+      const candidate = { width, height, src, alt };
+      if (options.includeElement) candidate.element = img;
+      return candidate;
     }).filter(img => {
       if (!img.src) return false;
       if (/logo|icon|sprite|ewm|qrcode|qr|avatar|tx|toux|qx0609|dcy_|photoAlbum\/templet|photoAlbum\/page\/performance/i.test(img.src)) return false;
       return img.width >= 800 || img.height >= 500 || (img.width * img.height) >= 300000;
-    }).slice(0, 5);
+    }).slice(0, OCR_MAX_IMAGES);
+  }
+
+  function getImportantImages(root) {
+    return getImportantImageCandidates(root).map(img => ({
+      width: img.width,
+      height: img.height,
+      src: img.src,
+      alt: img.alt
+    }));
   }
 
   function appendImageInfo(content, root) {
@@ -1117,7 +1153,208 @@
       return `- ${label}${size}: ${img.src}`;
     });
 
-    return `${content}\n\n图片内容：\n${imageLines.join('\n')}`.trim();
+    return `${content}\n\n${IMAGE_INFO_TITLE}\n${imageLines.join('\n')}`.trim();
+  }
+
+  async function enhanceResultWithImageOcr(result) {
+    const candidates = document.body
+      ? getImportantImageCandidates(document.body, { includeElement: true })
+      : [];
+
+    if (candidates.length === 0) return result;
+
+    const imageOcr = {
+      attempted: false,
+      supported: false,
+      imageCount: candidates.length,
+      recognizedCount: 0,
+      failedCount: 0
+    };
+
+    if (!canUseTextDetector()) {
+      return withImageOcrResult(
+        result,
+        imageOcr,
+        [],
+        isImageHeavyExtraction(result.content)
+          ? ['检测到正文图片，但当前浏览器未提供可用 OCR 能力，已保留图片信息。']
+          : []
+      );
+    }
+
+    imageOcr.attempted = true;
+    imageOcr.supported = true;
+
+    let recognition;
+    try {
+      recognition = await withTimeout(
+        recognizeImageText(candidates),
+        OCR_TOTAL_TIMEOUT_MS,
+        'OCR_TOTAL_TIMEOUT'
+      );
+    } catch (err) {
+      recognition = {
+        items: [],
+        failedCount: candidates.length,
+        error: err.message || String(err)
+      };
+    }
+
+    const ocrItems = Array.isArray(recognition.items) ? recognition.items : [];
+    imageOcr.recognizedCount = ocrItems.length;
+    imageOcr.failedCount = Number(recognition.failedCount || 0);
+    if (recognition.error) imageOcr.error = recognition.error;
+
+    const warnings = [];
+    if (ocrItems.length === 0 && isImageHeavyExtraction(result.content)) {
+      warnings.push('未能从正文图片识别出文字；可能是图片不含文字、跨域或浏览器 OCR 限制。');
+    } else if (imageOcr.failedCount > 0 && ocrItems.length > 0) {
+      warnings.push('已识别部分图片文字；少量图片可能因加载、跨域或浏览器 OCR 限制未读取。');
+    }
+
+    return withImageOcrResult(result, imageOcr, ocrItems, warnings);
+  }
+
+  function canUseTextDetector() {
+    return typeof globalThis.TextDetector === 'function';
+  }
+
+  async function recognizeImageText(candidates) {
+    const detector = new globalThis.TextDetector();
+    const items = [];
+    let failedCount = 0;
+
+    for (let index = 0; index < candidates.length; index++) {
+      const candidate = candidates[index];
+      try {
+        const text = await recognizeSingleImage(detector, candidate);
+        if (text) {
+          items.push({
+            index,
+            src: candidate.src,
+            alt: candidate.alt,
+            width: candidate.width,
+            height: candidate.height,
+            text
+          });
+        }
+      } catch (err) {
+        failedCount++;
+        console.warn('[ContentExtract] 图片 OCR 失败:', {
+          src: candidate.src,
+          message: err.message || String(err)
+        });
+      }
+    }
+
+    return { items, failedCount };
+  }
+
+  async function recognizeSingleImage(detector, candidate) {
+    const img = candidate.element;
+    if (!img) return '';
+
+    await waitForImageReady(img, OCR_IMAGE_READY_TIMEOUT_MS);
+
+    const detections = await withTimeout(
+      detector.detect(img),
+      OCR_PER_IMAGE_TIMEOUT_MS,
+      'OCR_IMAGE_TIMEOUT'
+    );
+
+    return collectDetectedText(detections);
+  }
+
+  function collectDetectedText(detections) {
+    if (!Array.isArray(detections) || detections.length === 0) return '';
+
+    const lines = detections.flatMap(item => {
+      const raw = item?.rawValue || item?.rawText || item?.text || item?.value || '';
+      return String(raw || '').split(/\n+/);
+    }).map(cleanOcrLine).filter(line => line.length >= 2);
+
+    return uniqueLines(lines).join('\n');
+  }
+
+  function cleanOcrLine(line) {
+    return normalizeText(line)
+      .replace(/[|｜]{2,}/g, '|')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  }
+
+  function waitForImageReady(img, timeoutMs) {
+    if (!img) return Promise.resolve(false);
+    if (img.complete && (img.naturalWidth || img.width)) return Promise.resolve(true);
+
+    return new Promise(resolve => {
+      let settled = false;
+      const finish = value => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        img.removeEventListener('load', handleLoad);
+        img.removeEventListener('error', handleError);
+        resolve(value);
+      };
+      const handleLoad = () => finish(true);
+      const handleError = () => finish(false);
+      const timer = setTimeout(() => finish(false), timeoutMs);
+
+      img.addEventListener('load', handleLoad, { once: true });
+      img.addEventListener('error', handleError, { once: true });
+    });
+  }
+
+  async function withTimeout(promise, timeoutMs, code) {
+    let timer = null;
+    try {
+      return await Promise.race([
+        promise,
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error(code)), timeoutMs);
+        })
+      ]);
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+
+  function withImageOcrResult(result, imageOcr, ocrItems, warnings = []) {
+    const content = ocrItems.length > 0
+      ? appendImageOcrText(result.content || '', ocrItems)
+      : result.content || '';
+    const excerptSource = ocrItems.length > 0 ? content : (result.excerpt || content.slice(0, 200));
+
+    const cleanedWarnings = (Array.isArray(result.qualityWarnings) ? result.qualityWarnings : [])
+      .filter(warning => !STALE_IMAGE_OCR_WARNING_RE.test(String(warning || '')));
+
+    return {
+      ...result,
+      content,
+      excerpt: cleanExtractedText(excerptSource).slice(0, 200),
+      qualityWarnings: uniqueLines([
+        ...cleanedWarnings,
+        ...warnings
+      ]),
+      imageOcr
+    };
+  }
+
+  function appendImageOcrText(content, ocrItems) {
+    if (!Array.isArray(ocrItems) || ocrItems.length === 0) return content;
+
+    const blocks = ocrItems.map((item, index) => {
+      const label = item.alt || `图片 ${index + 1}`;
+      const size = item.width && item.height ? `（${item.width}x${item.height}）` : '';
+      const text = String(item.text || '')
+        .split(/\n+/)
+        .map(line => `  ${line}`)
+        .join('\n');
+      return `${index + 1}. ${label}${size}\n${text}`;
+    });
+
+    return `${content}\n\n${IMAGE_OCR_TITLE}\n${blocks.join('\n\n')}`.trim();
   }
 
   function getArticleMetadata() {
@@ -1295,9 +1532,15 @@
 
     switch (action) {
       case 'extractPage': {
-        const result = extractPageContent();
-        sendResponse({ success: result.success, data: result, error: result.error });
-        break;
+        extractPageContentWithOcr()
+          .then(result => {
+            sendResponse({ success: result.success, data: result, error: result.error });
+          })
+          .catch(err => {
+            console.error('[ContentExtract] 提取页面失败:', err);
+            sendResponse({ success: false, error: err.message || String(err) });
+          });
+        return true;
       }
 
       case 'getSelectedText': {

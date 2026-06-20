@@ -389,7 +389,8 @@ async function handleExtractPage(tabId) {
           pageType: response.data.pageType || '',
           confidence: typeof response.data.confidence === 'number' ? response.data.confidence : null,
           reason: response.data.reason || '',
-          qualityWarnings: Array.isArray(response.data.qualityWarnings) ? response.data.qualityWarnings : []
+          qualityWarnings: Array.isArray(response.data.qualityWarnings) ? response.data.qualityWarnings : [],
+          imageOcr: response.data.imageOcr || null
         }
       };
     }
