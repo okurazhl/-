@@ -69,6 +69,21 @@
       </div>
     </main>
 
+    <!-- 网页摘要结果（默认隐藏） -->
+    <div id="summaryResultPanel" class="summary-result-panel hidden">
+      <div class="summary-result-header">
+        <button id="closeSummaryResultBtn" class="toolbar-btn">← 返回列表</button>
+        <button id="openSavedSummaryBtn" class="action-btn">打开保存的摘要</button>
+      </div>
+      <div class="summary-result-body">
+        <div id="summaryResultSavedStatus" class="summary-save-status">已保存到本地</div>
+        <div id="summaryResultText" class="summary-result-text"></div>
+        <div id="summaryResultSource" class="summary-result-source hidden">
+          来源：<a id="summaryResultLink" href="#" target="_blank"></a>
+        </div>
+      </div>
+    </div>
+
     <!-- 笔记编辑器（默认隐藏） -->
     <div id="editorPanel" class="editor-panel hidden">
       <div class="editor-header">
@@ -94,7 +109,7 @@
         </div>
         <textarea id="noteContent" class="editor-content" placeholder="在此输入笔记内容..."></textarea>
         <div id="noteQualityWarnings" class="quality-warnings hidden" role="status" aria-live="polite"></div>
-        <div class="editor-content-footer">
+        <div id="editorContentFooter" class="editor-content-footer">
           <span id="charCount" class="char-count">0 字</span>
           <span id="autoSaveIndicator" class="auto-save-indicator hidden">已自动保存</span>
         </div>
@@ -127,8 +142,9 @@
           <div class="api-key-row">
             <input type="password" id="llmApiKey" placeholder="sk-..." />
             <button id="toggleApiKeyVisibility" class="toolbar-btn">👁</button>
+            <button id="clearApiKeyBtn" class="toolbar-btn" type="button">清除</button>
           </div>
-          <p class="setting-note">⚠ 密钥仅保存在本地浏览器中；调用云端摘要时会作为 Authorization 发送给你配置的 API 地址。</p>
+          <p class="setting-note">⚠ 密钥仅保存在本地浏览器中；调用云端摘要时会作为 Authorization 发送给你配置的 API 地址，且该接口需要允许浏览器扩展跨域访问。</p>
           <label>模型名称</label>
           <input type="text" id="llmModel" placeholder="gpt-4o-mini" />
         </div>

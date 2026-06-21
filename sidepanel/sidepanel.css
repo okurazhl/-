@@ -552,6 +552,84 @@ body {
   color: #fff;
 }
 
+/* ========== 网页摘要结果 ========== */
+.summary-result-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-primary);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-result-panel.hidden {
+  display: none;
+}
+
+.summary-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.summary-result-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-save-status {
+  align-self: flex-start;
+  padding: 4px 8px;
+  border: 1px solid var(--success);
+  border-radius: var(--radius-sm);
+  background: #ebfbee;
+  color: var(--success);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .summary-save-status {
+  background: #16351f;
+}
+
+.summary-result-text {
+  padding: 12px 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.summary-result-source {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.summary-result-source a {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.summary-result-source a:hover {
+  text-decoration: underline;
+}
+
 /* ========== 编辑器面板 ========== */
 #editorPanel {
   position: absolute;
@@ -1239,6 +1317,50 @@ body {
   min-width: 0;
   color: var(--text-primary);
   overflow-wrap: anywhere;
+}
+
+.privacy-preview-scope {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.privacy-preview-scope-option {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  cursor: pointer;
+}
+
+.privacy-preview-scope-option input {
+  margin-top: 2px;
+}
+
+.privacy-preview-scope-option strong,
+.privacy-preview-scope-option small {
+  display: block;
+}
+
+.privacy-preview-scope-option strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.privacy-preview-scope-option small {
+  margin-top: 2px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.35;
+}
+
+.privacy-preview-scope-option.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .privacy-preview-text {

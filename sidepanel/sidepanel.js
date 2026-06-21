@@ -5,7 +5,7 @@
 
 import { initStorage, getAllNotes, getNoteById, createNote, updateNote, deleteNote,
          searchNotes, getAllCategories, getCategoryById, createCategory, updateCategory,
-         deleteCategory, getSettings, updateSettings } from '../lib/storage.js';
+         deleteCategory, getSettings, updateSettings, reloadStorage } from '../lib/storage.js';
 import { formatDate, escapeHtml, truncate, normalizeTags, debounce } from '../lib/utils.js';
 import { exportNotes } from '../lib/export.js';
 import { prepareSummaryContent } from '../lib/summary-content.js';
@@ -37,6 +37,15 @@ const DOM = {
   noteList: $('#noteList'),
   emptyState: $('#emptyState'),
 
+  // 网页摘要结果
+  summaryResultPanel: $('#summaryResultPanel'),
+  closeSummaryResultBtn: $('#closeSummaryResultBtn'),
+  openSavedSummaryBtn: $('#openSavedSummaryBtn'),
+  summaryResultSavedStatus: $('#summaryResultSavedStatus'),
+  summaryResultText: $('#summaryResultText'),
+  summaryResultSource: $('#summaryResultSource'),
+  summaryResultLink: $('#summaryResultLink'),
+
   // 编辑器
   editorPanel: $('#editorPanel'),
   backToListBtn: $('#backToListBtn'),
@@ -55,6 +64,7 @@ const DOM = {
   noteSource: $('#noteSource'),
   sourceLink: $('#sourceLink'),
   charCount: $('#charCount'),
+  editorContentFooter: $('#editorContentFooter'),
   autoSaveIndicator: $('#autoSaveIndicator'),
 
   // 设置面板
@@ -64,6 +74,7 @@ const DOM = {
   llmEnabled: $('#llmEnabled'),
   llmEndpoint: $('#llmEndpoint'),
   llmApiKey: $('#llmApiKey'),
+  clearApiKeyBtn: $('#clearApiKeyBtn'),
   llmModel: $('#llmModel'),
   toggleApiKeyVisibility: $('#toggleApiKeyVisibility'),
   themeSelect: $('#themeSelect'),
@@ -92,6 +103,7 @@ const state = {
   pageStatusHoldTabId: null,
   activeSummaryRequestId: null,
   activeSummaryNoteId: null,
+  lastSummaryNoteId: null,
   cancelledSummaryRequests: new Set()
 };
 
@@ -414,6 +426,16 @@ function refreshCategoryViews({ renderList = true } = {}) {
   }
 }
 
+function isSummaryOnlyNote(note = {}) {
+  return note.type === 'summarized' && !!(note.summary || '').trim() && !(note.content || '').trim();
+}
+
+function getNotePreviewText(note = {}) {
+  if ((note.summary || '').trim()) return truncate(note.summary, 120);
+  if ((note.excerpt || '').trim()) return note.excerpt;
+  return truncate(note.content || '', 100);
+}
+
 async function addCategoryFromInput() {
   const name = DOM.newCategoryName.value.trim();
   const color = DOM.newCategoryColor.value || getNextCategoryColor();
@@ -579,7 +601,7 @@ function renderNoteList() {
           </div>
         </div>
         <div class="note-card-body">
-          <span class="note-card-excerpt">${escapeHtml(note.excerpt || truncate(note.content || '', 100))}</span>
+          <span class="note-card-excerpt">${escapeHtml(getNotePreviewText(note))}</span>
           <span class="note-card-date">${dateStr}</span>
           <button class="note-card-delete" data-action="delete" data-note-id="${escapeHtml(note.id)}"
                   title="删除笔记">✕</button>
@@ -636,12 +658,26 @@ function sortNotes(notes, order) {
 }
 
 /** 打开编辑器 */
+function setEditorContentVisible(visible) {
+  if (DOM.noteContent) {
+    DOM.noteContent.classList.toggle('hidden', !visible);
+  }
+  if (DOM.editorContentFooter) {
+    DOM.editorContentFooter.classList.toggle('hidden', !visible);
+  }
+  if (!visible && DOM.noteQualityWarnings) {
+    DOM.noteQualityWarnings.classList.add('hidden');
+    DOM.noteQualityWarnings.innerHTML = '';
+  }
+}
+
 function openEditor(noteId = null) {
   state.currentView = 'editor';
   state.editingNoteId = noteId;
 
   // 切换面板
   DOM.editorPanel.classList.remove('hidden');
+  if (DOM.summaryResultPanel) DOM.summaryResultPanel.classList.add('hidden');
   DOM.noteList.style.display = 'none';
   DOM.settingsPanel.classList.add('hidden');
 
@@ -652,11 +688,17 @@ function openEditor(noteId = null) {
     // 编辑已有笔记
     const note = getNoteById(noteId);
     if (note) {
+      const summaryOnly = isSummaryOnlyNote(note);
       DOM.noteTitle.value = note.title || '';
       DOM.noteCategory.value = note.categoryId || '';
       DOM.noteTags.value = (note.tags || []).join(', ');
-      DOM.noteContent.value = note.content || '';
-      renderQualityWarnings(note);
+      DOM.noteContent.value = summaryOnly ? '' : (note.content || '');
+      setEditorContentVisible(!summaryOnly);
+      if (summaryOnly) {
+        renderQualityWarnings({});
+      } else {
+        renderQualityWarnings(note);
+      }
       DOM.noteSummary.value = note.summary || '';
       DOM.notePinned.checked = note.pinned || false;
 
@@ -669,7 +711,7 @@ function openEditor(noteId = null) {
         DOM.noteSource.classList.add('hidden');
       }
 
-      DOM.summarizeNoteBtn.style.display = '';
+      DOM.summarizeNoteBtn.style.display = summaryOnly ? 'none' : '';
     }
   } else {
     // 新建笔记
@@ -677,6 +719,7 @@ function openEditor(noteId = null) {
     DOM.noteCategory.value = state.settings.defaultCategoryId || '';
     DOM.noteTags.value = '';
     DOM.noteContent.value = '';
+    setEditorContentVisible(true);
     renderQualityWarnings({});
     DOM.noteSummary.value = '';
     DOM.notePinned.checked = false;
@@ -804,6 +847,7 @@ function openSettings() {
   DOM.settingsPanel.classList.remove('hidden');
   DOM.noteList.style.display = 'none';
   DOM.editorPanel.classList.add('hidden');
+  if (DOM.summaryResultPanel) DOM.summaryResultPanel.classList.add('hidden');
 
   // 填充当前设置
   const settings = getSettings();
@@ -1106,6 +1150,7 @@ function getPageTypeLabel(pageType = 'unknown') {
   const labels = {
     article: '文章/新闻/文档页',
     listing: '列表/聚合页',
+    'chat-conversation': '对话/聊天记录页',
     'forum-qa': '论坛/问答页',
     video: '视频/音频页',
     product: '商品/服务页',
@@ -1126,6 +1171,9 @@ function getSummaryNoticeForNote(note = {}) {
   }
   if (pageType === 'listing') {
     return '当前是列表/聚合页，摘要基于页面条目，不代表具体文章全文。';
+  }
+  if (pageType === 'chat-conversation') {
+    return '当前是对话/聊天记录页，摘要基于页面中可见的消息内容。';
   }
   const warning = Array.isArray(note.qualityWarnings) ? note.qualityWarnings[0] : '';
   return warning || '';
@@ -1163,10 +1211,11 @@ function updateSummaryUtilityButtons() {
   const settings = getSettings();
   const llmConfig = buildLlmConfig(settings);
   const hasSummary = !!(DOM.noteSummary?.value || '').trim();
-  const canPreview = !!(note && note.content && isCloudLlmConfigured(llmConfig));
+  const summaryOnly = isSummaryOnlyNote(note);
+  const canPreview = !!(note && note.content && !summaryOnly && isCloudLlmConfigured(llmConfig));
 
   if (DOM.insertSummaryBtn) {
-    DOM.insertSummaryBtn.classList.toggle('hidden', !hasSummary);
+    DOM.insertSummaryBtn.classList.toggle('hidden', !hasSummary || summaryOnly);
   }
 
   if (DOM.previewSummaryPayloadBtn) {
@@ -1187,6 +1236,7 @@ function setSummaryGeneratingState(isGenerating, requestId = null) {
   if (DOM.summarizePageBtn) {
     DOM.summarizePageBtn.disabled = isActive || state.pageAccess !== 'ready';
     DOM.summarizePageBtn.setAttribute('aria-disabled', String(DOM.summarizePageBtn.disabled));
+    DOM.summarizePageBtn.textContent = isActive ? '⏳ 总结中...' : '✨ 总结当前网页';
   }
   if (requestId) {
     state.activeSummaryRequestId = requestId;
@@ -1198,8 +1248,22 @@ function setSummaryGeneratingState(isGenerating, requestId = null) {
 }
 
 function setSummaryStage(label) {
-  if (!state.activeSummaryRequestId || !DOM.summarizeNoteBtn || !label) return;
-  DOM.summarizeNoteBtn.textContent = `⏳ ${label}`;
+  if (!state.activeSummaryRequestId || !label) return;
+  if (state.activeSummaryNoteId && DOM.summarizeNoteBtn) {
+    DOM.summarizeNoteBtn.textContent = `⏳ ${label}`;
+  } else if (DOM.summarizePageBtn) {
+    DOM.summarizePageBtn.textContent = `⏳ ${label}`;
+  }
+}
+
+function getSummaryMethodName(method) {
+  const methodNames = {
+    'llm': '云端 LLM',
+    'chrome-ai': 'Chrome 内置 AI',
+    'tfidf': 'TF-IDF 抽取算法',
+    'passthrough': '直接使用清洗文本'
+  };
+  return methodNames[method] || method || '未知';
 }
 
 function createTextEl(tag, text, className = '') {
@@ -1209,14 +1273,52 @@ function createTextEl(tag, text, className = '') {
   return el;
 }
 
+function normalizeUrlForCompare(url) {
+  try {
+    const parsed = new URL(url || '');
+    parsed.hash = '';
+    return parsed.toString();
+  } catch (err) {
+    return String(url || '').replace(/#.*$/, '');
+  }
+}
+
+function isSameSummarySource(note, tab) {
+  if (!note?.url || !tab?.url) return false;
+  return normalizeUrlForCompare(note.url) === normalizeUrlForCompare(tab.url);
+}
+
+async function loadSelectedTextForSummary(note) {
+  const tab = state.currentTab || await refreshCurrentTabInfo();
+  if (!isSameSummarySource(note, tab)) {
+    return { text: '', reason: 'source-mismatch' };
+  }
+
+  try {
+    const response = await sendToSW('getSelectedText', { tabId: tab.id });
+    const text = response?.success ? String(response.data?.text || '').trim() : '';
+    return { text, reason: text ? 'available' : 'empty' };
+  } catch (err) {
+    console.warn('[SidePanel] 读取摘要选中文本失败:', err.message || err);
+    return { text: '', reason: 'error' };
+  }
+}
+
 async function showCloudSummaryPreview(note, llmConfig, options = {}) {
   const settings = getSettings();
   const viewOnly = !!options.viewOnly;
   const force = !!options.force;
-  const summaryContent = prepareSummaryContent(note.content || '');
+  const selection = viewOnly ? { text: '' } : await loadSelectedTextForSummary(note);
+  const selectedText = selection.text || '';
+  let selectedScope = selectedText ? 'selection' : 'full';
 
-  if (!viewOnly && !force && settings.privacy?.cloudSummaryNoticeAccepted) {
-    return { confirmed: true };
+  if (!viewOnly && !force && settings.privacy?.cloudSummaryNoticeAccepted && !selectedText) {
+    return {
+      confirmed: true,
+      scope: 'full',
+      title: note.title || '未命名笔记',
+      content: note.content || ''
+    };
   }
 
   return new Promise(resolve => {
@@ -1235,29 +1337,107 @@ async function showCloudSummaryPreview(note, llmConfig, options = {}) {
       'privacy-preview-note'
     ));
 
+    let fullRadio = null;
+    let selectionRadio = null;
+    if (!viewOnly) {
+      const scopeGroup = document.createElement('div');
+      scopeGroup.className = 'privacy-preview-scope';
+      scopeGroup.setAttribute('role', 'radiogroup');
+      scopeGroup.setAttribute('aria-label', '摘要发送范围');
+
+      const makeScopeOption = (value, labelText, helperText, disabled = false) => {
+        const label = document.createElement('label');
+        label.className = 'privacy-preview-scope-option';
+        if (disabled) label.classList.add('disabled');
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'summaryScope';
+        input.value = value;
+        input.checked = selectedScope === value;
+        input.disabled = disabled;
+        input.addEventListener('change', () => {
+          if (input.checked) {
+            selectedScope = value;
+            refreshPreview();
+          }
+        });
+
+        const textWrap = document.createElement('span');
+        textWrap.appendChild(createTextEl('strong', labelText));
+        textWrap.appendChild(createTextEl('small', helperText));
+
+        label.appendChild(input);
+        label.appendChild(textWrap);
+        scopeGroup.appendChild(label);
+        return input;
+      };
+
+      fullRadio = makeScopeOption(
+        'full',
+        '总结全文',
+        '发送当前笔记中的网页正文'
+      );
+      selectionRadio = makeScopeOption(
+        'selection',
+        '仅总结选中文字',
+        selectedText ? `发送当前网页选区（${selectedText.length} 字）` : '当前网页没有可用选区',
+        !selectedText
+      );
+
+      dialog.appendChild(scopeGroup);
+    }
+
     const detail = document.createElement('dl');
     detail.className = 'privacy-preview-detail';
+    const detailValues = {};
     const rows = [
       ['服务地址', getEndpointHost(llmConfig.endpoint)],
       ['模型', llmConfig.model || 'gpt-4o-mini'],
       ['标题', note.title || '未命名笔记'],
       ['页面类型', getPageTypeLabel(getPageTypeForNote(note))],
       ['正文长度', `${(note.content || '').length} 字`],
-      ['发送正文', `清洗后前 ${Math.min(summaryContent.length, LLM_CONTENT_LIMIT)} 字`],
+      ['发送正文', ''],
       ['质量提示', getSummaryNoticeForNote(note) || '无'],
       ['API 密钥', '作为 Authorization header 发送，不会在此显示']
     ];
     rows.forEach(([label, value]) => {
       detail.appendChild(createTextEl('dt', label));
-      detail.appendChild(createTextEl('dd', value));
+      const dd = createTextEl('dd', value);
+      detailValues[label] = dd;
+      detail.appendChild(dd);
     });
     dialog.appendChild(detail);
 
     const preview = document.createElement('textarea');
     preview.className = 'privacy-preview-text';
     preview.readOnly = true;
-    preview.value = `标题：${note.title || '未命名笔记'}\n页面类型：${getPageTypeLabel(getPageTypeForNote(note))}\n\n正文预览：\n${summaryContent.slice(0, PREVIEW_CONTENT_LIMIT)}`;
     dialog.appendChild(preview);
+
+    function getScopedSummaryInput() {
+      const useSelection = selectedScope === 'selection' && selectedText;
+      const content = useSelection ? selectedText : (note.content || '');
+      return {
+        scope: useSelection ? 'selection' : 'full',
+        title: note.title || '未命名笔记',
+        content,
+        preparedContent: prepareSummaryContent(content)
+      };
+    }
+
+    function refreshPreview() {
+      if (fullRadio) fullRadio.checked = selectedScope === 'full';
+      if (selectionRadio) selectionRadio.checked = selectedScope === 'selection';
+
+      const input = getScopedSummaryInput();
+      const scopeLabel = input.scope === 'selection' ? '选中文字' : '网页正文';
+      detailValues['标题'].textContent = input.title;
+      detailValues['正文长度'].textContent = `${input.content.length} 字`;
+      detailValues['发送正文'].textContent =
+        `${scopeLabel}，清洗后前 ${Math.min(input.preparedContent.length, LLM_CONTENT_LIMIT)} 字`;
+      preview.value = `标题：${input.title}\n页面类型：${getPageTypeLabel(getPageTypeForNote(note))}\n发送范围：${scopeLabel}\n\n正文预览：\n${input.preparedContent.slice(0, PREVIEW_CONTENT_LIMIT)}`;
+    }
+    refreshPreview();
 
     let dontShowAgain = null;
     if (!viewOnly) {
@@ -1274,8 +1454,14 @@ async function showCloudSummaryPreview(note, llmConfig, options = {}) {
     buttons.className = 'confirm-dialog-buttons';
 
     const close = (confirmed) => {
+      const input = getScopedSummaryInput();
       overlay.remove();
-      resolve({ confirmed });
+      resolve(confirmed ? {
+        confirmed: true,
+        scope: input.scope,
+        title: input.title,
+        content: input.content
+      } : { confirmed: false });
     };
 
     if (!viewOnly) {
@@ -1427,34 +1613,152 @@ async function extractPage(cachedTab = null) {
   }
 }
 
+async function refreshStorageBackedViews() {
+  await reloadStorage();
+  state.settings = getSettings();
+  renderCategoryOptions();
+  renderCategoryManager();
+  renderNoteList();
+}
+
+function showSummaryResult(data = {}) {
+  state.currentView = 'summaryResult';
+  state.lastSummaryNoteId = data.noteId || null;
+  state.activeNoteId = data.noteId || state.activeNoteId;
+
+  if (DOM.editorPanel) DOM.editorPanel.classList.add('hidden');
+  if (DOM.settingsPanel) DOM.settingsPanel.classList.add('hidden');
+  if (DOM.noteList) DOM.noteList.style.display = 'none';
+  if (DOM.summaryResultPanel) DOM.summaryResultPanel.classList.remove('hidden');
+
+  if (DOM.summaryResultSavedStatus) {
+    const savedText = data.saved ? '已保存到本地' : '尚未保存';
+    const savedAtText = data.savedAt ? ` · ${formatDate(data.savedAt, 'datetime')}` : '';
+    DOM.summaryResultSavedStatus.textContent = `${savedText}${savedAtText}`;
+  }
+
+  if (DOM.summaryResultText) {
+    DOM.summaryResultText.textContent = data.summary || '';
+  }
+
+  if (DOM.summaryResultSource && DOM.summaryResultLink) {
+    if (data.url) {
+      DOM.summaryResultSource.classList.remove('hidden');
+      DOM.summaryResultLink.href = data.url;
+      DOM.summaryResultLink.textContent = data.sourceTitle || data.url;
+    } else {
+      DOM.summaryResultSource.classList.add('hidden');
+      DOM.summaryResultLink.removeAttribute('href');
+      DOM.summaryResultLink.textContent = '';
+    }
+  }
+
+  if (DOM.openSavedSummaryBtn) {
+    DOM.openSavedSummaryBtn.disabled = !data.noteId;
+    DOM.openSavedSummaryBtn.setAttribute('aria-disabled', String(!data.noteId));
+  }
+}
+
+function closeSummaryResultPanel() {
+  state.currentView = 'list';
+  if (DOM.summaryResultPanel) DOM.summaryResultPanel.classList.add('hidden');
+  if (DOM.editorPanel) DOM.editorPanel.classList.add('hidden');
+  if (DOM.settingsPanel) DOM.settingsPanel.classList.add('hidden');
+  if (DOM.noteList) DOM.noteList.style.display = '';
+  renderNoteList();
+}
+
+function openSavedSummaryNote() {
+  if (!state.lastSummaryNoteId) {
+    showToast('没有可打开的摘要笔记', 'warning');
+    return;
+  }
+  openEditor(state.lastSummaryNoteId);
+}
+
 async function summarizeCurrentPage() {
   if (state.activeSummaryRequestId) {
     showToast('摘要正在生成中，请稍候', 'warning');
     return;
   }
 
-  try {
-    showToast('正在提取并总结当前网页...', 'info');
-    const result = await requestPageExtraction(state.currentTab, {
-      statusTitle: '正在准备网页摘要',
-      statusDetail: '先提取当前网页正文，再生成摘要'
-    });
-    if (!result) return;
+  const requestId = generateRequestId();
+  state.activeSummaryNoteId = null;
+  state.cancelledSummaryRequests.delete(requestId);
 
-    const { tab, data } = result;
-    const partialExtraction = hasPartialExtractionWarning(data);
-    const note = await createNoteFromExtractedPage(data, tab);
+  try {
+    let tab = state.currentTab;
+    if (!tab || !tab.id) {
+      tab = await refreshCurrentTabInfo({ force: true });
+    }
+    if (!tab) {
+      updatePageStatusFromTab(null, { force: true });
+      showToast('无法获取当前标签页', 'error');
+      return;
+    }
+
+    if (!isUsableWebTab(tab)) {
+      showUnavailablePageForAction(tab);
+      return;
+    }
+
+    setSummaryGeneratingState(true, requestId);
+    setSummaryStage('后台提取网页...');
+    setPageStatus('info', '正在后台总结当前网页', '正在提取、清洗并生成摘要');
+    showToast('正在后台提取并总结当前网页...', 'info');
+
+    const response = await sendToSW('summarizePageAndSave', {
+      tabId: tab.id,
+      requestId
+    });
+
+    if (state.activeSummaryRequestId !== requestId || response?.code === 'CANCELLED') {
+      showToast('已取消生成', 'info');
+      return;
+    }
+
+    if ((!response || !response.success) && isMissingHostPermissionResponse(response)) {
+      setPageStatus(
+        'warning',
+        '缺少 activeTab 临时授权',
+        '请回到目标网页，点击扩展图标重新打开侧边栏后再总结',
+        { holdFor: 30000, tabId: tab.id }
+      );
+      showToast('缺少 activeTab 临时授权：请在目标网页上点击扩展图标重新打开侧边栏后再总结', 'warning');
+      return;
+    }
+
+    if (!response || !response.success || !response.data) {
+      setPageStatus(
+        'error',
+        '摘要失败',
+        response?.error || '未知错误',
+        { holdFor: 12000, tabId: tab.id }
+      );
+      showToast('总结当前网页失败: ' + (response?.error || '未知错误'), 'error');
+      return;
+    }
+
+    await refreshStorageBackedViews();
+
+    const data = response.data;
     setPageStatus(
-      partialExtraction ? 'warning' : 'success',
-      partialExtraction ? '已提取部分页面内容' : '已提取当前页面内容',
-      data.title || tab.title || getHostname(tab.url) || '',
+      'success',
+      '网页摘要已保存',
+      data.sourceTitle || data.title || getHostname(data.url || tab.url) || '',
       { holdFor: 12000, tabId: tab.id }
     );
-    openEditor(note.id);
-    await generateSummaryForNote(note.id);
+
+    showSummaryResult(data);
+    showToast('网页摘要已保存', 'success');
   } catch (err) {
     console.error('[SidePanel] 总结当前网页失败:', err.message || err);
     showToast('总结当前网页失败: ' + (err.message || '未知错误'), 'error');
+  } finally {
+    if (state.activeSummaryRequestId === requestId) {
+      setSummaryGeneratingState(false);
+    }
+    state.cancelledSummaryRequests.delete(requestId);
   }
 }
 
@@ -1641,13 +1945,7 @@ async function generateSummaryForNote(noteId) {
       await updateNote(note.id, { summary: response.summary });
       updateSummaryUtilityButtons();
 
-      const methodNames = {
-        'llm': '云端 LLM',
-        'chrome-ai': 'Chrome 内置 AI',
-        'tfidf': 'TF-IDF 抽取算法',
-        'passthrough': '直接使用原文'
-      };
-      const methodName = methodNames[response.method] || response.method || '未知';
+      const methodName = getSummaryMethodName(response.method);
       showToast(`摘要生成成功（${methodName}）`, 'success');
       return response;
     } else {
@@ -1706,6 +2004,11 @@ async function generateSummaryWithFallback(note, options = {}) {
   const llmConfig = buildLlmConfig(settings);
   const pageType = getPageTypeForNote(note);
   const errors = [];
+  const summaryInput = {
+    title: note.title,
+    content: note.content,
+    scope: 'full'
+  };
 
   if (llmConfig.enabled && llmConfig.apiKey && llmConfig.endpoint) {
     setSummaryStage('等待云端确认...');
@@ -1713,13 +2016,16 @@ async function generateSummaryWithFallback(note, options = {}) {
     if (!preview.confirmed || isSummaryRequestCancelled(requestId)) {
       return cancelledSummaryResponse();
     }
+    summaryInput.title = preview.title || note.title;
+    summaryInput.content = preview.content || note.content;
+    summaryInput.scope = preview.scope || 'full';
 
     setSummaryStage('调用云端模型...');
     const llmResponse = await sendSummarizeWithTimeout({
       requestId,
       noteId: note.id,
-      content: note.content,
-      title: note.title,
+      content: summaryInput.content,
+      title: summaryInput.title,
       config: llmConfig,
       mode: 'llm',
       pageType
@@ -1737,8 +2043,8 @@ async function generateSummaryWithFallback(note, options = {}) {
 
   setSummaryStage('尝试浏览器 AI...');
   const chromeResponse = await tryChromeSummarizer(
-    note.title,
-    note.content,
+    summaryInput.title,
+    summaryInput.content,
     settings.summaryLength || 'medium',
     { timeoutMs: CHROME_SUMMARIZER_TIMEOUT }
   );
@@ -1752,8 +2058,8 @@ async function generateSummaryWithFallback(note, options = {}) {
   const tfidfResponse = await sendToSW('summarize', {
     requestId,
     noteId: note.id,
-    content: note.content,
-    title: note.title,
+    content: summaryInput.content,
+    title: summaryInput.title,
     config: { length: settings.summaryLength || 'medium' },
     mode: 'tfidf',
     pageType
@@ -2040,6 +2346,13 @@ function bindEvents() {
   // --- 总结当前网页 ---
   DOM.summarizePageBtn.addEventListener('click', summarizeCurrentPage);
 
+  if (DOM.closeSummaryResultBtn) {
+    DOM.closeSummaryResultBtn.addEventListener('click', closeSummaryResultPanel);
+  }
+  if (DOM.openSavedSummaryBtn) {
+    DOM.openSavedSummaryBtn.addEventListener('click', openSavedSummaryNote);
+  }
+
   // --- 快速添加 URL ---
   DOM.quickUrlBtn.addEventListener('click', quickAddUrl);
 
@@ -2140,6 +2453,14 @@ function bindEvents() {
     }
   });
 
+  DOM.clearApiKeyBtn.addEventListener('click', () => {
+    DOM.llmApiKey.value = '';
+    DOM.llmApiKey.type = 'password';
+    DOM.toggleApiKeyVisibility.textContent = '👁';
+    DOM.llmApiKey.focus();
+    showToast('API 密钥已清空，保存设置后生效', 'info');
+  });
+
   // --- 键盘快捷键 ---
   document.addEventListener('keydown', (e) => {
     // Ctrl+S / Cmd+S — 保存
@@ -2158,6 +2479,8 @@ function bindEvents() {
         closeEditor();
       } else if (state.currentView === 'settings') {
         closeSettings();
+      } else if (state.currentView === 'summaryResult') {
+        closeSummaryResultPanel();
       }
     }
 

@@ -4,6 +4,7 @@
 // ============================================================
 
 import { generateSummary } from './lib/summarizer.js';
+import { initStorage, getSettings, createNote } from './lib/storage.js';
 
 const SIDEPANEL_PATH = 'sidepanel/sidepanel.html';
 
@@ -345,6 +346,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       return true;
     }
 
+    // --- 后台总结当前网页并保存摘要笔记 ---
+    case 'summarizePageAndSave': {
+      handleSummarizePageAndSave(message)
+        .then(result => sendResponse(result))
+        .catch(err => sendResponse({ success: false, error: err.message }));
+      return true;
+    }
+
     // --- 取消摘要 ---
     case 'cancelSummarize': {
       handleCancelSummarize(message.requestId)
@@ -533,6 +542,150 @@ async function handleSummarize(payload) {
       activeSummaryRequests.delete(requestId);
     }
   }
+}
+
+async function handleSummarizePageAndSave(payload) {
+  const { tabId, requestId } = payload;
+
+  if (!tabId) {
+    return makeError('NO_TAB', '缺少 tabId 参数');
+  }
+
+  const summaryRequestId = requestId || `page_sum_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const controller = new AbortController();
+  activeSummaryRequests.set(summaryRequestId, controller);
+
+  console.log('[SW] 后台网页摘要请求:', {
+    requestId: summaryRequestId,
+    tabId
+  });
+
+  try {
+    await initStorage();
+
+    let tab = null;
+    try {
+      tab = await chrome.tabs.get(tabId);
+    } catch (err) {
+      console.warn('[SW] 获取摘要目标标签页失败:', { tabId, message: err.message || String(err) });
+    }
+
+    const extracted = await handleExtractPage(tabId);
+    if (!extracted || !extracted.success || !extracted.data) {
+      return extracted || makeError('NO_CONTENT', '提取页面内容失败');
+    }
+
+    if (controller.signal.aborted) {
+      return { success: false, code: 'CANCELLED', error: '已取消生成', method: 'none' };
+    }
+
+    const data = extracted.data;
+    const settings = getSettings();
+    const llmConfig = buildLlmConfigFromSettings(settings);
+    const title = data.title || tab?.title || '未命名页面';
+    const sourceUrl = data.url || tab?.url || '';
+    const sourceTitle = data.sourceTitle || data.title || tab?.title || sourceUrl;
+    const pageType = data.pageType || 'article';
+
+    const summaryResult = await generateSummary(
+      llmConfig,
+      title,
+      data.content || '',
+      {
+        length: llmConfig.length || 'medium',
+        mode: 'auto',
+        requestId: summaryRequestId,
+        pageType,
+        signal: controller.signal
+      }
+    );
+
+    if (!summaryResult || !summaryResult.success || !summaryResult.summary) {
+      return {
+        success: false,
+        code: summaryResult?.code,
+        error: summaryResult?.error || '网页摘要生成失败',
+        method: summaryResult?.method || 'none'
+      };
+    }
+
+    if (controller.signal.aborted) {
+      return { success: false, code: 'CANCELLED', error: '已取消生成', method: 'none' };
+    }
+
+    const summary = String(summaryResult.summary || '').trim();
+    const savedAt = Date.now();
+    const note = await createNote({
+      type: 'summarized',
+      title,
+      content: '',
+      summary,
+      excerpt: getSummaryExcerpt(summary),
+      url: sourceUrl,
+      sourceTitle,
+      pageType,
+      extractionMethod: data.method || '',
+      extractionConfidence: typeof data.confidence === 'number' ? data.confidence : null,
+      extractionReason: data.reason || '',
+      qualityWarnings: Array.isArray(data.qualityWarnings) ? data.qualityWarnings : [],
+      imageOcr: data.imageOcr || null,
+      summaryMethod: summaryResult.method || '',
+      summaryStatus: 'saved',
+      summarySavedAt: savedAt,
+      summaryUsage: summaryResult.usage || null
+    });
+
+    console.log('[SW] 后台网页摘要已保存:', {
+      requestId: summaryRequestId,
+      noteId: note.id,
+      method: summaryResult.method || ''
+    });
+
+    return {
+      success: true,
+      data: {
+        noteId: note.id,
+        title: note.title,
+        summary: note.summary,
+        url: note.url,
+        sourceTitle: note.sourceTitle,
+        saved: true,
+        savedAt,
+        method: note.summaryMethod,
+        pageType: note.pageType,
+        qualityWarnings: note.qualityWarnings || [],
+        usage: note.summaryUsage || null
+      }
+    };
+  } catch (err) {
+    console.error('[SW] 后台网页摘要失败:', {
+      requestId: summaryRequestId,
+      tabId,
+      message: err.message || String(err)
+    });
+    return {
+      success: false,
+      error: `网页摘要失败: ${err.message || String(err)}`
+    };
+  } finally {
+    activeSummaryRequests.delete(summaryRequestId);
+  }
+}
+
+function buildLlmConfigFromSettings(settings = {}) {
+  return {
+    endpoint: settings.llm?.apiEndpoint || '',
+    apiKey: settings.llm?.apiKey || '',
+    model: settings.llm?.model || 'gpt-4o-mini',
+    enabled: settings.llm?.enabled || false,
+    length: settings.summaryLength || 'medium'
+  };
+}
+
+function getSummaryExcerpt(summary, maxLength = 150) {
+  const value = String(summary || '').replace(/\s+/g, ' ').trim();
+  if (value.length <= maxLength) return value;
+  return `${value.slice(0, maxLength - 1).trim()}…`;
 }
 
 async function handleCancelSummarize(requestId) {
