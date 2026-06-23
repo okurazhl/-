@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-20T14:49:57.335Z",
+  "generatedAt": "2026-06-22T05:48:55.581Z",
   "total": 100,
-  "passed": 100,
-  "failed": 0,
+  "passed": 92,
+  "failed": 8,
   "extractionSuccess": 92,
   "expectedFailures": 8,
-  "summaryPassed": 82,
+  "summaryPassed": 0,
   "groups": {
     "英文文章": {
       "total": 10,
@@ -44,8 +44,8 @@
     },
     "视频页": {
       "total": 8,
-      "passed": 8,
-      "failed": 0
+      "passed": 0,
+      "failed": 8
     },
     "GitHub README": {
       "total": 8,
@@ -90,11 +90,11 @@
       "contentPreview": "English Article Extraction Case 1English Article Extraction Case 1 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 1, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 1English Article Extraction Case 1 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 244
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 419
     },
     {
       "index": 2,
@@ -112,11 +112,11 @@
       "contentPreview": "English Article Extraction Case 2English Article Extraction Case 2 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 2, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 2English Article Extraction Case 2 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 190
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 318
     },
     {
       "index": 3,
@@ -134,11 +134,11 @@
       "contentPreview": "English Article Extraction Case 3English Article Extraction Case 3 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 3, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 3English Article Extraction Case 3 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 180
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 356
     },
     {
       "index": 4,
@@ -156,11 +156,11 @@
       "contentPreview": "English Article Extraction Case 4English Article Extraction Case 4 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 4, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 4English Article Extraction Case 4 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 174
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 645
     },
     {
       "index": 5,
@@ -178,11 +178,11 @@
       "contentPreview": "English Article Extraction Case 5English Article Extraction Case 5 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 5, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 5English Article Extraction Case 5 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 183
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 398
     },
     {
       "index": 6,
@@ -200,11 +200,11 @@
       "contentPreview": "English Article Extraction Case 6English Article Extraction Case 6 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 6, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 6English Article Extraction Case 6 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 180
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 283
     },
     {
       "index": 7,
@@ -222,11 +222,11 @@
       "contentPreview": "English Article Extraction Case 7English Article Extraction Case 7 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 7, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 7English Article Extraction Case 7 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 180
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 243
     },
     {
       "index": 8,
@@ -244,11 +244,11 @@
       "contentPreview": "English Article Extraction Case 8English Article Extraction Case 8 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 8, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 8English Article Extraction Case 8 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 181
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 299
     },
     {
       "index": 9,
@@ -266,11 +266,11 @@
       "contentPreview": "English Article Extraction Case 9English Article Extraction Case 9 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 9, including background, ke",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 9English Article Extraction Case 9 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowled",
-      "elapsedMs": 191
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 323
     },
     {
       "index": 10,
@@ -288,11 +288,11 @@
       "contentPreview": "English Article Extraction Case 10English Article Extraction Case 10 is a deterministic article used to test content extraction in the web note helper.The article focuses on knowledge management 10, including background,",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "English Article Extraction Case 10English Article Extraction Case 10 is a deterministic article used to test content extraction in the web note helper. The article focuses on knowl",
-      "elapsedMs": 188
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 230
     },
     {
       "index": 11,
@@ -310,11 +310,11 @@
       "contentPreview": "中文正文提取案例 1中文正文提取案例 1 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 1 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 1 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 1 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 1中文正文提取案例 1 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 1 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 1 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 198
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 400
     },
     {
       "index": 12,
@@ -332,11 +332,11 @@
       "contentPreview": "中文正文提取案例 2中文正文提取案例 2 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 2 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 2 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 2 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 2中文正文提取案例 2 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 2 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 2 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 196
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 303
     },
     {
       "index": 13,
@@ -354,11 +354,11 @@
       "contentPreview": "中文正文提取案例 3中文正文提取案例 3 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 3 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 3 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 3 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 3中文正文提取案例 3 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 3 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 3 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 192
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 390
     },
     {
       "index": 14,
@@ -376,11 +376,11 @@
       "contentPreview": "中文正文提取案例 4中文正文提取案例 4 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 4 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 4 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 4 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 4中文正文提取案例 4 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 4 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 4 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 200
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 305
     },
     {
       "index": 15,
@@ -398,11 +398,11 @@
       "contentPreview": "中文正文提取案例 5中文正文提取案例 5 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 5 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 5 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 5 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 5中文正文提取案例 5 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 5 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 5 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 212
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 225
     },
     {
       "index": 16,
@@ -420,11 +420,11 @@
       "contentPreview": "中文正文提取案例 6中文正文提取案例 6 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 6 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 6 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 6 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 6中文正文提取案例 6 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 6 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 6 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 212
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 276
     },
     {
       "index": 17,
@@ -442,11 +442,11 @@
       "contentPreview": "中文正文提取案例 7中文正文提取案例 7 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 7 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 7 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 7 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 7中文正文提取案例 7 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 7 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 7 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 197
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 367
     },
     {
       "index": 18,
@@ -464,11 +464,11 @@
       "contentPreview": "中文正文提取案例 8中文正文提取案例 8 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 8 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 8 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 8 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 8中文正文提取案例 8 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 8 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 8 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 186
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 346
     },
     {
       "index": 19,
@@ -486,11 +486,11 @@
       "contentPreview": "中文正文提取案例 9中文正文提取案例 9 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 9 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 9 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 9 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 9中文正文提取案例 9 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 9 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 9 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 189
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 281
     },
     {
       "index": 20,
@@ -508,11 +508,11 @@
       "contentPreview": "中文正文提取案例 10中文正文提取案例 10 是一篇用于测试网页笔记助手正文提取的中文文章。 文章围绕 知识管理 10 展开，包含背景、核心观点、实践步骤和结论。 第一部分解释 知识管理 10 为什么重要，并给出真实用户在阅读网页时的常见需求。 第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。 第三部分强调摘要必须基于页面中真实可见的正文，不应该臆测缺失内容。 第 10 个案例用于验证标题、段落和正文长度是否保持稳定。",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "中文正文提取案例 10中文正文提取案例 10 是一篇用于测试网页笔记助手正文提取的中文文章。文章围绕 知识管理 10 展开，包含背景、核心观点、实践步骤和结论。第一部分解释 知识管理 10 为什么重要，并给出真实用户在阅读网页时的常见需求。第二部分说明提取结果应该排除导航、广告、评论入口和其他控件。",
-      "elapsedMs": 196
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 281
     },
     {
       "index": 21,
@@ -532,11 +532,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 1 以下为页面中的主要列表条目 1. Research item 1-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 191
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 242
     },
     {
       "index": 22,
@@ -556,11 +556,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 2 以下为页面中的主要列表条目 1. Research item 2-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 186
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 254
     },
     {
       "index": 23,
@@ -580,11 +580,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 3 以下为页面中的主要列表条目 1. Research item 3-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 187
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 249
     },
     {
       "index": 24,
@@ -604,11 +604,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 4 以下为页面中的主要列表条目 1. Research item 4-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 186
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 234
     },
     {
       "index": 25,
@@ -628,11 +628,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 5 以下为页面中的主要列表条目 1. Research item 5-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 204
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 374
     },
     {
       "index": 26,
@@ -652,11 +652,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 6 以下为页面中的主要列表条目 1. Research item 6-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 185
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 329
     },
     {
       "index": 27,
@@ -676,11 +676,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 7 以下为页面中的主要列表条目 1. Research item 7-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 206
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 305
     },
     {
       "index": 28,
@@ -700,11 +700,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Listing Case 8 以下为页面中的主要列表条目 1. Research item 8-0: browser notes workflow 说明：Short explanation for item 0 with enough context for summarization.",
-      "elapsedMs": 204
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 282
     },
     {
       "index": 29,
@@ -724,11 +724,11 @@
       "warnings": [
         "当前页面是搜索结果页，摘要基于页面条目而非原文全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：搜索结果页 页面标题：Search Case 1 以下为页面中的主要搜索结果条目 1. Search result 1-0 about browser summaries 说明：This snippet describes search result 0, current context, and source details.",
-      "elapsedMs": 194
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 221
     },
     {
       "index": 30,
@@ -748,11 +748,11 @@
       "warnings": [
         "当前页面是搜索结果页，摘要基于页面条目而非原文全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：搜索结果页 页面标题：Search Case 2 以下为页面中的主要搜索结果条目 1. Search result 2-0 about browser summaries 说明：This snippet describes search result 0, current context, and source details.",
-      "elapsedMs": 203
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 212
     },
     {
       "index": 31,
@@ -772,11 +772,11 @@
       "warnings": [
         "当前页面是搜索结果页，摘要基于页面条目而非原文全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：搜索结果页 页面标题：Search Case 3 以下为页面中的主要搜索结果条目 1. Search result 3-0 about browser summaries 说明：This snippet describes search result 0, current context, and source details.",
-      "elapsedMs": 191
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 227
     },
     {
       "index": 32,
@@ -796,11 +796,11 @@
       "warnings": [
         "当前页面是搜索结果页，摘要基于页面条目而非原文全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：搜索结果页 页面标题：Search Case 4 以下为页面中的主要搜索结果条目 1. Search result 4-0 about browser summaries 说明：This snippet describes search result 0, current context, and source details.",
-      "elapsedMs": 175
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 224
     },
     {
       "index": 33,
@@ -820,11 +820,11 @@
       "warnings": [
         "当前页面是搜索结果页，摘要基于页面条目而非原文全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：搜索结果页 页面标题：Search Case 5 以下为页面中的主要搜索结果条目 1. Search result 5-0 about browser summaries 说明：This snippet describes search result 0, current context, and source details.",
-      "elapsedMs": 186
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 213
     },
     {
       "index": 34,
@@ -844,11 +844,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目 1. HN story 0-19: local-first browser notes 说明：29 points · 20 comments",
-      "elapsedMs": 232
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 312
     },
     {
       "index": 35,
@@ -868,11 +868,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目 1. HN story 1-19: local-first browser notes 说明：29 points · 20 comments",
-      "elapsedMs": 211
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 213
     },
     {
       "index": 36,
@@ -892,11 +892,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目 1. HN story 2-0: local-first browser notes 说明：10 points · 1 comments 2.",
-      "elapsedMs": 195
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 231
     },
     {
       "index": 37,
@@ -916,11 +916,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目 1. HN story 3-0: local-first browser notes 说明：10 points · 1 comments 2. HN story 3-7: local-first browser notes 说明：17 points · 8 comments",
-      "elapsedMs": 200
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 236
     },
     {
       "index": 38,
@@ -940,11 +940,11 @@
       "warnings": [
         "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目 1. HN story 4-0: local-first browser notes 说明：10 points · 1 comments 2. HN story 4-7: local-first browser notes 说明：17 points · 8 comments",
-      "elapsedMs": 183
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 332
     },
     {
       "index": 39,
@@ -964,11 +964,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 195
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 267
     },
     {
       "index": 40,
@@ -988,11 +988,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 185
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 247
     },
     {
       "index": 41,
@@ -1012,11 +1012,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 196
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 256
     },
     {
       "index": 42,
@@ -1036,11 +1036,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 199
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 256
     },
     {
       "index": 43,
@@ -1060,11 +1060,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 184
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 230
     },
     {
       "index": 44,
@@ -1084,11 +1084,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 191
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 218
     },
     {
       "index": 45,
@@ -1108,11 +1108,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 191
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 204
     },
     {
       "index": 46,
@@ -1132,11 +1132,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 217
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 205
     },
     {
       "index": 47,
@@ -1156,11 +1156,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 195
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 212
     },
     {
       "index": 48,
@@ -1180,11 +1180,11 @@
       "warnings": [
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "The main post introduces Dropbox as a synchronization product. Comment 0 discusses Dropbox synchronization, user experience, and implementation tradeoffs.",
-      "elapsedMs": 180
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 203
     },
     {
       "index": 49,
@@ -1202,11 +1202,11 @@
       "contentPreview": "Notebook Pro 1Buy Notebook Pro 1 from $1000. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Notebook Pro 1Buy Notebook Pro 1 from $1000. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choos",
-      "elapsedMs": 264
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 303
     },
     {
       "index": 50,
@@ -1224,11 +1224,11 @@
       "contentPreview": "MacBook AirBuy MacBook Air from $1001. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "MacBook AirBuy MacBook Air from $1001. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose mont",
-      "elapsedMs": 201
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 242
     },
     {
       "index": 51,
@@ -1246,11 +1246,11 @@
       "contentPreview": "Notebook Pro 3Buy Notebook Pro 3 from $1002. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Notebook Pro 3Buy Notebook Pro 3 from $1002. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choos",
-      "elapsedMs": 231
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 242
     },
     {
       "index": 52,
@@ -1268,11 +1268,11 @@
       "contentPreview": "MacBook AirBuy MacBook Air from $1003. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "MacBook AirBuy MacBook Air from $1003. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose mont",
-      "elapsedMs": 233
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 395
     },
     {
       "index": 53,
@@ -1290,11 +1290,11 @@
       "contentPreview": "Notebook Pro 5Buy Notebook Pro 5 from $1004. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Notebook Pro 5Buy Notebook Pro 5 from $1004. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choos",
-      "elapsedMs": 274
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 491
     },
     {
       "index": 54,
@@ -1312,11 +1312,11 @@
       "contentPreview": "MacBook AirBuy MacBook Air from $1005. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "MacBook AirBuy MacBook Air from $1005. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose mont",
-      "elapsedMs": 257
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 294
     },
     {
       "index": 55,
@@ -1334,11 +1334,11 @@
       "contentPreview": "Notebook Pro 7Buy Notebook Pro 7 from $1006. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Notebook Pro 7Buy Notebook Pro 7 from $1006. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choos",
-      "elapsedMs": 229
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 236
     },
     {
       "index": 56,
@@ -1356,11 +1356,11 @@
       "contentPreview": "MacBook AirBuy MacBook Air from $1007. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "MacBook AirBuy MacBook Air from $1007. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose mont",
-      "elapsedMs": 241
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 666
     },
     {
       "index": 57,
@@ -1378,11 +1378,11 @@
       "contentPreview": "MacBook AirBuy MacBook Air from $1101. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "MacBook AirBuy MacBook Air from $1101. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose mont",
-      "elapsedMs": 303
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 778
     },
     {
       "index": 58,
@@ -1400,11 +1400,11 @@
       "contentPreview": "MacBook AirBuy MacBook Air from $1101. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose monthly payment options.",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "MacBook AirBuy MacBook Air from $1101. This product page highlights battery life, memory, storage, price, and performance.Configure the product, compare tech specs, and choose mont",
-      "elapsedMs": 221
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 275
     },
     {
       "index": 59,
@@ -1412,23 +1412,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test1",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 1",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 1: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 1 简介： Video Case 1 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 1: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 310
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2811,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\059-video-1.png"
     },
     {
       "index": 60,
@@ -1436,23 +1442,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test2",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 2",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 2: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 2 简介： Video Case 2 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 2: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 233
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2405,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\060-video-2.png"
     },
     {
       "index": 61,
@@ -1460,23 +1472,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test3",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 3",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 3: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 3 简介： Video Case 3 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 3: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 240
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2406,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\061-video-3.png"
     },
     {
       "index": 62,
@@ -1484,23 +1502,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test4",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 4",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 4: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 4 简介： Video Case 4 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 4: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 215
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2629,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\062-video-4.png"
     },
     {
       "index": 63,
@@ -1508,23 +1532,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test5",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 5",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 5: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 5 简介： Video Case 5 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 5: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 232
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2442,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\063-video-5.png"
     },
     {
       "index": 64,
@@ -1532,23 +1562,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test6",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 6",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 6: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 6 简介： Video Case 6 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 6: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 228
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2490,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\064-video-6.png"
     },
     {
       "index": 65,
@@ -1556,23 +1592,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test7",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 7",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 7: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 7 简介： Video Case 7 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 7: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 277
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2450,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\065-video-7.png"
     },
     {
       "index": 66,
@@ -1580,23 +1622,29 @@
       "group": "视频页",
       "url": "https://www.youtube.com/watch?v=test8",
       "expectSuccess": true,
-      "passed": true,
-      "failures": [],
+      "passed": false,
+      "failures": [
+        "contentLength=118<220"
+      ],
       "extractionSuccess": true,
       "title": "Video Case 8",
       "pageType": "video",
-      "method": "readability",
-      "contentLength": 234,
-      "contentPreview": "Video Case 8: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page, so summaries must use only visible des",
+      "method": "youtube-metadata",
+      "contentLength": 118,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Video Case 8 简介： Video Case 8 - YouTube test page",
       "error": "",
       "warnings": [
-        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。",
+        "提取内容较短，摘要可能不完整。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "Video Case 8: browser note workflow1,234 views. This video description explains browser note workflows and transcript availability.No transcript is available in this generated page",
-      "elapsedMs": 237
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 2388,
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\regression-100\\failure-screenshots\\066-video-8.png"
     },
     {
       "index": 67,
@@ -1614,11 +1662,11 @@
       "contentPreview": "仓库：openai/codex-fixture-1 简介：Lightweight coding agent fixture 1 codex-fixture-1 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-1 简介：Lightweight coding agent fixture 1 codex-fixture-1 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 251
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 297
     },
     {
       "index": 68,
@@ -1636,11 +1684,11 @@
       "contentPreview": "仓库：openai/codex-fixture-2 简介：Lightweight coding agent fixture 2 codex-fixture-2 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-2 简介：Lightweight coding agent fixture 2 codex-fixture-2 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 233
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 186
     },
     {
       "index": 69,
@@ -1658,11 +1706,11 @@
       "contentPreview": "仓库：openai/codex-fixture-3 简介：Lightweight coding agent fixture 3 codex-fixture-3 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-3 简介：Lightweight coding agent fixture 3 codex-fixture-3 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 213
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 196
     },
     {
       "index": 70,
@@ -1680,11 +1728,11 @@
       "contentPreview": "仓库：openai/codex-fixture-4 简介：Lightweight coding agent fixture 4 codex-fixture-4 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-4 简介：Lightweight coding agent fixture 4 codex-fixture-4 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 213
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 201
     },
     {
       "index": 71,
@@ -1702,11 +1750,11 @@
       "contentPreview": "仓库：openai/codex-fixture-5 简介：Lightweight coding agent fixture 5 codex-fixture-5 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-5 简介：Lightweight coding agent fixture 5 codex-fixture-5 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 204
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 203
     },
     {
       "index": 72,
@@ -1724,11 +1772,11 @@
       "contentPreview": "仓库：openai/codex-fixture-6 简介：Lightweight coding agent fixture 6 codex-fixture-6 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-6 简介：Lightweight coding agent fixture 6 codex-fixture-6 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 209
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 204
     },
     {
       "index": 73,
@@ -1746,11 +1794,11 @@
       "contentPreview": "仓库：openai/codex-fixture-7 简介：Lightweight coding agent fixture 7 codex-fixture-7 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-7 简介：Lightweight coding agent fixture 7 codex-fixture-7 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 192
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 211
     },
     {
       "index": 74,
@@ -1768,11 +1816,11 @@
       "contentPreview": "仓库：openai/codex-fixture-8 简介：Lightweight coding agent fixture 8 codex-fixture-8 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains installation, usage, configuration, authent",
       "error": "",
       "warnings": [],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "tfidf",
-      "summaryPreview": "仓库：openai/codex-fixture-8 简介：Lightweight coding agent fixture 8 codex-fixture-8 Codex CLI is a coding agent from OpenAI that runs locally on your computer. This README explains ins",
-      "elapsedMs": 213
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 222
     },
     {
       "index": 75,
@@ -1794,11 +1842,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 1 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 1（1000x3000）",
-      "elapsedMs": 296
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 480
     },
     {
       "index": 76,
@@ -1820,11 +1868,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 2 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 2（1000x3000）",
-      "elapsedMs": 228
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 404
     },
     {
       "index": 77,
@@ -1846,11 +1894,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 3 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 3（1000x3000）",
-      "elapsedMs": 253
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 653
     },
     {
       "index": 78,
@@ -1872,11 +1920,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 4 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 4（1000x3000）",
-      "elapsedMs": 229
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 660
     },
     {
       "index": 79,
@@ -1898,11 +1946,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 5 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 5（1000x3000）",
-      "elapsedMs": 233
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 449
     },
     {
       "index": 80,
@@ -1924,11 +1972,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 6 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 6（1000x3000）",
-      "elapsedMs": 224
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 386
     },
     {
       "index": 81,
@@ -1950,11 +1998,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 7 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 7（1000x3000）",
-      "elapsedMs": 214
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 364
     },
     {
       "index": 82,
@@ -1976,11 +2024,11 @@
         "页面正文可能主要在图片中；当前未能读取图片文字。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
       ],
-      "summaryChecked": true,
-      "summarySuccess": true,
-      "summaryMethod": "passthrough",
-      "summaryPreview": "Image Heavy Case 8 发布时间：2026年06月20日 来源：测试站点 编辑：测试员 图片说明： - Long article image 8（1000x3000）",
-      "elapsedMs": 231
+      "summaryChecked": false,
+      "summarySuccess": false,
+      "summaryMethod": "",
+      "summaryPreview": "",
+      "elapsedMs": 454
     },
     {
       "index": 83,
@@ -2002,7 +2050,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 213
+      "elapsedMs": 352
     },
     {
       "index": 84,
@@ -2024,7 +2072,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 206
+      "elapsedMs": 257
     },
     {
       "index": 85,
@@ -2046,7 +2094,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 194
+      "elapsedMs": 300
     },
     {
       "index": 86,
@@ -2068,7 +2116,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 219
+      "elapsedMs": 364
     },
     {
       "index": 87,
@@ -2090,7 +2138,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 251
+      "elapsedMs": 317
     },
     {
       "index": 88,
@@ -2112,7 +2160,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 220
+      "elapsedMs": 308
     },
     {
       "index": 89,
@@ -2134,7 +2182,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 220
+      "elapsedMs": 319
     },
     {
       "index": 90,
@@ -2156,7 +2204,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 226
+      "elapsedMs": 340
     },
     {
       "index": 91,
@@ -2181,7 +2229,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 201
+      "elapsedMs": 740
     },
     {
       "index": 92,
@@ -2206,7 +2254,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 216
+      "elapsedMs": 343
     },
     {
       "index": 93,
@@ -2231,7 +2279,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 214
+      "elapsedMs": 271
     },
     {
       "index": 94,
@@ -2256,7 +2304,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 204
+      "elapsedMs": 418
     },
     {
       "index": 95,
@@ -2281,7 +2329,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 205
+      "elapsedMs": 341
     },
     {
       "index": 96,
@@ -2306,7 +2354,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 261
+      "elapsedMs": 266
     },
     {
       "index": 97,
@@ -2331,7 +2379,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 232
+      "elapsedMs": 223
     },
     {
       "index": 98,
@@ -2356,7 +2404,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 231
+      "elapsedMs": 304
     },
     {
       "index": 99,
@@ -2381,7 +2429,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 221
+      "elapsedMs": 273
     },
     {
       "index": 100,
@@ -2406,7 +2454,7 @@
       "summarySuccess": false,
       "summaryMethod": "",
       "summaryPreview": "",
-      "elapsedMs": 208
+      "elapsedMs": 311
     }
   ]
 }

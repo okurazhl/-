@@ -10,6 +10,9 @@
     "activeTab",
     "unlimitedStorage"
   ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "action": {
     "default_title": "打开笔记侧边栏",
     "default_icon": {

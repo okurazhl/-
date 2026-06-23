@@ -1,5 +1,5 @@
 {
-  "runAt": 1781966928215,
+  "runAt": 1782107262965,
   "total": 10,
   "passed": 10,
   "failed": 0,
@@ -16,8 +16,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 137,
-      "content": "单张中文正文图\n正文在图片中。\n\n图片内容：\n- 会议长图（920x560）: http://127.0.0.1:51843/img/single-image-zh-1.svg\n\n图片 OCR 文字：\n1. 会议长图（920x560）\n  会议通知\n  报名截止 6月30日",
-      "contentPreview": "单张中文正文图 正文在图片中。 图片内容： - 会议长图（920x560）: http://127.0.0.1:51843/img/single-image-zh-1.svg 图片 OCR 文字： 1. 会议长图（920x560） 会议通知 报名截止 6月30日",
+      "content": "单张中文正文图\n正文在图片中。\n\n图片内容：\n- 会议长图（920x560）: http://127.0.0.1:64441/img/single-image-zh-1.svg\n\n图片 OCR 文字：\n1. 会议长图（920x560）\n  会议通知\n  报名截止 6月30日",
+      "contentPreview": "单张中文正文图 正文在图片中。 图片内容： - 会议长图（920x560）: http://127.0.0.1:64441/img/single-image-zh-1.svg 图片 OCR 文字： 1. 会议长图（920x560） 会议通知 报名截止 6月30日",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "提取内容较短，摘要可能不完整。",
@@ -32,9 +32,9 @@
       },
       "ocrText": "1. 会议长图（920x560）\n  会议通知\n  报名截止 6月30日",
       "summary": "单张中文正文图\n正文在图片中。\n\n图片 OCR 转写文字：\n会议长图（920x560）：会议通知；报名截止 6月30日。\n\n图片说明：\n- 会议长图（920x560）",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 117
+      "elapsedMs": 713
     },
     {
       "index": 2,
@@ -47,8 +47,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 211,
-      "content": "多张正文图\n页面由两张图组成。\n\n图片内容：\n- 步骤一（900x520）: http://127.0.0.1:51843/img/multi-image-1.svg\n- 步骤二（900x520）: http://127.0.0.1:51843/img/multi-image-2.svg\n\n图片 OCR 文字：\n1. 步骤一（900x520）\n  第一步：打开设置\n\n2. 步骤二（900x520）\n  第二步：保存笔记",
-      "contentPreview": "多张正文图 页面由两张图组成。 图片内容： - 步骤一（900x520）: http://127.0.0.1:51843/img/multi-image-1.svg - 步骤二（900x520）: http://127.0.0.1:51843/img/multi-image-2.svg 图片 OCR 文字： 1. 步骤一（900x520） 第一步：打开设置 2. 步骤二（900x520） 第二步：保存笔记",
+      "content": "多张正文图\n页面由两张图组成。\n\n图片内容：\n- 步骤一（900x520）: http://127.0.0.1:64441/img/multi-image-1.svg\n- 步骤二（900x520）: http://127.0.0.1:64441/img/multi-image-2.svg\n\n图片 OCR 文字：\n1. 步骤一（900x520）\n  第一步：打开设置\n\n2. 步骤二（900x520）\n  第二步：保存笔记",
+      "contentPreview": "多张正文图 页面由两张图组成。 图片内容： - 步骤一（900x520）: http://127.0.0.1:64441/img/multi-image-1.svg - 步骤二（900x520）: http://127.0.0.1:64441/img/multi-image-2.svg 图片 OCR 文字： 1. 步骤一（900x520） 第一步：打开设置 2. 步骤二（900x520） 第二步：保存笔记",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
@@ -61,10 +61,10 @@
         "failedCount": 0
       },
       "ocrText": "1. 步骤一（900x520）\n  第一步：打开设置\n\n2. 步骤二（900x520）\n  第二步：保存笔记",
-      "summary": "多张正文图\n页面由两张图组成。\n\n图片 OCR 转写文字：\n步骤一（900x520）：第一步：打开设置。\n步骤二（900x520）：第二步：保存笔记。",
-      "summaryMethod": "tfidf",
+      "summary": "多张正文图\n页面由两张图组成。\n\n图片 OCR 转写文字：\n步骤一（900x520）：第一步：打开设置。\n步骤二（900x520）：第二步：保存笔记。\n\n图片说明：\n- 步骤一（900x520）\n- 步骤二（900x520）",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 53
+      "elapsedMs": 222
     },
     {
       "index": 3,
@@ -77,8 +77,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 200,
-      "content": "部分图片识别失败\n第二张图模拟浏览器检测异常。\n\n图片内容：\n- 可识别图（900x520）: http://127.0.0.1:51843/img/partial-failure-1.svg\n- 失败图（900x520）: http://127.0.0.1:51843/img/partial-failure-2.svg\n\n图片 OCR 文字：\n1. 可识别图（900x520）\n  可识别文本 A",
-      "contentPreview": "部分图片识别失败 第二张图模拟浏览器检测异常。 图片内容： - 可识别图（900x520）: http://127.0.0.1:51843/img/partial-failure-1.svg - 失败图（900x520）: http://127.0.0.1:51843/img/partial-failure-2.svg 图片 OCR 文字： 1. 可识别图（900x520） 可识别文本 A",
+      "content": "部分图片识别失败\n第二张图模拟浏览器检测异常。\n\n图片内容：\n- 可识别图（900x520）: http://127.0.0.1:64441/img/partial-failure-1.svg\n- 失败图（900x520）: http://127.0.0.1:64441/img/partial-failure-2.svg\n\n图片 OCR 文字：\n1. 可识别图（900x520）\n  可识别文本 A",
+      "contentPreview": "部分图片识别失败 第二张图模拟浏览器检测异常。 图片内容： - 可识别图（900x520）: http://127.0.0.1:64441/img/partial-failure-1.svg - 失败图（900x520）: http://127.0.0.1:64441/img/partial-failure-2.svg 图片 OCR 文字： 1. 可识别图（900x520） 可识别文本 A",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "当前页面未匹配专用提取器，已使用通用回退提取。",
@@ -93,9 +93,9 @@
       },
       "ocrText": "1. 可识别图（900x520）\n  可识别文本 A",
       "summary": "部分图片识别失败\n第二张图模拟浏览器检测异常。\n\n图片 OCR 转写文字：\n可识别图（900x520）：可识别文本 A。\n\n图片说明：\n- 可识别图（900x520）\n- 失败图（900x520）",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 51
+      "elapsedMs": 160
     },
     {
       "index": 4,
@@ -108,8 +108,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 117,
-      "content": "浏览器不支持 TextDetector\n只有正文图片，浏览器没有 OCR 能力。\n\n图片内容：\n- 政策图（900x520）: http://127.0.0.1:51843/img/unsupported-detector-1.svg",
-      "contentPreview": "浏览器不支持 TextDetector 只有正文图片，浏览器没有 OCR 能力。 图片内容： - 政策图（900x520）: http://127.0.0.1:51843/img/unsupported-detector-1.svg",
+      "content": "浏览器不支持 TextDetector\n只有正文图片，浏览器没有 OCR 能力。\n\n图片内容：\n- 政策图（900x520）: http://127.0.0.1:64441/img/unsupported-detector-1.svg",
+      "contentPreview": "浏览器不支持 TextDetector 只有正文图片，浏览器没有 OCR 能力。 图片内容： - 政策图（900x520）: http://127.0.0.1:64441/img/unsupported-detector-1.svg",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "提取内容较短，摘要可能不完整。",
@@ -125,9 +125,9 @@
       },
       "ocrText": "",
       "summary": "浏览器不支持 TextDetector\n只有正文图片，浏览器没有 OCR 能力。\n\n图片说明：\n- 政策图（900x520）",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 50
+      "elapsedMs": 106
     },
     {
       "index": 5,
@@ -149,9 +149,9 @@
       "imageOcr": null,
       "ocrText": "",
       "summary": "小图标不进入 OCR这是一个含小图标的普通短页面，图标不应进入 OCR 候选。",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 47
+      "elapsedMs": 116
     },
     {
       "index": 6,
@@ -164,8 +164,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 88,
-      "content": "OCR 返回空结果\n图片可能不含可识别文字。\n\n图片内容：\n- 空白图（900x520）: http://127.0.0.1:51843/img/empty-ocr-1.svg",
-      "contentPreview": "OCR 返回空结果 图片可能不含可识别文字。 图片内容： - 空白图（900x520）: http://127.0.0.1:51843/img/empty-ocr-1.svg",
+      "content": "OCR 返回空结果\n图片可能不含可识别文字。\n\n图片内容：\n- 空白图（900x520）: http://127.0.0.1:64441/img/empty-ocr-1.svg",
+      "contentPreview": "OCR 返回空结果 图片可能不含可识别文字。 图片内容： - 空白图（900x520）: http://127.0.0.1:64441/img/empty-ocr-1.svg",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "提取内容较短，摘要可能不完整。",
@@ -181,9 +181,9 @@
       },
       "ocrText": "",
       "summary": "OCR 返回空结果\n图片可能不含可识别文字。\n\n图片说明：\n- 空白图（900x520）",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 49
+      "elapsedMs": 131
     },
     {
       "index": 7,
@@ -196,8 +196,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 136,
-      "content": "OCR 行去重\n同一张图里 OCR 返回重复内容。\n\n图片内容：\n- 去重图片（900x520）: http://127.0.0.1:51843/img/dedupe-lines-1.svg\n\n图片 OCR 文字：\n1. 去重图片（900x520）\n  重复行\n  唯一行",
-      "contentPreview": "OCR 行去重 同一张图里 OCR 返回重复内容。 图片内容： - 去重图片（900x520）: http://127.0.0.1:51843/img/dedupe-lines-1.svg 图片 OCR 文字： 1. 去重图片（900x520） 重复行 唯一行",
+      "content": "OCR 行去重\n同一张图里 OCR 返回重复内容。\n\n图片内容：\n- 去重图片（900x520）: http://127.0.0.1:64441/img/dedupe-lines-1.svg\n\n图片 OCR 文字：\n1. 去重图片（900x520）\n  重复行\n  唯一行",
+      "contentPreview": "OCR 行去重 同一张图里 OCR 返回重复内容。 图片内容： - 去重图片（900x520）: http://127.0.0.1:64441/img/dedupe-lines-1.svg 图片 OCR 文字： 1. 去重图片（900x520） 重复行 唯一行",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "提取内容较短，摘要可能不完整。",
@@ -212,9 +212,9 @@
       },
       "ocrText": "1. 去重图片（900x520）\n  重复行\n  唯一行",
       "summary": "OCR 行去重\n同一张图里 OCR 返回重复内容。\n\n图片 OCR 转写文字：\n去重图片（900x520）：重复行；唯一行。\n\n图片说明：\n- 去重图片（900x520）",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 46
+      "elapsedMs": 102
     },
     {
       "index": 8,
@@ -227,7 +227,7 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 326,
-      "content": "正文足够时不制造图片重警告\n这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。 即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。 用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。 这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。 额外的段落用于模拟真实文章中的背景、事实、观点和结论，确保可见正文已经足够支撑保存和摘要。 这类页面不应该因为 OCR 能力缺失而显示图片正文不可读的强警告，只需要保留图片线索即可。\n\n图片内容：\n- 补充图（900x520）: http://127.0.0.1:51843/img/text-rich-unsupported-1.svg",
+      "content": "正文足够时不制造图片重警告\n这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。 即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。 用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。 这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。 额外的段落用于模拟真实文章中的背景、事实、观点和结论，确保可见正文已经足够支撑保存和摘要。 这类页面不应该因为 OCR 能力缺失而显示图片正文不可读的强警告，只需要保留图片线索即可。\n\n图片内容：\n- 补充图（900x520）: http://127.0.0.1:64441/img/text-rich-unsupported-1.svg",
       "contentPreview": "正文足够时不制造图片重警告 这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。 即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。 用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。 这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。 额外的段落用于模拟真实文章中的背景、事实、观点和结论，确保可见正文已经足够支撑保存和摘要。 这类页面不应该因为 OCR 能力缺失而显示图片正文不可读的强警告，只需要保留图片线索即可。 图片内容： - 补充图",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
@@ -241,10 +241,10 @@
         "failedCount": 0
       },
       "ocrText": "",
-      "summary": "正文足够时不制造图片重警告 这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。",
-      "summaryMethod": "tfidf",
+      "summary": "正文足够时不制造图片重警告\n这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。 即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。 用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。 这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。 额外的段落用于模拟真实文章中的背景、事实、观点和结论，确保可见正文已经足够支撑保存和摘要。 这类页面不应该因为 OCR 能力缺失而显示图片正文不可读的强警告，只需要保留图片线索即可。\n\n图片说明：\n- 补充图（900x520）",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 55
+      "elapsedMs": 197
     },
     {
       "index": 9,
@@ -257,8 +257,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 539,
-      "content": "最多处理五张正文图\n页面包含六张大图，只处理前五张。\n\n图片内容：\n- 正文图 1（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-1.svg\n- 正文图 2（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-2.svg\n- 正文图 3（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-3.svg\n- 正文图 4（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-4.svg\n- 正文图 5（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-5.svg\n\n图片 OCR 文字：\n1. 正文图 1（900x520）\n  OCR-1\n\n2. 正文图 2（900x520）\n  OCR-2\n\n3. 正文图 3（900x520）\n  OCR-3\n\n4. 正文图 4（900x520）\n  OCR-4\n\n5. 正文图 5（900x520）\n  OCR-5",
-      "contentPreview": "最多处理五张正文图 页面包含六张大图，只处理前五张。 图片内容： - 正文图 1（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-1.svg - 正文图 2（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-2.svg - 正文图 3（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-3.svg - 正文图 4（900",
+      "content": "最多处理五张正文图\n页面包含六张大图，只处理前五张。\n\n图片内容：\n- 正文图 1（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-1.svg\n- 正文图 2（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-2.svg\n- 正文图 3（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-3.svg\n- 正文图 4（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-4.svg\n- 正文图 5（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-5.svg\n\n图片 OCR 文字：\n1. 正文图 1（900x520）\n  OCR-1\n\n2. 正文图 2（900x520）\n  OCR-2\n\n3. 正文图 3（900x520）\n  OCR-3\n\n4. 正文图 4（900x520）\n  OCR-4\n\n5. 正文图 5（900x520）\n  OCR-5",
+      "contentPreview": "最多处理五张正文图 页面包含六张大图，只处理前五张。 图片内容： - 正文图 1（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-1.svg - 正文图 2（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-2.svg - 正文图 3（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-3.svg - 正文图 4（900",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "当前页面未匹配专用提取器，已使用通用回退提取。"
@@ -271,10 +271,10 @@
         "failedCount": 0
       },
       "ocrText": "1. 正文图 1（900x520）\n  OCR-1\n\n2. 正文图 2（900x520）\n  OCR-2\n\n3. 正文图 3（900x520）\n  OCR-3\n\n4. 正文图 4（900x520）\n  OCR-4\n\n5. 正文图 5（900x520）\n  OCR-5",
-      "summary": "最多处理五张正文图\n页面包含六张大图，只处理前五张。\n\n图片 OCR 转写文字：\n正文图 1（900x520）：OCR-1。\n正文图 2（900x520）：OCR-2。\n正文图 3（900x520）：OCR-3。\n正文图 4（900x520）：OCR-4。\n正文图 5（900x520）：OCR-5。",
-      "summaryMethod": "tfidf",
+      "summary": "最多处理五张正文图\n页面包含六张大图，只处理前五张。\n\n图片 OCR 转写文字：\n正文图 1（900x520）：OCR-1。\n正文图 2（900x520）：OCR-2。\n正文图 3（900x520）：OCR-3。\n正文图 4（900x520）：OCR-4。\n正文图 5（900x520）：OCR-5。\n\n图片说明：\n- 正文图 1（900x520）\n- 正文图 2（900x520）\n- 正文图 3（900x520）\n- 正文图 4（900x520）\n- 正文图 5（900x520）",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 59
+      "elapsedMs": 184
     },
     {
       "index": 10,
@@ -287,8 +287,8 @@
       "method": "fallback",
       "pageType": "unknown",
       "contentLength": 95,
-      "content": "单图 OCR 超时\n这张图模拟 OCR 长时间无响应。\n\n图片内容：\n- 超时图（900x520）: http://127.0.0.1:51843/img/ocr-timeout-1.svg",
-      "contentPreview": "单图 OCR 超时 这张图模拟 OCR 长时间无响应。 图片内容： - 超时图（900x520）: http://127.0.0.1:51843/img/ocr-timeout-1.svg",
+      "content": "单图 OCR 超时\n这张图模拟 OCR 长时间无响应。\n\n图片内容：\n- 超时图（900x520）: http://127.0.0.1:64441/img/ocr-timeout-1.svg",
+      "contentPreview": "单图 OCR 超时 这张图模拟 OCR 长时间无响应。 图片内容： - 超时图（900x520）: http://127.0.0.1:64441/img/ocr-timeout-1.svg",
       "qualityWarnings": [
         "页面类型不明确，已使用通用正文提取。",
         "提取内容较短，摘要可能不完整。",
@@ -304,9 +304,9 @@
       },
       "ocrText": "",
       "summary": "单图 OCR 超时\n这张图模拟 OCR 长时间无响应。\n\n图片说明：\n- 超时图（900x520）",
-      "summaryMethod": "passthrough",
+      "summaryMethod": "llm",
       "summaryError": "",
-      "elapsedMs": 3080
+      "elapsedMs": 3184
     }
   ]
 }

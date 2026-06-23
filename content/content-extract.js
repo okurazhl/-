@@ -28,6 +28,8 @@
     '.story-content',
     '.markdown-body',
     '.theme-doc-markdown',
+    '#mw-content-text .mw-parser-output',
+    '.mw-parser-output',
     '.dangyuanwang160317_ind01',
     '#font_area',
     '.font_area_mid',
@@ -82,6 +84,21 @@
     '[id*="breadcrumb" i]',
     '[class*="related" i]',
     '[id*="related" i]',
+    '[class*="navbox" i]',
+    '[class*="metadata" i]',
+    '[class*="vector-page-toolbar" i]',
+    '[class*="vector-menu" i]',
+    '.infobox',
+    '.toc',
+    '.catlinks',
+    '.reflist',
+    '.reference',
+    '.mw-editsection',
+    '.mw-jump-link',
+    '#p-lang-btn',
+    '#p-views',
+    '#p-cactions',
+    '#p-tb',
     '[class*="share" i]',
     '[id*="share" i]',
     'nav',
@@ -97,6 +114,7 @@
   const BAIDU_RESULT_SKIP_RE = /(?:大家还在搜|相关搜索|视频大全|查看更多视频|换一换热搜榜|热搜榜|民生榜|财经榜|帮助举报用户反馈|您确定要退出吗|退出后，个人中心)/;
   const BLOCKED_PAGE_TYPES = new Set(['restricted', 'login', 'error']);
   const SEARCH_RESULT_HOST_RE = /(^|\.)((google|bing|sogou|so|duckduckgo)\.com|google\.[a-z.]+)$/i;
+  const CHATGPT_HOST_RE = /(^|\.)chatgpt\.com$|(^|\.)chat\.openai\.com$/i;
   const OCR_MAX_IMAGES = 5;
   const OCR_TOTAL_TIMEOUT_MS = 8000;
   const OCR_PER_IMAGE_TIMEOUT_MS = 3000;
@@ -104,14 +122,34 @@
   const IMAGE_OCR_TITLE = '图片 OCR 文字：';
   const IMAGE_INFO_TITLE = '图片内容：';
   const STALE_IMAGE_OCR_WARNING_RE = /未读取图片文字|只记录了图片信息|OCR 不可用|未能从正文图片识别出文字|未能读取图片文字/;
+  const NOISE_CANDIDATE_MAX = 12;
+  const NOISE_CANDIDATE_TEXT_LIMIT = 5000;
+  const NOISE_CANDIDATE_HTML_LIMIT = 1000;
+  const NOISE_CANDIDATE_TOTAL_TEXT_LIMIT = 22000;
+  const YOUTUBE_TRANSCRIPT_LIMIT = 30000;
+  const YOUTUBE_METADATA_LIMIT = 3000;
+  const YOUTUBE_DIRECT_TRANSCRIPT_MIN_LENGTH = 80;
+  const YOUTUBE_VISIBLE_TRANSCRIPT_MIN_LINES = 8;
+  const YOUTUBE_VISIBLE_TRANSCRIPT_MIN_LENGTH = 500;
+  const YOUTUBE_SHORT_VIDEO_MAX_SECONDS = 120;
+  const YOUTUBE_SHORT_VISIBLE_TRANSCRIPT_MIN_LENGTH = 160;
+  const YOUTUBE_TRANSCRIPT_UNAVAILABLE_WARNING = '未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。';
+  const YOUTUBE_PARTIAL_TRANSCRIPT_WARNING = '检测到局部字幕，未作为完整视频摘要依据。';
 
   /**
    * 提取页面主要内容
    * @returns {{ success: boolean, title?: string, content?: string, htmlContent?: string, excerpt?: string, url?: string, byline?: string, method?: string, error?: string }}
    */
-  function extractPageContent() {
+  async function extractPageContent() {
     const url = window.location.href;
     const classification = classifyPage(url);
+
+    if (isYouTubeWatchPage(url)) {
+      return applyExtractionMetadata(
+        await extractYouTubeWatchPage(url),
+        makeClassification('video', 0.92, 'youtube-watch-page')
+      );
+    }
 
     if (classification.pageType === 'search-results:baidu') {
       return applyExtractionMetadata(
@@ -128,6 +166,17 @@
       }
     }
 
+    if (isChatGptConversationPage(url)) {
+      const chatResult = extractChatGptConversationPage(url);
+      if (chatResult.success) {
+        return applyExtractionMetadata(chatResult, makeClassification(
+          'chat-conversation',
+          chatResult.confidence || 0.9,
+          chatResult.reason || 'chatgpt-message-turns'
+        ));
+      }
+    }
+
     if (classification.pageType === 'search-results:generic' || classification.pageType === 'listing') {
       return applyExtractionMetadata(extractListingPage(url, classification), classification);
     }
@@ -136,12 +185,20 @@
       return applyExtractionMetadata(extractBlockedPage(url, classification), classification);
     }
 
+    if (classification.pageType === 'video') {
+      const genericVideoResult = await extractGenericVideoPage(url);
+      if (genericVideoResult.success && (genericVideoResult.transcriptAvailable || (genericVideoResult.content || '').length >= 120)) {
+        return applyExtractionMetadata(genericVideoResult, classification);
+      }
+    }
+
     const fallbackResult = fallbackExtract(url);
     let readabilityResult = null;
 
     if (window.Readability) {
       try {
-        const reader = new window.Readability(document);
+        const documentClone = makeReadabilityDocumentClone();
+        const reader = new window.Readability(documentClone);
         const result = reader.parse();
         let content = cleanExtractedText(result.textContent || stripHtml(result.content || ''));
         if (content.length < 500 && document.body) {
@@ -162,7 +219,21 @@
       }
     }
 
-    const best = shouldUseFallback(readabilityResult, fallbackResult) ? fallbackResult : readabilityResult || fallbackResult;
+    if (classification.pageType === 'listing' &&
+        !isArticleLikeExtraction(readabilityResult) &&
+        !isArticleLikeExtraction(fallbackResult)) {
+      return applyExtractionMetadata(extractListingPage(url, classification), classification);
+    }
+
+    let best = shouldUseFallback(readabilityResult, fallbackResult) ? fallbackResult : readabilityResult || fallbackResult;
+    if (classification.pageType === 'listing' && isArticleLikeExtraction(best)) {
+      best = {
+        ...best,
+        pageType: 'article',
+        confidence: Math.max(classification.confidence || 0, 0.72),
+        reason: 'article-content-after-readability'
+      };
+    }
 
     if (!best || !best.content || best.content.length < 20) {
       return applyExtractionMetadata({
@@ -183,7 +254,7 @@
   }
 
   async function extractPageContentWithOcr() {
-    const result = extractPageContent();
+    const result = await extractPageContent();
     if (!result || !result.success) return result;
     return enhanceResultWithImageOcr(result);
   }
@@ -211,6 +282,10 @@
 
     if (isLikelySearchResultsPage(parsed)) {
       return makeClassification('search-results:generic', 0.78, 'search-url');
+    }
+
+    if (isChatGptConversationPage(parsed) && hasChatGptMessageNodes()) {
+      return makeClassification('chat-conversation', 0.9, 'chatgpt-message-turns');
     }
 
     if (isLikelyForumQaPage(parsed)) {
@@ -275,8 +350,15 @@
       /(?:验证码|安全验证|身份验证|captcha|security check|wappass)/i.test(`${captchaText}\n${sample}`);
     const shortSecurityGate = bodyText.length < 1600 &&
       /(?:正在进行安全验证|防护恶意自动程序|验证您不是自动程序|安全服务防护|security check|checking your browser|verify you are human)/i.test(sample);
+    const chatGptNeedsLoginOrUnavailable = CHATGPT_HOST_RE.test(parsed.hostname) &&
+      !hasChatGptMessageNodes() &&
+      /(?:登录以获取|登录|免费注册|log in|sign up|this content is unavailable|unavailable or not found|此内容不可用|未找到)/i.test(sample);
 
-    return (hasPasswordInput && textLooksLogin) || nodeLooksCaptcha || shortSecurityGate || (routeLooksLogin && textLooksLogin);
+    return chatGptNeedsLoginOrUnavailable ||
+      (hasPasswordInput && textLooksLogin) ||
+      nodeLooksCaptcha ||
+      shortSecurityGate ||
+      (routeLooksLogin && textLooksLogin);
   }
 
   function isLikelySearchResultsPage(parsed) {
@@ -308,6 +390,1423 @@
     return false;
   }
 
+  function isYouTubeWatchPage(url) {
+    const parsed = safeParseUrl(url);
+    if (!parsed) return false;
+    const host = parsed.hostname.toLowerCase();
+    const path = parsed.pathname.toLowerCase();
+    if (/(^|\.)youtube\.com$/.test(host)) {
+      return path === '/watch' || path.startsWith('/shorts/') || path.startsWith('/live/');
+    }
+    return /(^|\.)youtu\.be$/.test(host);
+  }
+
+  async function extractYouTubeWatchPage(url) {
+    const playerResponse = getYouTubePlayerResponse();
+    const initialData = getYouTubeInitialData();
+    const videoId = getYouTubeVideoId(url, playerResponse);
+    const durationSeconds = getYouTubeVideoDurationSeconds(playerResponse);
+    const metadata = getYouTubeVideoMetadata(playerResponse, initialData);
+    const transcript = await extractYouTubeTranscriptWithProviders(playerResponse, initialData, videoId, durationSeconds);
+    const chapters = getYouTubeChapters(playerResponse, initialData);
+
+    const parts = [];
+    if (metadata.title) parts.push(`YouTube 视频标题：${metadata.title}`);
+    if (metadata.channel) parts.push(`频道：${metadata.channel}`);
+
+    const warnings = [];
+    let method = 'youtube-metadata';
+    let reason = 'youtube-metadata-fallback';
+
+    if (transcript.text) {
+      method = 'youtube-transcript';
+      reason = transcript.source || 'youtube-transcript';
+      parts.push(`字幕/Transcript：\n${truncateText(transcript.text, YOUTUBE_TRANSCRIPT_LIMIT)}`);
+    } else {
+      warnings.push(YOUTUBE_TRANSCRIPT_UNAVAILABLE_WARNING);
+      if (hasPartialVisibleTranscriptAttempt(transcript.attempts)) {
+        warnings.push(YOUTUBE_PARTIAL_TRANSCRIPT_WARNING);
+      }
+      if (transcript.error) {
+        warnings.push(`YouTube 字幕读取失败：${truncateText(transcript.error, 180)}`);
+      }
+    }
+
+    if (metadata.description) {
+      parts.push(`简介：\n${truncateText(metadata.description, YOUTUBE_METADATA_LIMIT)}`);
+    }
+
+    if (chapters.length > 0) {
+      parts.push(`章节：\n${chapters.map((item, index) => {
+        const time = item.time ? `${item.time} ` : '';
+        return `${index + 1}. ${time}${item.title}`;
+      }).join('\n')}`);
+    }
+
+    if (!transcript.text) {
+      parts.unshift(YOUTUBE_TRANSCRIPT_UNAVAILABLE_WARNING);
+    }
+
+    const content = cleanExtractedText(parts.filter(Boolean).join('\n\n'));
+    if (!content || content.length < 20) {
+      return {
+        success: false,
+        title: metadata.title || cleanTitle(document.title || ''),
+        content,
+        htmlContent: '',
+        excerpt: content.slice(0, 200),
+        url,
+        byline: metadata.channel || '',
+        method,
+        pageType: 'video',
+        confidence: 0.45,
+        reason,
+        error: '未能从 YouTube 页面提取到可用的字幕、简介或章节信息',
+        qualityWarnings: warnings
+      };
+    }
+
+    return {
+      success: true,
+      title: metadata.title || cleanTitle(document.title || ''),
+      content,
+      htmlContent: '',
+      excerpt: content.slice(0, 200),
+      url,
+      byline: metadata.channel || '',
+      method,
+      pageType: 'video',
+      confidence: transcript.text ? 0.92 : 0.76,
+      reason,
+      transcriptAvailable: !!transcript.text,
+      transcriptSource: transcript.source || '',
+      transcriptProvider: transcript.provider || '',
+      transcriptAttempts: transcript.attempts || [],
+      youtube: {
+        videoId,
+        title: metadata.title || '',
+        channel: metadata.channel || '',
+        description: metadata.description || '',
+        chapters,
+        transcriptAvailable: !!transcript.text,
+        transcriptSource: transcript.source || '',
+        transcriptProvider: transcript.provider || '',
+        transcriptAttempts: transcript.attempts || [],
+        hasDescription: !!metadata.hasDescription,
+        descriptionSource: metadata.descriptionSource || '',
+        chapterCount: chapters.length,
+        durationSeconds
+      },
+      qualityWarnings: warnings
+    };
+  }
+
+  function getYouTubeVideoMetadata(playerResponse, initialData) {
+    const videoDetails = playerResponse?.videoDetails || {};
+    const microformat = playerResponse?.microformat?.playerMicroformatRenderer || {};
+    const title = cleanTitle(
+      videoDetails.title ||
+      extractSimpleText(microformat.title) ||
+      getMetaContent('meta[property="og:title"], meta[name="title"]') ||
+      getFirstText([
+        'h1.ytd-watch-metadata',
+        'h1.title',
+        '#title h1',
+        'yt-formatted-string.ytd-watch-metadata'
+      ]) ||
+      document.title ||
+      ''
+    );
+    const channel = normalizeText(
+      videoDetails.author ||
+      extractSimpleText(microformat.ownerChannelName) ||
+      getMetaContent('link[itemprop="name"]') ||
+      getFirstText([
+        '#owner #channel-name a',
+        'ytd-video-owner-renderer #channel-name a',
+        '#upload-info #channel-name a'
+      ])
+    );
+    const descriptionCandidates = [
+      { source: 'videoDetails.shortDescription', text: videoDetails.shortDescription || '' },
+      { source: 'microformat.description', text: extractSimpleText(microformat.description) },
+      { source: 'watch-description-dom', text: getFirstText([
+        '#description-inline-expander',
+        'ytd-text-inline-expander',
+        '#description',
+        '#meta-contents #description'
+      ]) },
+      { source: 'meta.description', text: getMetaContent('meta[name="description"], meta[property="og:description"]') }
+    ];
+
+    let description = '';
+    let descriptionSource = '';
+    for (const candidate of descriptionCandidates) {
+      const cleaned = sanitizeYouTubeText(candidate.text, YOUTUBE_METADATA_LIMIT);
+      if (!cleaned || isGenericYouTubeDescription(cleaned)) continue;
+      description = cleaned;
+      descriptionSource = candidate.source;
+      break;
+    }
+
+    return {
+      title,
+      channel,
+      description,
+      descriptionSource,
+      hasDescription: !!description
+    };
+  }
+
+  function getMetaContent(selector) {
+    const node = document.querySelector(selector);
+    if (!node) return '';
+    return normalizeText(node.getAttribute('content') || node.getAttribute('href') || '');
+  }
+
+  function getFirstText(selectors) {
+    for (const selector of selectors) {
+      try {
+        const node = document.querySelector(selector);
+        const text = normalizeText(node ? node.textContent || '' : '');
+        if (text) return text;
+      } catch (err) {
+        // Ignore unsupported selectors on host pages.
+      }
+    }
+    return '';
+  }
+
+  function extractSimpleText(value) {
+    if (!value) return '';
+    if (typeof value === 'string') return normalizeText(value);
+    if (typeof value.simpleText === 'string') return normalizeText(value.simpleText);
+    if (Array.isArray(value.runs)) {
+      return normalizeText(value.runs.map(run => run.text || '').join(''));
+    }
+    return '';
+  }
+
+  function sanitizeYouTubeText(text, maxLength = YOUTUBE_METADATA_LIMIT) {
+    const lines = splitCleanLines(text)
+      .filter(line => !/^(?:subscribe|subscribed|join|share|clip|save|thanks|download|more|show less|show more|sign in|log in)$/i.test(line))
+      .filter(line => !/^https?:\/\//i.test(line));
+    return truncateText(lines.join('\n'), maxLength);
+  }
+
+  function isGenericYouTubeDescription(text) {
+    const value = normalizeText(text);
+    return /Enjoy the videos and music you love|upload original content|share it all with friends|在\s*YouTube\s*上.*视频.*音乐.*上传原创内容|畅享你喜爱的视频和音乐/i.test(value);
+  }
+
+  async function extractGenericVideoPage(url) {
+    const metadata = getGenericVideoMetadata();
+    const transcript = await extractGenericPageTranscript();
+    const parts = [];
+    const warnings = [];
+
+    if (metadata.title) parts.push(`视频标题：${metadata.title}`);
+    if (transcript.text) {
+      parts.push(`字幕/Transcript：\n${truncateText(transcript.text, YOUTUBE_TRANSCRIPT_LIMIT)}`);
+    } else {
+      warnings.push('未能获取页面字幕/Transcript；摘要只能基于页面标题、简介和可见视频元数据，不能代表完整视频内容。');
+      if (transcript.error) warnings.push(`字幕读取失败：${truncateText(transcript.error, 180)}`);
+    }
+    if (metadata.description) {
+      parts.push(`简介：\n${truncateText(metadata.description, YOUTUBE_METADATA_LIMIT)}`);
+    }
+
+    const content = cleanExtractedText(parts.filter(Boolean).join('\n\n'));
+    return {
+      success: content.length >= 20,
+      title: metadata.title || cleanTitle(document.title || ''),
+      content,
+      htmlContent: '',
+      excerpt: content.slice(0, 200),
+      url,
+      byline: metadata.byline || '',
+      method: transcript.text ? 'video-transcript' : 'video-metadata',
+      pageType: 'video',
+      confidence: transcript.text ? 0.86 : 0.58,
+      reason: transcript.text ? transcript.source || 'generic-video-transcript' : 'generic-video-metadata',
+      transcriptAvailable: !!transcript.text,
+      transcriptSource: transcript.source || '',
+      qualityWarnings: warnings
+    };
+  }
+
+  function getGenericVideoMetadata() {
+    const title = cleanTitle(
+      getMetaContent('meta[property="og:title"], meta[name="twitter:title"], meta[name="title"]') ||
+      getFirstText(['h1', '[itemprop="name"]']) ||
+      document.title ||
+      ''
+    );
+    const description = cleanExtractedText(
+      getMetaContent('meta[property="og:description"], meta[name="description"], meta[name="twitter:description"]') ||
+      getFirstText(['[itemprop="description"]', '.description', '#description']) ||
+      ''
+    );
+    const byline = normalizeText(
+      getMetaContent('meta[name="author"], meta[property="article:author"]') ||
+      getFirstText(['[rel="author"]', '.author', '.byline'])
+    );
+    return {
+      title,
+      description: truncateText(description, YOUTUBE_METADATA_LIMIT),
+      byline
+    };
+  }
+
+  async function extractGenericPageTranscript() {
+    const visibleTranscript = getVisibleGenericTranscriptText();
+    if (visibleTranscript) {
+      return { text: visibleTranscript, source: 'visible-transcript' };
+    }
+
+    const tracks = getHtmlCaptionTracks();
+    const errors = [];
+    for (const track of tracks.slice(0, 4)) {
+      try {
+        const text = await fetchGenericCaptionTrack(track);
+        if (text) {
+          return {
+            text,
+            source: `html-track:${track.srclang || track.label || 'unknown'}`
+          };
+        }
+        errors.push(`字幕轨道为空：${track.src}`);
+      } catch (err) {
+        errors.push(err.message || String(err));
+      }
+    }
+
+    return {
+      text: '',
+      source: '',
+      error: errors.join('；') || '页面未暴露可访问的字幕轨道'
+    };
+  }
+
+  function getVisibleGenericTranscriptText() {
+    const containerSelectors = [
+      '[class*="transcript" i]',
+      '[id*="transcript" i]',
+      '[aria-label*="transcript" i]',
+      '[class*="caption" i]',
+      '[id*="caption" i]',
+      '[class*="subtitle" i]',
+      '[id*="subtitle" i]'
+    ];
+    const lines = [];
+
+    containerSelectors.forEach(selector => {
+      let nodes = [];
+      try {
+        nodes = Array.from(document.querySelectorAll(selector)).slice(0, 8);
+      } catch (err) {
+        nodes = [];
+      }
+
+      nodes.forEach(node => {
+        if (!isVisibleElement(node)) return;
+        const clone = node.cloneNode(true);
+        cleanupClone(clone);
+        splitCleanLines(clone.textContent || '').forEach(line => {
+          const text = normalizeCaptionLine(line);
+          if (text && !isYouTubeTimestamp(text) && !isLowValueTranscriptLine(text)) {
+            lines.push(text);
+          }
+        });
+      });
+    });
+
+    const text = collectCaptionLines(lines).join('\n');
+    return text.length >= 80 ? text : '';
+  }
+
+  function isLowValueTranscriptLine(line) {
+    return /^(?:transcript|captions?|subtitles?|show transcript|hide transcript|download|share|copy|settings|auto-scroll|search)$/i.test(line || '');
+  }
+
+  function getHtmlCaptionTracks() {
+    return Array.from(document.querySelectorAll('track'))
+      .map(track => ({
+        src: track.getAttribute('src') || '',
+        kind: track.getAttribute('kind') || '',
+        srclang: track.getAttribute('srclang') || '',
+        label: track.getAttribute('label') || ''
+      }))
+      .filter(track => track.src && /^(?:captions|subtitles)?$/i.test(track.kind || 'captions'))
+      .sort((a, b) => scoreHtmlCaptionTrack(b) - scoreHtmlCaptionTrack(a));
+  }
+
+  function scoreHtmlCaptionTrack(track) {
+    const lang = String(track.srclang || track.label || '').toLowerCase();
+    const preferred = [navigator.language, document.documentElement.lang, 'zh', 'en']
+      .map(value => String(value || '').slice(0, 2).toLowerCase())
+      .filter(Boolean);
+    let score = /caption|subtitle/i.test(track.kind || '') ? 4 : 1;
+    preferred.forEach((prefix, index) => {
+      if (prefix && lang.startsWith(prefix)) score += 10 - index;
+    });
+    return score;
+  }
+
+  async function fetchGenericCaptionTrack(track) {
+    const url = new URL(track.src, window.location.href).href;
+    const response = await fetch(url, {
+      credentials: 'omit',
+      cache: 'no-store'
+    });
+    if (!response.ok) {
+      throw new Error(`字幕轨道请求失败 HTTP ${response.status}`);
+    }
+    const raw = await response.text();
+    return parseYouTubeCaptionPayload(raw);
+  }
+
+  async function extractYouTubeTranscriptWithProviders(playerResponse, initialData, videoId, videoDurationSeconds = 0) {
+    const attempts = [];
+    const visibleProbeAttempt = makeVisibleTranscriptProbeAttempt();
+    if (visibleProbeAttempt) attempts.push(visibleProbeAttempt);
+
+    const providers = getYouTubeTranscriptProviders(playerResponse, initialData, videoId, videoDurationSeconds);
+
+    for (const provider of providers) {
+      const startedAt = Date.now();
+      try {
+        const result = normalizeTranscriptProviderResult(
+          await provider.run(),
+          provider.id,
+          startedAt,
+          videoDurationSeconds
+        );
+        attempts.push(result.attempt);
+        if (result.text) {
+          return {
+            text: result.text,
+            source: result.source || provider.id,
+            provider: provider.id,
+            attempts,
+            error: ''
+          };
+        }
+      } catch (err) {
+        attempts.push(makeTranscriptProviderAttempt(provider.id, startedAt, '', err.message || String(err)));
+      }
+    }
+
+    return {
+      text: '',
+      source: '',
+      provider: '',
+      attempts,
+      error: summarizeTranscriptProviderErrors(attempts) || '未能读取 YouTube Transcript'
+    };
+  }
+
+  function getYouTubeTranscriptProviders(playerResponse, initialData, videoId, videoDurationSeconds = 0) {
+    return [
+      {
+        id: 'player-response-caption-tracks',
+        run: () => fetchYouTubeCaptionTracksFromList(
+          getYouTubeCaptionTracks(playerResponse),
+          'player-response'
+        )
+      },
+      {
+        id: 'youtubei-player-caption-tracks',
+        run: async () => {
+          if (!videoId) return { text: '', error: '缺少 YouTube videoId' };
+          const youtubeiResult = await fetchYouTubePlayerCaptionTracks(videoId);
+          if (youtubeiResult.error && (!youtubeiResult.tracks || youtubeiResult.tracks.length === 0)) {
+            return { text: '', source: youtubeiResult.source || 'youtubei-player', error: youtubeiResult.error };
+          }
+          return fetchYouTubeCaptionTracksFromList(
+            youtubeiResult.tracks,
+            youtubeiResult.source || 'youtubei-player'
+          );
+        }
+      },
+      {
+        id: 'youtube-get-transcript-endpoint',
+        run: () => fetchYouTubeTranscriptEndpoint(initialData)
+      },
+      {
+        id: 'visible-transcript-panel-click',
+        run: () => revealAndReadYouTubeTranscriptPanel(videoDurationSeconds)
+      }
+    ];
+  }
+
+  async function fetchYouTubeCaptionTracksFromList(tracks, source) {
+    const track = getPreferredYouTubeCaptionTrack(tracks);
+    if (!track) {
+      return { text: '', source, error: '页面未暴露可用 captionTracks' };
+    }
+
+    try {
+      const text = await fetchYouTubeCaptionTrack(track);
+      return {
+        text,
+        source: text ? `${source}:${track.languageCode || track.vssId || 'unknown'}` : source,
+        error: text ? '' : 'captionTracks 返回为空'
+      };
+    } catch (err) {
+      return { text: '', source, error: err.message || String(err) };
+    }
+  }
+
+  function normalizeTranscriptProviderResult(result, providerId, startedAt, videoDurationSeconds = 0) {
+    const text = cleanExtractedText(result?.text || '');
+    const source = result?.source || providerId;
+    const lineCount = typeof result?.lineCount === 'number' ? result.lineCount : countTranscriptLines(text);
+    let error = text ? '' : (result?.error || 'provider 返回空字幕');
+    let partial = !!result?.partial;
+    let reason = result?.reason || '';
+
+    if (text) {
+      const completeness = validateYouTubeTranscriptCompleteness(providerId, source, text, lineCount, videoDurationSeconds);
+      if (!completeness.ok) {
+        error = completeness.error;
+        partial = true;
+        reason = completeness.reason;
+      }
+    }
+
+    return {
+      text: error ? '' : text,
+      source,
+      attempt: makeTranscriptProviderAttempt(providerId, startedAt, source, error, text.length, {
+        lineCount,
+        partial,
+        reason
+      })
+    };
+  }
+
+  function makeTranscriptProviderAttempt(providerId, startedAt, source = '', error = '', textLength = 0, extra = {}) {
+    return {
+      provider: providerId,
+      source,
+      success: textLength > 0 && !error,
+      textLength,
+      elapsedMs: Math.max(0, Date.now() - startedAt),
+      error: error ? truncateText(String(error), 180) : '',
+      ...extra
+    };
+  }
+
+  function makeVisibleTranscriptProbeAttempt() {
+    const startedAt = Date.now();
+    const snapshot = getVisibleYouTubeTranscriptSnapshot();
+    if (!snapshot.text) {
+      return makeTranscriptProviderAttempt(
+        'visible-transcript-dom',
+        startedAt,
+        'visible-transcript-dom',
+        '页面未显示可读取的 Transcript DOM',
+        0,
+        { lineCount: 0 }
+      );
+    }
+
+    return makeTranscriptProviderAttempt(
+      'visible-transcript-dom',
+      startedAt,
+      'youtube-visible-transcript-probe',
+      '可见 Transcript DOM 仅作为候选探测，优先使用完整字幕来源',
+      snapshot.text.length,
+      {
+        lineCount: snapshot.lineCount,
+        partial: true,
+        reason: 'visible transcript appears partial'
+      }
+    );
+  }
+
+  function validateYouTubeTranscriptCompleteness(providerId, source, text, lineCount, videoDurationSeconds = 0) {
+    if (!text) return { ok: false, error: 'provider 返回空字幕', reason: 'empty' };
+
+    if (isVisibleTranscriptProvider(providerId, source)) {
+      if (isVisibleTranscriptComplete(text, lineCount, videoDurationSeconds)) {
+        return { ok: true, error: '', reason: '' };
+      }
+      return {
+        ok: false,
+        error: '可见 Transcript 片段未达到完整性门槛，疑似只包含当前渲染区域',
+        reason: 'visible transcript appears partial'
+      };
+    }
+
+    if (text.length < YOUTUBE_DIRECT_TRANSCRIPT_MIN_LENGTH) {
+      return {
+        ok: false,
+        error: '字幕文本过短，疑似不完整',
+        reason: 'direct transcript too short'
+      };
+    }
+
+    return { ok: true, error: '', reason: '' };
+  }
+
+  function isVisibleTranscriptProvider(providerId, source) {
+    return /visible-transcript/i.test(`${providerId || ''} ${source || ''}`);
+  }
+
+  function isVisibleTranscriptComplete(text, lineCount, videoDurationSeconds = 0) {
+    const length = String(text || '').trim().length;
+    if (videoDurationSeconds > 0 && videoDurationSeconds < YOUTUBE_SHORT_VIDEO_MAX_SECONDS) {
+      return length >= YOUTUBE_SHORT_VISIBLE_TRANSCRIPT_MIN_LENGTH;
+    }
+    return lineCount >= YOUTUBE_VISIBLE_TRANSCRIPT_MIN_LINES &&
+      length >= YOUTUBE_VISIBLE_TRANSCRIPT_MIN_LENGTH;
+  }
+
+  function countTranscriptLines(text) {
+    return splitCleanLines(text).length;
+  }
+
+  function hasPartialVisibleTranscriptAttempt(attempts = []) {
+    return (attempts || []).some(attempt =>
+      attempt?.partial && isVisibleTranscriptProvider(attempt.provider, attempt.source)
+    );
+  }
+
+  function summarizeTranscriptProviderErrors(attempts) {
+    const errors = (attempts || [])
+      .map(attempt => attempt?.error || '')
+      .filter(Boolean);
+    return uniqueLines(errors).join('；');
+  }
+
+  async function extractYouTubeTranscript(playerResponse, initialData, videoId) {
+    return extractYouTubeTranscriptWithProviders(
+      playerResponse,
+      initialData,
+      videoId,
+      getYouTubeVideoDurationSeconds(playerResponse)
+    );
+  }
+
+  function getVisibleYouTubeTranscriptText() {
+    return getVisibleYouTubeTranscriptSnapshot().text;
+  }
+
+  function getVisibleYouTubeTranscriptSnapshot() {
+    const selectors = [
+      'ytd-transcript-segment-renderer .segment-text',
+      'ytd-transcript-segment-renderer yt-formatted-string',
+      '[class*="transcript"] [class*="segment"]',
+      '[class*="segment-text"]'
+    ];
+    const lines = [];
+    selectors.forEach(selector => {
+      try {
+        document.querySelectorAll(selector).forEach(node => {
+          const text = normalizeCaptionLine(node.textContent || '');
+          if (text && !isYouTubeTimestamp(text)) lines.push(text);
+        });
+      } catch (err) {
+        // Skip selectors that are not valid on the current page.
+      }
+    });
+    const unique = collectCaptionLines(lines);
+    return {
+      text: unique.join('\n'),
+      lines: unique,
+      lineCount: unique.length
+    };
+  }
+
+  async function revealAndReadYouTubeTranscriptPanel(videoDurationSeconds = 0) {
+    const originalScrollY = window.scrollY || 0;
+    try {
+      const existing = await collectVisibleYouTubeTranscriptByScrolling(videoDurationSeconds, 1000);
+      if (existing.text) {
+        return existing;
+      }
+
+      scrollYouTubeMetadataIntoView();
+      await delay(800);
+      clickYouTubeDescriptionExpanders();
+      await delay(350);
+
+      const buttons = findYouTubeTranscriptButtons();
+      if (buttons.length === 0) {
+        return { text: '', source: '', error: '页面未找到可点击的 Transcript 入口' };
+      }
+
+      for (const button of buttons.slice(0, 5)) {
+        clickElement(button);
+        const result = await collectVisibleYouTubeTranscriptByScrolling(videoDurationSeconds, 5000);
+        if (result.text) {
+          return result;
+        }
+      }
+
+      return { text: '', source: '', error: '已尝试打开 Transcript 面板但未出现字幕段落' };
+    } catch (err) {
+      return { text: '', source: '', error: err.message || String(err) };
+    } finally {
+      if (!getVisibleYouTubeTranscriptText()) {
+        try { window.scrollTo(0, originalScrollY); } catch (err) {}
+      }
+    }
+  }
+
+  async function collectVisibleYouTubeTranscriptByScrolling(videoDurationSeconds = 0, timeoutMs = 5000) {
+    const started = Date.now();
+    while (Date.now() - started < timeoutMs) {
+      const snapshot = getVisibleYouTubeTranscriptSnapshot();
+      if (snapshot.text) {
+        const container = findYouTubeTranscriptScrollContainer();
+        const lines = await collectYouTubeTranscriptLinesFromScrollContainer(
+          container,
+          Math.max(600, timeoutMs - (Date.now() - started))
+        );
+        const finalLines = lines.length ? lines : snapshot.lines;
+        const text = collectCaptionLines(finalLines).join('\n');
+        const lineCount = countTranscriptLines(text);
+        const complete = isVisibleTranscriptComplete(text, lineCount, videoDurationSeconds);
+        return {
+          text,
+          source: 'youtube-visible-transcript-scroll',
+          lineCount,
+          partial: !complete,
+          reason: complete ? '' : 'visible transcript appears partial',
+          error: complete ? '' : '可见 Transcript 片段未达到完整性门槛，疑似只包含当前渲染区域'
+        };
+      }
+      await delay(250);
+    }
+
+    return { text: '', source: '', lineCount: 0, error: '页面未显示可读取的 Transcript DOM' };
+  }
+
+  async function collectYouTubeTranscriptLinesFromScrollContainer(container, timeoutMs = 5000) {
+    const target = makeScrollTarget(container);
+    const lines = [];
+    const seen = new Set();
+    const started = Date.now();
+
+    const addVisibleLines = () => {
+      getVisibleYouTubeTranscriptSnapshot().lines.forEach(line => {
+        const key = line.toLowerCase();
+        if (!seen.has(key)) {
+          seen.add(key);
+          lines.push(line);
+        }
+      });
+    };
+
+    addVisibleLines();
+    if (!target) return lines;
+
+    const originalTop = target.getTop();
+    try {
+      target.setTop(0);
+      await delay(180);
+      addVisibleLines();
+
+      let stableScrolls = 0;
+      while (Date.now() - started < timeoutMs) {
+        addVisibleLines();
+        if (target.isAtBottom()) break;
+
+        const before = target.getTop();
+        target.scrollPage();
+        await delay(220);
+        addVisibleLines();
+
+        if (Math.abs(target.getTop() - before) < 2) {
+          stableScrolls += 1;
+          if (stableScrolls >= 2) break;
+        } else {
+          stableScrolls = 0;
+        }
+      }
+    } finally {
+      try {
+        target.setTop(originalTop);
+      } catch (err) {
+        // Restoring scroll position is best-effort only.
+      }
+    }
+
+    return lines;
+  }
+
+  function makeScrollTarget(container) {
+    if (container && container !== document.documentElement && container !== document.body) {
+      return {
+        getTop: () => container.scrollTop || 0,
+        setTop: value => { container.scrollTop = value; },
+        scrollPage: () => {
+          container.scrollTop += Math.max(240, Math.floor((container.clientHeight || 600) * 0.85));
+        },
+        isAtBottom: () => (container.scrollTop || 0) + (container.clientHeight || 0) >= (container.scrollHeight || 0) - 4
+      };
+    }
+
+    const scrollingElement = document.scrollingElement || document.documentElement || document.body;
+    if (!scrollingElement) return null;
+    return {
+      getTop: () => window.scrollY || scrollingElement.scrollTop || 0,
+      setTop: value => {
+        try {
+          window.scrollTo(0, value);
+        } catch (err) {
+          scrollingElement.scrollTop = value;
+        }
+      },
+      scrollPage: () => {
+        try {
+          window.scrollBy(0, Math.max(320, Math.floor(window.innerHeight * 0.75)));
+        } catch (err) {
+          scrollingElement.scrollTop += Math.max(320, Math.floor((scrollingElement.clientHeight || 700) * 0.75));
+        }
+      },
+      isAtBottom: () => {
+        const top = window.scrollY || scrollingElement.scrollTop || 0;
+        const height = window.innerHeight || scrollingElement.clientHeight || 0;
+        return top + height >= (scrollingElement.scrollHeight || 0) - 4;
+      }
+    };
+  }
+
+  function findYouTubeTranscriptScrollContainer() {
+    const selectors = [
+      'ytd-transcript-renderer #segments-container',
+      '#segments-container',
+      'ytd-transcript-search-panel-renderer',
+      'ytd-transcript-renderer',
+      'ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"]',
+      '[target-id="engagement-panel-searchable-transcript"]',
+      '[class*="transcript" i]',
+      '[id*="transcript" i]'
+    ];
+
+    for (const selector of selectors) {
+      try {
+        const nodes = Array.from(document.querySelectorAll(selector));
+        for (const node of nodes) {
+          const scrollable = findScrollableElement(node);
+          if (scrollable) return scrollable;
+        }
+      } catch (err) {
+        // Try the next selector.
+      }
+    }
+
+    const firstSegment = document.querySelector('ytd-transcript-segment-renderer, [class*="segment-text"]');
+    let node = firstSegment;
+    while (node && node !== document.body) {
+      if (isScrollableElement(node)) return node;
+      node = node.parentElement;
+    }
+
+    return document.scrollingElement || document.documentElement || document.body;
+  }
+
+  function findScrollableElement(root) {
+    if (!root || !isVisibleElement(root)) return null;
+    if (isScrollableElement(root)) return root;
+    const descendants = Array.from(root.querySelectorAll ? root.querySelectorAll('*') : []);
+    return descendants.find(node => isVisibleElement(node) && isScrollableElement(node)) || null;
+  }
+
+  function isScrollableElement(node) {
+    if (!node || node.nodeType !== 1) return false;
+    const heightDelta = (node.scrollHeight || 0) - (node.clientHeight || 0);
+    if (heightDelta <= 24) return false;
+    const style = window.getComputedStyle ? window.getComputedStyle(node) : null;
+    const overflow = `${style?.overflowY || ''} ${style?.overflow || ''}`;
+    return /auto|scroll|overlay/i.test(overflow) || /transcript|segments/i.test(`${node.id || ''} ${node.className || ''}`);
+  }
+
+  function scrollYouTubeMetadataIntoView() {
+    const selectors = [
+      'ytd-watch-metadata',
+      '#below',
+      '#primary-inner',
+      '#description',
+      '#meta'
+    ];
+    for (const selector of selectors) {
+      try {
+        const node = document.querySelector(selector);
+        if (node && typeof node.scrollIntoView === 'function') {
+          node.scrollIntoView({ block: 'center', inline: 'nearest' });
+          return;
+        }
+      } catch (err) {
+        // Try the next selector.
+      }
+    }
+    window.scrollBy(0, Math.max(600, Math.floor(window.innerHeight * 0.85)));
+  }
+
+  function clickYouTubeDescriptionExpanders() {
+    const selectors = [
+      '#description-inline-expander #expand',
+      'ytd-text-inline-expander #expand',
+      '#description tp-yt-paper-button#expand',
+      '#description-inline-expander tp-yt-paper-button#expand'
+    ];
+    selectors.forEach(selector => {
+      try {
+        document.querySelectorAll(selector).forEach(node => {
+          if (isVisibleElement(node)) clickElement(node);
+        });
+      } catch (err) {
+        // Ignore unsupported selectors.
+      }
+    });
+  }
+
+  function findYouTubeTranscriptButtons() {
+    const directSelectors = [
+      'ytd-video-description-transcript-section-renderer button',
+      'button[aria-label*="transcript" i]',
+      'button[aria-label*="文字记录" i]',
+      'tp-yt-paper-button[aria-label*="transcript" i]'
+    ];
+    const candidates = [];
+    directSelectors.forEach(selector => {
+      try {
+        document.querySelectorAll(selector).forEach(node => candidates.push(node));
+      } catch (err) {
+        // Ignore unsupported selectors.
+      }
+    });
+
+    document.querySelectorAll('button, tp-yt-paper-button, yt-button-shape button, a[role="button"]').forEach(node => {
+      const label = normalizeText([
+        node.getAttribute('aria-label') || '',
+        node.getAttribute('title') || '',
+        node.textContent || ''
+      ].join(' '));
+      if (isYouTubeTranscriptButtonLabel(label)) candidates.push(node);
+    });
+
+    const seen = new Set();
+    return candidates.filter(node => {
+      if (!node || seen.has(node) || !isVisibleElement(node)) return false;
+      seen.add(node);
+      const label = normalizeText([
+        node.getAttribute('aria-label') || '',
+        node.getAttribute('title') || '',
+        node.textContent || ''
+      ].join(' '));
+      return isYouTubeTranscriptButtonLabel(label);
+    });
+  }
+
+  function isYouTubeTranscriptButtonLabel(label) {
+    const text = normalizeText(label || '');
+    if (!text || /(?:hide|close|关闭|隱藏|隐藏|收起)/i.test(text)) return false;
+    return /(?:show|open|view)?\s*transcript|文字记录|文字稿|转录|轉錄|文字起こし|transcrição|transkript/i.test(text);
+  }
+
+  async function waitForYouTubeVisibleTranscript(timeoutMs) {
+    const started = Date.now();
+    while (Date.now() - started < timeoutMs) {
+      const text = getVisibleYouTubeTranscriptText();
+      if (text && text.length >= 80) return text;
+      await delay(250);
+    }
+    return '';
+  }
+
+  function clickElement(node) {
+    if (!node) return;
+    try {
+      node.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, cancelable: true, view: window }));
+      node.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window }));
+      node.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true, view: window }));
+      node.click();
+    } catch (err) {
+      // Some custom elements only expose click().
+      try { node.click(); } catch (innerErr) {}
+    }
+  }
+
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function getYouTubeCaptionTracks(playerResponse) {
+    const tracks = playerResponse?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+    return Array.isArray(tracks) ? tracks.filter(track => track && track.baseUrl) : [];
+  }
+
+  async function fetchYouTubePlayerCaptionTracks(videoId) {
+    const config = getYouTubeInnertubeConfig();
+    if (!config.apiKey) {
+      return { tracks: [], source: '', error: '页面未暴露可用 captionTracks，且缺少 INNERTUBE_API_KEY' };
+    }
+
+    try {
+      const response = await fetch(`https://www.youtube.com/youtubei/v1/player?key=${encodeURIComponent(config.apiKey)}`, {
+        method: 'POST',
+        credentials: 'omit',
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          context: config.context || makeDefaultYouTubeInnertubeContext(config),
+          videoId,
+          contentCheckOk: true,
+          racyCheckOk: true
+        })
+      });
+
+      if (!response.ok) {
+        return { tracks: [], source: 'youtubei-player', error: `youtubei/player 请求失败 HTTP ${response.status}` };
+      }
+
+      const data = await response.json();
+      return {
+        tracks: getYouTubeCaptionTracks(data),
+        source: 'youtubei-player',
+        error: ''
+      };
+    } catch (err) {
+      return { tracks: [], source: 'youtubei-player', error: err.message || String(err) };
+    }
+  }
+
+  async function fetchYouTubeTranscriptEndpoint(initialData) {
+    const endpoint = getYouTubeTranscriptEndpoint(initialData);
+    if (!endpoint?.params) {
+      return { text: '', source: '', error: '页面未暴露 getTranscriptEndpoint' };
+    }
+
+    const config = getYouTubeInnertubeConfig();
+    if (!config.apiKey) {
+      return { text: '', source: '', error: 'getTranscriptEndpoint 缺少 INNERTUBE_API_KEY' };
+    }
+
+    try {
+      const response = await fetch(`https://www.youtube.com/youtubei/v1/get_transcript?key=${encodeURIComponent(config.apiKey)}`, {
+        method: 'POST',
+        credentials: 'omit',
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          context: config.context || makeDefaultYouTubeInnertubeContext(config),
+          params: endpoint.params
+        })
+      });
+
+      if (!response.ok) {
+        return { text: '', source: 'youtube-get-transcript', error: `get_transcript 请求失败 HTTP ${response.status}` };
+      }
+
+      const data = await response.json();
+      const text = parseYouTubeTranscriptEndpointResponse(data);
+      return {
+        text,
+        source: text ? 'youtube-get-transcript' : '',
+        error: text ? '' : 'get_transcript 返回为空'
+      };
+    } catch (err) {
+      return { text: '', source: 'youtube-get-transcript', error: err.message || String(err) };
+    }
+  }
+
+  function getYouTubeTranscriptEndpoint(initialData) {
+    const endpoints = collectYouTubeRenderers(initialData, 'getTranscriptEndpoint');
+    return endpoints.find(endpoint => endpoint && endpoint.params) || null;
+  }
+
+  function parseYouTubeTranscriptEndpointResponse(data) {
+    const lines = collectYouTubeRenderers(data, 'transcriptSegmentRenderer')
+      .map(renderer => extractSimpleText(renderer.snippet))
+      .filter(Boolean);
+    return collectCaptionLines(lines).join('\n');
+  }
+
+  function getYouTubeInnertubeConfig() {
+    const runtimeConfig = {};
+    try {
+      if (window.ytcfg && typeof window.ytcfg.get === 'function') {
+        runtimeConfig.apiKey = window.ytcfg.get('INNERTUBE_API_KEY') || '';
+        runtimeConfig.context = window.ytcfg.get('INNERTUBE_CONTEXT') || null;
+        runtimeConfig.clientName = window.ytcfg.get('INNERTUBE_CLIENT_NAME') || '';
+        runtimeConfig.clientVersion = window.ytcfg.get('INNERTUBE_CLIENT_VERSION') || '';
+      }
+    } catch (err) {
+      // Fall back to script parsing below.
+    }
+
+    const scriptConfig = parseYouTubeConfigFromScripts();
+    return {
+      apiKey: runtimeConfig.apiKey || scriptConfig.apiKey || '',
+      context: runtimeConfig.context || scriptConfig.context || null,
+      clientName: runtimeConfig.clientName || scriptConfig.clientName || '',
+      clientVersion: runtimeConfig.clientVersion || scriptConfig.clientVersion || ''
+    };
+  }
+
+  function makeDefaultYouTubeInnertubeContext(config = {}) {
+    return {
+      client: {
+        clientName: config.clientName || 'WEB',
+        clientVersion: config.clientVersion || '2.20240101.00.00'
+      }
+    };
+  }
+
+  function parseYouTubeConfigFromScripts() {
+    const result = {
+      apiKey: '',
+      context: null,
+      clientName: '',
+      clientVersion: ''
+    };
+
+    const scripts = Array.from(document.scripts || []);
+    for (const script of scripts) {
+      const text = script.textContent || '';
+      if (!text) continue;
+
+      if (!result.apiKey) {
+        const apiKeyMatch = text.match(/"INNERTUBE_API_KEY"\s*:\s*"([^"]+)"/);
+        if (apiKeyMatch) result.apiKey = apiKeyMatch[1];
+      }
+      if (!result.clientName) {
+        const clientNameMatch = text.match(/"INNERTUBE_CLIENT_NAME"\s*:\s*"([^"]+)"/);
+        if (clientNameMatch) result.clientName = clientNameMatch[1];
+      }
+      if (!result.clientVersion) {
+        const clientVersionMatch = text.match(/"INNERTUBE_CLIENT_VERSION"\s*:\s*"([^"]+)"/);
+        if (clientVersionMatch) result.clientVersion = clientVersionMatch[1];
+      }
+
+      if (!result.context) {
+        const config = parseYtcfgSetObject(text);
+        if (config) {
+          result.apiKey = result.apiKey || config.INNERTUBE_API_KEY || '';
+          result.context = config.INNERTUBE_CONTEXT || null;
+          result.clientName = result.clientName || config.INNERTUBE_CLIENT_NAME || '';
+          result.clientVersion = result.clientVersion || config.INNERTUBE_CLIENT_VERSION || '';
+        }
+      }
+    }
+
+    return result;
+  }
+
+  function parseYtcfgSetObject(scriptText) {
+    const marker = 'ytcfg.set(';
+    const markerIndex = String(scriptText || '').indexOf(marker);
+    if (markerIndex === -1) return null;
+    const start = scriptText.indexOf('{', markerIndex + marker.length);
+    if (start === -1) return null;
+    const jsonText = readBalancedJsonObject(scriptText, start);
+    if (!jsonText) return null;
+    try {
+      return JSON.parse(jsonText);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function getPreferredYouTubeCaptionTrack(tracks) {
+    if (!Array.isArray(tracks) || tracks.length === 0) return null;
+    const preferredLanguages = [
+      navigator.language,
+      document.documentElement.lang,
+      'zh',
+      'zh-CN',
+      'en'
+    ].map(lang => String(lang || '').toLowerCase()).filter(Boolean);
+
+    return [...tracks].sort((a, b) =>
+      scoreYouTubeCaptionTrack(b, preferredLanguages) - scoreYouTubeCaptionTrack(a, preferredLanguages)
+    )[0];
+  }
+
+  function scoreYouTubeCaptionTrack(track, preferredLanguages) {
+    const lang = String(track.languageCode || track.vssId || '').toLowerCase();
+    let score = 0;
+    if (track.isTranslatable) score += 1;
+    if (track.kind !== 'asr') score += 3;
+    if (track.vssId && !String(track.vssId).includes('a.')) score += 1;
+    preferredLanguages.forEach((preferred, index) => {
+      if (preferred && lang.startsWith(preferred.slice(0, 2))) {
+        score += 10 - index;
+      }
+    });
+    return score;
+  }
+
+  async function fetchYouTubeCaptionTrack(track) {
+    const response = await fetch(ensureYouTubeCaptionFormat(track.baseUrl), {
+      credentials: 'omit',
+      cache: 'no-store'
+    });
+    if (!response.ok) {
+      throw new Error(`字幕请求失败 HTTP ${response.status}`);
+    }
+    const raw = await response.text();
+    return parseYouTubeCaptionPayload(raw);
+  }
+
+  function ensureYouTubeCaptionFormat(rawUrl) {
+    try {
+      const parsed = new URL(rawUrl, window.location.href);
+      parsed.searchParams.set('fmt', 'json3');
+      return parsed.href;
+    } catch (err) {
+      const joiner = String(rawUrl || '').includes('?') ? '&' : '?';
+      return `${rawUrl}${joiner}fmt=json3`;
+    }
+  }
+
+  function parseYouTubeCaptionPayload(raw) {
+    const text = String(raw || '').trim();
+    if (!text) return '';
+
+    try {
+      const json = JSON.parse(text);
+      const parsed = parseYouTubeJson3Caption(json);
+      if (parsed) return parsed;
+    } catch (err) {
+      // Fall through to XML/VTT parsers.
+    }
+
+    if (/^</.test(text)) {
+      return parseYouTubeXmlCaption(text);
+    }
+
+    return parseYouTubeVttCaption(text);
+  }
+
+  function parseYouTubeJson3Caption(json) {
+    const lines = [];
+    (json?.events || []).forEach(event => {
+      if (!Array.isArray(event.segs)) return;
+      const line = event.segs.map(seg => seg.utf8 || '').join('');
+      if (line) lines.push(line);
+    });
+    return collectCaptionLines(lines).join('\n');
+  }
+
+  function parseYouTubeXmlCaption(raw) {
+    try {
+      const doc = new DOMParser().parseFromString(raw, 'text/xml');
+      return collectCaptionLines(Array.from(doc.querySelectorAll('text'))
+        .map(node => node.textContent || '')).join('\n');
+    } catch (err) {
+      return '';
+    }
+  }
+
+  function parseYouTubeVttCaption(raw) {
+    const lines = String(raw || '').split(/\n+/)
+      .map(line => normalizeCaptionLine(line))
+      .filter(line => line && !/^WEBVTT/i.test(line) && !isYouTubeTimestamp(line) && !/^\d+$/.test(line));
+    return collectCaptionLines(lines).join('\n');
+  }
+
+  function collectCaptionLines(lines) {
+    const result = [];
+    const seen = new Set();
+    for (const line of lines) {
+      const cleaned = normalizeCaptionLine(line);
+      if (!cleaned || isYouTubeTimestamp(cleaned)) continue;
+      const key = cleaned.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      result.push(cleaned);
+      if (result.join('\n').length >= YOUTUBE_TRANSCRIPT_LIMIT) break;
+    }
+    return result;
+  }
+
+  function normalizeCaptionLine(line) {
+    return normalizeText(line)
+      .replace(/<[^>]+>/g, '')
+      .replace(/\[[^\]]{1,40}\]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function isYouTubeTimestamp(text) {
+    return /^(?:\d{1,2}:)?\d{1,2}:\d{2}(?:\.\d+)?(?:\s*-->\s*(?:\d{1,2}:)?\d{1,2}:\d{2}(?:\.\d+)?)?$/.test(text || '');
+  }
+
+  function getYouTubePlayerResponse() {
+    if (window.ytInitialPlayerResponse && typeof window.ytInitialPlayerResponse === 'object') {
+      return window.ytInitialPlayerResponse;
+    }
+    return parseYouTubeJsonFromScripts([
+      'ytInitialPlayerResponse =',
+      'var ytInitialPlayerResponse =',
+      '"ytInitialPlayerResponse":'
+    ]);
+  }
+
+  function getYouTubeVideoId(url, playerResponse) {
+    if (playerResponse?.videoDetails?.videoId) {
+      return String(playerResponse.videoDetails.videoId);
+    }
+
+    const parsed = safeParseUrl(url);
+    if (!parsed) return '';
+    if (/(^|\.)youtu\.be$/i.test(parsed.hostname)) {
+      return parsed.pathname.split('/').filter(Boolean)[0] || '';
+    }
+    if (parsed.searchParams.has('v')) {
+      return parsed.searchParams.get('v') || '';
+    }
+    const parts = parsed.pathname.split('/').filter(Boolean);
+    if ((parts[0] === 'shorts' || parts[0] === 'live') && parts[1]) {
+      return parts[1];
+    }
+    return '';
+  }
+
+  function getYouTubeVideoDurationSeconds(playerResponse) {
+    const raw = playerResponse?.videoDetails?.lengthSeconds ||
+      playerResponse?.microformat?.playerMicroformatRenderer?.lengthSeconds ||
+      '';
+    const value = Number(raw);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  }
+
+  function getYouTubeInitialData() {
+    if (window.ytInitialData && typeof window.ytInitialData === 'object') {
+      return window.ytInitialData;
+    }
+    return parseYouTubeJsonFromScripts([
+      'ytInitialData =',
+      'var ytInitialData =',
+      '"ytInitialData":'
+    ]);
+  }
+
+  function parseYouTubeJsonFromScripts(markers) {
+    const scripts = Array.from(document.scripts || []);
+    for (const script of scripts) {
+      const text = script.textContent || '';
+      if (!text) continue;
+      for (const marker of markers) {
+        const markerIndex = text.indexOf(marker);
+        if (markerIndex === -1) continue;
+        const start = text.indexOf('{', markerIndex + marker.length);
+        if (start === -1) continue;
+        const jsonText = readBalancedJsonObject(text, start);
+        if (!jsonText) continue;
+        try {
+          return JSON.parse(jsonText);
+        } catch (err) {
+          // Try the next marker/script.
+        }
+      }
+    }
+    return null;
+  }
+
+  function readBalancedJsonObject(text, start) {
+    let depth = 0;
+    let inString = false;
+    let quote = '';
+    let escaped = false;
+
+    for (let i = start; i < text.length; i++) {
+      const char = text[i];
+
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+        } else if (char === '\\') {
+          escaped = true;
+        } else if (char === quote) {
+          inString = false;
+        }
+        continue;
+      }
+
+      if (char === '"' || char === "'") {
+        inString = true;
+        quote = char;
+      } else if (char === '{') {
+        depth++;
+      } else if (char === '}') {
+        depth--;
+        if (depth === 0) return text.slice(start, i + 1);
+      }
+    }
+
+    return '';
+  }
+
+  function findYouTubeDescriptionInInitialData(initialData) {
+    const renderers = collectYouTubeRenderers(initialData, 'attributedDescriptionBodyText');
+    for (const renderer of renderers) {
+      const text = extractSimpleText(renderer?.content || renderer);
+      if (text) return text;
+    }
+    return '';
+  }
+
+  function getYouTubeChapters(playerResponse, initialData) {
+    const chapters = [];
+    addYouTubeChaptersFromObject(chapters, playerResponse);
+    const seen = new Set();
+    return chapters.filter(item => {
+      const key = `${item.time || ''}|${item.title || ''}`.toLowerCase();
+      if (!item.title || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 40);
+  }
+
+  function addYouTubeChaptersFromObject(chapters, root) {
+    const renderers = collectYouTubeRenderers(root, 'macroMarkersListItemRenderer');
+    renderers.forEach(renderer => {
+      const title = extractSimpleText(renderer.title);
+      const time = extractSimpleText(renderer.timeDescription);
+      if (title) chapters.push({ title, time });
+    });
+  }
+
+  function collectYouTubeRenderers(root, keyName) {
+    if (!root || typeof root !== 'object') return [];
+    const result = [];
+    const stack = [root];
+    let scanned = 0;
+
+    while (stack.length > 0 && scanned < 25000) {
+      const current = stack.pop();
+      scanned++;
+      if (!current || typeof current !== 'object') continue;
+
+      if (current[keyName]) result.push(current[keyName]);
+
+      if (Array.isArray(current)) {
+        current.forEach(item => {
+          if (item && typeof item === 'object') stack.push(item);
+        });
+      } else {
+        Object.keys(current).forEach(key => {
+          const value = current[key];
+          if (value && typeof value === 'object') stack.push(value);
+        });
+      }
+    }
+
+    return result;
+  }
+
   function isGitHubRepositoryPage(url) {
     const parsed = safeParseUrl(url);
     if (!parsed || !/(^|\.)github\.com$/i.test(parsed.hostname)) return false;
@@ -315,6 +1814,145 @@
     if (parts.length < 2) return false;
     if (['issues', 'pulls', 'pull', 'actions', 'projects', 'wiki', 'security', 'pulse', 'graphs', 'settings'].includes(parts[2])) return false;
     return true;
+  }
+
+  function isChatGptConversationPage(urlOrParsed) {
+    const parsed = typeof urlOrParsed === 'string' ? safeParseUrl(urlOrParsed) : urlOrParsed;
+    if (hasChatGptMessageNodes()) return true;
+    if (!parsed || !CHATGPT_HOST_RE.test(parsed.hostname)) return false;
+    return /^\/(?:c|share)\//i.test(parsed.pathname);
+  }
+
+  function hasChatGptMessageNodes() {
+    return !!document.querySelector('[data-message-author-role], article[data-testid^="conversation-turn-"]');
+  }
+
+  function extractChatGptConversationPage(url) {
+    const messages = collectChatGptMessages();
+    const content = messages.map((message, index) => {
+      const label = getChatGptRoleLabel(message.role);
+      return `${index + 1}. ${label}：\n${message.text}`;
+    }).join('\n\n').trim();
+
+    if (messages.length === 0 || content.length < 40) {
+      return {
+        success: false,
+        title: getPageTitle() || 'ChatGPT 会话',
+        content,
+        htmlContent: '',
+        excerpt: content.slice(0, 200).trim(),
+        url,
+        byline: '',
+        method: 'chatgpt-conversation',
+        error: '未能找到可提取的 ChatGPT 会话消息'
+      };
+    }
+
+    const title = getChatGptConversationTitle(messages);
+    return {
+      success: true,
+      title,
+      content,
+      htmlContent: '',
+      excerpt: content.slice(0, 200).trim(),
+      url,
+      byline: '',
+      method: 'chatgpt-conversation',
+      pageType: 'chat-conversation',
+      confidence: 0.9,
+      reason: 'chatgpt-message-turns'
+    };
+  }
+
+  function collectChatGptMessages() {
+    const roleNodes = Array.from(document.querySelectorAll('[data-message-author-role]'));
+    if (roleNodes.length > 0) {
+      return roleNodes.map(node => {
+        const role = node.getAttribute('data-message-author-role') || '';
+        return makeChatGptMessage(role, node);
+      }).filter(Boolean);
+    }
+
+    return Array.from(document.querySelectorAll('article[data-testid^="conversation-turn-"]'))
+      .map((node, index) => {
+        const contentNode = node.querySelector('.markdown, .whitespace-pre-wrap, [class*="prose"], [dir="auto"]') || node;
+        const role = index % 2 === 0 ? 'user' : 'assistant';
+        return makeChatGptMessage(role, contentNode);
+      })
+      .filter(Boolean);
+  }
+
+  function makeChatGptMessage(role, node) {
+    const clone = node.cloneNode(true);
+    cleanupClone(clone);
+    cleanupChatGptMessageClone(clone);
+    const text = cleanChatGptMessageText(getChatGptMessageText(clone));
+    if (!text || text.length < 2) return null;
+    return { role: role || 'message', text };
+  }
+
+  function getChatGptMessageText(root) {
+    const blockSelectors = 'p, li, pre, blockquote, h1, h2, h3, h4, h5, h6';
+    const blocks = Array.from(root.querySelectorAll(blockSelectors))
+      .map(node => normalizeText(node.textContent || ''))
+      .filter(Boolean);
+
+    if (blocks.length > 0) {
+      return blocks.join('\n');
+    }
+
+    return root.textContent || '';
+  }
+
+  function cleanupChatGptMessageClone(root) {
+    const selectors = [
+      '[class*="sr-only" i]',
+      '[data-testid*="copy" i]',
+      '[data-testid*="feedback" i]',
+      '[data-testid*="voice" i]',
+      '[aria-label*="Copy" i]',
+      '[aria-label*="Read aloud" i]',
+      '[aria-label*="Good response" i]',
+      '[aria-label*="Bad response" i]'
+    ];
+
+    selectors.forEach(selector => {
+      try {
+        root.querySelectorAll(selector).forEach(el => el.parentNode && el.parentNode.removeChild(el));
+      } catch (e) { /* skip invalid selector */ }
+    });
+  }
+
+  function cleanChatGptMessageText(text) {
+    const lines = splitCleanLines(text)
+      .map(line => normalizeText(line)
+        .replace(/^(?:You said|ChatGPT said)\s*[:：]\s*/i, '')
+        .trim())
+      .filter(line => line && !isChatGptUiLine(line) && !isChatGptArtifactLine(line));
+
+    return lines.join('\n').trim();
+  }
+
+  function isChatGptUiLine(line) {
+    return /^(?:ChatGPT can make mistakes|Check important info|New chat|Search chats|Library|Explore GPTs|Upgrade plan|Share|Copy|Edit|Regenerate|Read aloud|Good response|Bad response|Sources?|Search the web|Canvas|Reasoned for \d|Thought for \d)/i.test(line);
+  }
+
+  function getChatGptRoleLabel(role) {
+    const normalized = String(role || '').toLowerCase();
+    if (normalized === 'user') return '用户';
+    if (normalized === 'assistant') return 'ChatGPT';
+    if (normalized === 'system') return '系统';
+    if (normalized === 'tool') return '工具';
+    return '消息';
+  }
+
+  function getChatGptConversationTitle(messages) {
+    const pageTitle = cleanTitle(getPageTitle() || document.title || '');
+    if (pageTitle && !/^ChatGPT$/i.test(pageTitle)) return pageTitle;
+
+    const firstUserMessage = messages.find(message => message.role === 'user') || messages[0];
+    const firstLine = splitCleanLines(firstUserMessage?.text || '')[0] || '';
+    return truncateText(firstLine, 80) || 'ChatGPT 会话';
   }
 
   function extractGitHubRepositoryPage(url) {
@@ -486,6 +2124,8 @@
   }
 
   function isLikelyArticlePage() {
+    if (hasStrongArticleContainer()) return true;
+
     const explicitArticleSignal = document.querySelector('[itemtype*="Article"], [property="article:published_time"], meta[property="og:type"][content="article" i]');
     if (explicitArticleSignal) {
       const mainText = normalizeText((document.querySelector('article, main, [role="main"], #content, .content') || document.body)?.textContent || '');
@@ -508,12 +2148,64 @@
   }
 
   function isLikelyListingPage() {
+    const dominantList = hasDominantListStructure();
+    if (hasStrongArticleContainer() && !dominantList) return false;
+
     const links = getLikelyResultLinks();
     if (links.length < 12) return false;
     const main = document.querySelector('main, [role="main"], #content, .content, #main') || document.body;
     const linkDensity = main ? getLinkDensity(main) : 0;
     const paragraphCount = main ? Array.from(main.querySelectorAll('p')).filter(p => normalizeText(p.textContent || '').length > 60).length : 0;
-    return linkDensity > 0.35 || (links.length >= 18 && paragraphCount < links.length / 2);
+    return dominantList || linkDensity > 0.35 || (links.length >= 18 && paragraphCount < links.length / 2);
+  }
+
+  function hasDominantListStructure() {
+    const scope = document.querySelector('main, [role="main"], #content, .content, #main') || document.body;
+    if (!scope) return false;
+
+    const links = getLikelyResultLinks();
+    if (links.length < 12) return false;
+
+    const listItems = Array.from(scope.querySelectorAll('li'))
+      .map(li => normalizeText(li.textContent || ''))
+      .filter(text => text.length >= 40);
+    if (listItems.length < 10) return false;
+
+    const paragraphs = Array.from(scope.querySelectorAll('p'))
+      .map(p => normalizeText(p.textContent || ''))
+      .filter(text => text.length >= 40);
+    const scopeTextLength = normalizeText(scope.textContent || '').length;
+    const listTextLength = listItems.reduce((sum, text) => sum + text.length, 0);
+    const listTextRatio = scopeTextLength > 0 ? listTextLength / scopeTextLength : 0;
+
+    return listTextRatio > 0.55 && listItems.length >= Math.max(10, paragraphs.length * 0.75);
+  }
+
+  function hasStrongArticleContainer() {
+    const candidates = [
+      document.querySelector('article'),
+      document.querySelector('#mw-content-text .mw-parser-output'),
+      document.querySelector('.mw-parser-output'),
+      document.querySelector('main, [role="main"], #content, .content, #article, .article')
+    ].filter(Boolean);
+
+    return candidates.some(node => {
+      const paragraphs = Array.from(node.querySelectorAll('p'))
+        .map(p => normalizeText(p.textContent || ''))
+        .filter(text => text.length >= 60);
+      const paragraphTextLength = paragraphs.reduce((sum, text) => sum + text.length, 0);
+      const linkDensity = getLinkDensity(node);
+      return paragraphs.length >= 3 &&
+        paragraphTextLength >= 700 &&
+        linkDensity < 0.45;
+    });
+  }
+
+  function isArticleLikeExtraction(result) {
+    const content = normalizeText(result?.content || '');
+    if (content.length < 700) return false;
+    if (result?.method === 'listing') return false;
+    return !/^页面类型：(?:列表|搜索结果)/.test(content);
   }
 
   function getLikelyResultLinks() {
@@ -524,6 +2216,204 @@
       .filter(text => text.length >= 6 && text.length <= 120 && !isLowValueListingTitle(text));
   }
 
+  function collectNoiseCandidates(result, classification) {
+    const candidates = [];
+    const seen = new Set();
+    const usedIds = new Set();
+    let totalTextLength = 0;
+
+    const addCandidate = candidate => {
+      if (!candidate || candidates.length >= NOISE_CANDIDATE_MAX) return;
+
+      const text = cleanExtractedText(candidate.text || '');
+      if (text.length < 40) return;
+
+      const key = normalizeText(text).slice(0, 1000).toLowerCase();
+      if (!key || seen.has(key)) return;
+
+      const remaining = NOISE_CANDIDATE_TOTAL_TEXT_LIMIT - totalTextLength;
+      if (remaining <= 0) return;
+
+      const maxTextLength = Math.min(NOISE_CANDIDATE_TEXT_LIMIT, remaining);
+      const finalText = text.length > maxTextLength ? truncateText(text, maxTextLength) : text;
+      seen.add(key);
+      totalTextLength += finalText.length;
+
+      const baseId = makeNoiseCandidateId(candidate.id || `${candidate.type || 'candidate'}-${candidates.length + 1}`);
+      const id = makeUniqueNoiseCandidateId(baseId, usedIds);
+      usedIds.add(id);
+
+      candidates.push({
+        id,
+        type: candidate.type || 'candidate',
+        text: finalText,
+        htmlSnippet: truncateCandidateHtml(candidate.htmlSnippet || ''),
+        score: typeof candidate.score === 'number' ? Math.round(candidate.score) : null,
+        sourceSelector: candidate.sourceSelector || '',
+        linkDensity: typeof candidate.linkDensity === 'number' ? Number(candidate.linkDensity.toFixed(3)) : null,
+        textLength: text.length
+      });
+    };
+
+    addCandidate({
+      id: `local-${result?.method || 'extract'}`,
+      type: result?.method || 'local-result',
+      text: result?.content || '',
+      htmlSnippet: result?.htmlContent || '',
+      score: typeof result?.confidence === 'number' ? result.confidence * 10000 : (result?.content || '').length,
+      sourceSelector: result?.method || 'local-result'
+    });
+
+    if (window.Readability && result?.method !== 'readability') {
+      try {
+        const reader = new window.Readability(makeReadabilityDocumentClone());
+        const parsed = reader.parse();
+        addCandidate({
+          id: 'readability',
+          type: 'readability',
+          text: parsed.textContent || stripHtml(parsed.content || ''),
+          htmlSnippet: parsed.content || '',
+          score: parsed.length || (parsed.textContent || '').length,
+          sourceSelector: 'readability'
+        });
+      } catch (err) {
+        console.warn('[ContentExtract] 生成 Readability 候选失败:', err);
+      }
+    }
+
+    collectSelectorNoiseCandidates(addCandidate);
+    collectListingNoiseCandidate(addCandidate, classification);
+    collectImageNoiseCandidate(addCandidate, result?.content || '');
+
+    return candidates;
+  }
+
+  function collectSelectorNoiseCandidates(addCandidate) {
+    let added = 0;
+
+    for (const selector of CONTENT_SELECTORS) {
+      if (added >= 7) break;
+
+      let nodes = [];
+      try {
+        nodes = Array.from(document.querySelectorAll(selector)).slice(0, 4);
+      } catch (err) {
+        continue;
+      }
+
+      for (const node of nodes) {
+        if (added >= 7) break;
+        const candidate = makeElementNoiseCandidate(node, selector);
+        if (!candidate) continue;
+        addCandidate(candidate);
+        added++;
+      }
+    }
+  }
+
+  function makeElementNoiseCandidate(node, selector) {
+    if (!node) return null;
+
+    const clone = node.cloneNode(true);
+    cleanupClone(clone);
+    let text = cleanExtractedText(clone.textContent || '');
+    const importantImages = getImportantImages(node);
+    if (text.length < 500 && importantImages.length > 0) {
+      text = appendImageInfo(text, node);
+    }
+
+    if (text.length < 80 && importantImages.length === 0) return null;
+
+    const linkDensity = getLinkDensity(node);
+    if (text.length < 500 && linkDensity > 0.58) return null;
+
+    return {
+      id: `selector-${selector}`,
+      type: 'selector',
+      text,
+      htmlSnippet: clone.innerHTML || '',
+      score: scoreElement(node, text.length, linkDensity, importantImages),
+      sourceSelector: selector,
+      linkDensity
+    };
+  }
+
+  function collectListingNoiseCandidate(addCandidate, classification) {
+    const items = collectListingItems();
+    if (items.length < 5) return;
+
+    const pageType = classification?.pageType || 'listing';
+    const isSearch = pageType.startsWith('search-results');
+    const lines = [
+      `页面类型：${isSearch ? '搜索结果页' : '列表/聚合页'}`,
+      `页面标题：${getPageTitle() || cleanTitle(document.title || '未命名页面')}`,
+      isSearch ? '以下为页面中的主要搜索结果条目：' : '以下为页面中的主要列表条目：',
+      ''
+    ];
+
+    items.slice(0, 25).forEach((item, index) => {
+      lines.push(`${index + 1}. ${item.title}`);
+      if (item.context) lines.push(`说明：${item.context}`);
+      lines.push('');
+    });
+
+    addCandidate({
+      id: 'listing-items',
+      type: isSearch ? 'search-results' : 'listing-items',
+      text: lines.join('\n'),
+      score: items.length * 100,
+      sourceSelector: 'collectListingItems'
+    });
+  }
+
+  function collectImageNoiseCandidate(addCandidate, content) {
+    const value = String(content || '');
+    if (!hasImageInfoBlock(value) && !hasImageOcrText(value)) return;
+
+    const imageInfoMatch = value.match(/图片内容：[\s\S]*?(?=\n\n图片 OCR 文字：|$)/);
+    const imageOcrMatch = value.match(/图片 OCR 文字：[\s\S]*$/);
+    const text = [
+      imageOcrMatch ? imageOcrMatch[0] : '',
+      imageInfoMatch ? imageInfoMatch[0] : ''
+    ].filter(Boolean).join('\n\n').trim();
+
+    addCandidate({
+      id: 'image-ocr-info',
+      type: hasImageOcrText(value) ? 'image-ocr' : 'image-info',
+      text,
+      score: hasImageOcrText(value) ? 1200 : 500,
+      sourceSelector: 'image-blocks'
+    });
+  }
+
+  function makeNoiseCandidateId(value) {
+    const normalized = String(value || 'candidate')
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 48);
+    return normalized || 'candidate';
+  }
+
+  function makeUniqueNoiseCandidateId(baseId, usedIds) {
+    if (!usedIds.has(baseId)) return baseId;
+    let index = 2;
+    let next = `${baseId}-${index}`;
+    while (usedIds.has(next)) {
+      index++;
+      next = `${baseId}-${index}`;
+    }
+    return next;
+  }
+
+  function truncateCandidateHtml(html) {
+    const value = String(html || '').replace(/\s+/g, ' ').trim();
+    if (!value) return '';
+    return value.length > NOISE_CANDIDATE_HTML_LIMIT
+      ? `${value.slice(0, NOISE_CANDIDATE_HTML_LIMIT - 1).trim()}…`
+      : value;
+  }
+
   function applyExtractionMetadata(result, classification, extraWarnings = []) {
     const content = result && result.content ? result.content : '';
     const warnings = uniqueLines([
@@ -532,13 +2422,19 @@
       ...getQualityWarnings(content, classification, result?.method || '')
     ]);
 
-    return {
+    const metadata = {
       ...(result || {}),
       pageType: result?.pageType || classification.pageType,
       confidence: typeof result?.confidence === 'number' ? result.confidence : classification.confidence,
       reason: result?.reason || classification.reason,
       qualityWarnings: warnings
     };
+
+    if (metadata.success && content) {
+      metadata.noiseCandidates = collectNoiseCandidates(metadata, classification);
+    }
+
+    return metadata;
   }
 
   function getQualityWarnings(content, classification, method) {
@@ -1028,6 +2924,25 @@
     }
   }
 
+  function makeReadabilityDocumentClone() {
+    const documentClone = document.cloneNode(true);
+    if (documentClone.body) {
+      cleanupClone(documentClone.body);
+    }
+    return documentClone;
+  }
+
+  function isVisibleElement(node) {
+    if (!node || node.nodeType !== 1) return false;
+    const style = window.getComputedStyle ? window.getComputedStyle(node) : null;
+    if (style && (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0)) {
+      return false;
+    }
+    const rect = typeof node.getBoundingClientRect === 'function' ? node.getBoundingClientRect() : null;
+    if (rect && rect.width === 0 && rect.height === 0) return false;
+    return true;
+  }
+
   function findBestContainer(root) {
     let best = null;
 
@@ -1454,6 +3369,7 @@
     lines.forEach(line => {
       if (!line) return;
       if (UI_NOISE_LINE_RE.test(line)) return;
+      if (isChatGptArtifactLine(line)) return;
       if (/^(?:[<＞>]*\s*)?(?:上一页|下一页|帮助|举报|用户反馈|企业推广)\s*$/.test(line)) return;
       if (/^(?:百度首页|hao123|地图|视频|贴吧|学术|更多产品)/.test(line) && line.length < 80) return;
 
@@ -1464,6 +3380,49 @@
     });
 
     return filtered.join('\n').trim();
+  }
+
+  function isChatGptArtifactLine(line) {
+    const value = normalizeText(line);
+    if (!value || value.length > 120) return false;
+    if (isRuntimeMarkdownArtifact(value)) return true;
+    if (isIsolatedArtifactToken(value)) return true;
+
+    const segments = value
+      .split(/[\u3001\uFF0C,\u3002;\uFF1B]+|\.\s+|\s+(?=#{1,6}\s*\d)|\s{2,}/)
+      .map(part => normalizeText(part))
+      .filter(Boolean);
+
+    return segments.length >= 2 && segments.every(segment =>
+      isRuntimeMarkdownArtifact(segment) || isIsolatedArtifactToken(segment) || isEmptyArtifactHeading(segment)
+    );
+  }
+
+  function isRuntimeMarkdownArtifact(line) {
+    return /^runtime\.[a-z0-9_.-]+\.md$/i.test(normalizeText(line));
+  }
+
+  function isIsolatedArtifactToken(line) {
+    const value = normalizeArtifactToken(line);
+    return /^(?:config|webpack|sync|runtime|tabs|body|md)$/i.test(value);
+  }
+
+  function isEmptyArtifactHeading(line) {
+    return normalizeArtifactToken(line) === '';
+  }
+
+  function normalizeArtifactToken(line) {
+    return normalizeText(line)
+      .replace(/^#{1,6}\s*/, '')
+      .replace(/^\d+[.)\u3001\uFF0E]?\s*/, '')
+      .replace(/[.\u3002]+$/g, '')
+      .trim();
+  }
+
+  function truncateText(text, maxLength) {
+    const value = normalizeText(text);
+    if (value.length <= maxLength) return value;
+    return `${value.slice(0, Math.max(0, maxLength - 1)).trim()}…`;
   }
 
   function stripHtml(html) {

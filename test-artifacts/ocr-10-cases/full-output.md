@@ -1,6 +1,6 @@
 # OCR Full Transcriptions And Summaries
 
-- Run at: 2026-06-20T14:48:48.215Z
+- Run at: 2026-06-22T05:47:42.965Z
 - Total: 10
 - Passed: 10
 - Failed: 0
@@ -9,7 +9,7 @@
 
 - Result: 通过
 - OCR: recognized=1, failed=0, supported=true
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -39,7 +39,7 @@
 正文在图片中。
 
 图片内容：
-- 会议长图（920x560）: http://127.0.0.1:51843/img/single-image-zh-1.svg
+- 会议长图（920x560）: http://127.0.0.1:64441/img/single-image-zh-1.svg
 
 图片 OCR 文字：
 1. 会议长图（920x560）
@@ -51,7 +51,7 @@
 
 - Result: 通过
 - OCR: recognized=2, failed=0, supported=true
-- Summary method: tfidf
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -72,6 +72,10 @@
 图片 OCR 转写文字：
 步骤一（900x520）：第一步：打开设置。
 步骤二（900x520）：第二步：保存笔记。
+
+图片说明：
+- 步骤一（900x520）
+- 步骤二（900x520）
 ```
 
 ### 提取正文全文
@@ -81,8 +85,8 @@
 页面由两张图组成。
 
 图片内容：
-- 步骤一（900x520）: http://127.0.0.1:51843/img/multi-image-1.svg
-- 步骤二（900x520）: http://127.0.0.1:51843/img/multi-image-2.svg
+- 步骤一（900x520）: http://127.0.0.1:64441/img/multi-image-1.svg
+- 步骤二（900x520）: http://127.0.0.1:64441/img/multi-image-2.svg
 
 图片 OCR 文字：
 1. 步骤一（900x520）
@@ -96,7 +100,7 @@
 
 - Result: 通过
 - OCR: recognized=1, failed=1, supported=true
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -126,8 +130,8 @@
 第二张图模拟浏览器检测异常。
 
 图片内容：
-- 可识别图（900x520）: http://127.0.0.1:51843/img/partial-failure-1.svg
-- 失败图（900x520）: http://127.0.0.1:51843/img/partial-failure-2.svg
+- 可识别图（900x520）: http://127.0.0.1:64441/img/partial-failure-1.svg
+- 失败图（900x520）: http://127.0.0.1:64441/img/partial-failure-2.svg
 
 图片 OCR 文字：
 1. 可识别图（900x520）
@@ -138,7 +142,7 @@
 
 - Result: 通过
 - OCR: recognized=0, failed=0, supported=false
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -163,14 +167,14 @@
 只有正文图片，浏览器没有 OCR 能力。
 
 图片内容：
-- 政策图（900x520）: http://127.0.0.1:51843/img/unsupported-detector-1.svg
+- 政策图（900x520）: http://127.0.0.1:64441/img/unsupported-detector-1.svg
 ```
 
 ## 5. small-image-ignore
 
 - Result: 通过
 - OCR: recognized=0, failed=0, supported=n/a
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -194,7 +198,7 @@
 
 - Result: 通过
 - OCR: recognized=0, failed=0, supported=true
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -219,14 +223,14 @@ OCR 返回空结果
 图片可能不含可识别文字。
 
 图片内容：
-- 空白图（900x520）: http://127.0.0.1:51843/img/empty-ocr-1.svg
+- 空白图（900x520）: http://127.0.0.1:64441/img/empty-ocr-1.svg
 ```
 
 ## 7. dedupe-lines
 
 - Result: 通过
 - OCR: recognized=1, failed=0, supported=true
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -256,7 +260,7 @@ OCR 行去重
 同一张图里 OCR 返回重复内容。
 
 图片内容：
-- 去重图片（900x520）: http://127.0.0.1:51843/img/dedupe-lines-1.svg
+- 去重图片（900x520）: http://127.0.0.1:64441/img/dedupe-lines-1.svg
 
 图片 OCR 文字：
 1. 去重图片（900x520）
@@ -268,7 +272,7 @@ OCR 行去重
 
 - Result: 通过
 - OCR: recognized=0, failed=0, supported=false
-- Summary method: tfidf
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -279,7 +283,11 @@ OCR 行去重
 ### 摘要生成内容
 
 ```text
-正文足够时不制造图片重警告 这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。
+正文足够时不制造图片重警告
+这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。 即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。 用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。 这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。 额外的段落用于模拟真实文章中的背景、事实、观点和结论，确保可见正文已经足够支撑保存和摘要。 这类页面不应该因为 OCR 能力缺失而显示图片正文不可读的强警告，只需要保留图片线索即可。
+
+图片说明：
+- 补充图（900x520）
 ```
 
 ### 提取正文全文
@@ -289,14 +297,14 @@ OCR 行去重
 这是一段足够长的普通正文，用来模拟新闻或文档页面已经有可提取文本。 即使页面中包含一张正文图片，OCR 不可用也不应该把整个页面标记为图片正文不可读。 用户仍然可以基于这些文本生成摘要，图片信息只作为补充线索保留。 这里继续补充一些自然语言内容，确保非图片文本超过阈值并保持页面可读。 额外的段落用于模拟真实文章中的背景、事实、观点和结论，确保可见正文已经足够支撑保存和摘要。 这类页面不应该因为 OCR 能力缺失而显示图片正文不可读的强警告，只需要保留图片线索即可。
 
 图片内容：
-- 补充图（900x520）: http://127.0.0.1:51843/img/text-rich-unsupported-1.svg
+- 补充图（900x520）: http://127.0.0.1:64441/img/text-rich-unsupported-1.svg
 ```
 
 ## 9. candidate-limit-five
 
 - Result: 通过
 - OCR: recognized=5, failed=0, supported=true
-- Summary method: tfidf
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -329,6 +337,13 @@ OCR 行去重
 正文图 3（900x520）：OCR-3。
 正文图 4（900x520）：OCR-4。
 正文图 5（900x520）：OCR-5。
+
+图片说明：
+- 正文图 1（900x520）
+- 正文图 2（900x520）
+- 正文图 3（900x520）
+- 正文图 4（900x520）
+- 正文图 5（900x520）
 ```
 
 ### 提取正文全文
@@ -338,11 +353,11 @@ OCR 行去重
 页面包含六张大图，只处理前五张。
 
 图片内容：
-- 正文图 1（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-1.svg
-- 正文图 2（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-2.svg
-- 正文图 3（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-3.svg
-- 正文图 4（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-4.svg
-- 正文图 5（900x520）: http://127.0.0.1:51843/img/candidate-limit-five-5.svg
+- 正文图 1（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-1.svg
+- 正文图 2（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-2.svg
+- 正文图 3（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-3.svg
+- 正文图 4（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-4.svg
+- 正文图 5（900x520）: http://127.0.0.1:64441/img/candidate-limit-five-5.svg
 
 图片 OCR 文字：
 1. 正文图 1（900x520）
@@ -365,7 +380,7 @@ OCR 行去重
 
 - Result: 通过
 - OCR: recognized=0, failed=1, supported=true
-- Summary method: passthrough
+- Summary method: llm
 
 ### OCR 转写全文
 
@@ -390,5 +405,5 @@ OCR 行去重
 这张图模拟 OCR 长时间无响应。
 
 图片内容：
-- 超时图（900x520）: http://127.0.0.1:51843/img/ocr-timeout-1.svg
+- 超时图（900x520）: http://127.0.0.1:64441/img/ocr-timeout-1.svg
 ```

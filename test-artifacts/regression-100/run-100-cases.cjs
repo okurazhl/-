@@ -10,6 +10,16 @@ const screenshotDir = path.join(outDir, 'failure-screenshots');
 fs.rmSync(screenshotDir, { recursive: true, force: true });
 fs.mkdirSync(screenshotDir, { recursive: true });
 
+const cloudSummaryConfig = process.env.LLM_ENDPOINT && process.env.LLM_API_KEY
+  ? {
+      enabled: true,
+      endpoint: process.env.LLM_ENDPOINT,
+      apiKey: process.env.LLM_API_KEY,
+      model: process.env.LLM_MODEL || 'gpt-4o-mini',
+      length: 'medium'
+    }
+  : null;
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 function findFreePort() {
@@ -464,7 +474,7 @@ function scoreCase(testCase, data, summaryResult) {
     for (const warning of testCase.expectedWarnings || []) {
       if (!warnings.some(item => item.includes(warning))) failures.push(`missing warning: ${warning}`);
     }
-    if ((data?.content || '').length >= 100 && !summaryResult?.success) {
+    if (summaryResult && (data?.content || '').length >= 100 && !summaryResult.success) {
       failures.push(`summary failed: ${summaryResult?.error || 'unknown'}`);
     }
   } else {
@@ -641,12 +651,12 @@ async function main() {
 
         const data = response?.data || response || {};
         let summaryResult = null;
-        if (data.success && data.content && data.content.length >= 100) {
+        if (cloudSummaryConfig && data.success && data.content && data.content.length >= 100) {
           summaryResult = await generateSummary(
-            { enabled: false, length: 'medium' },
+            cloudSummaryConfig,
             data.title || currentCase.id,
             data.content,
-            { mode: 'tfidf', length: 'medium', pageType: data.pageType || 'unknown' }
+            { mode: 'llm', length: 'medium', pageType: data.pageType || 'unknown' }
           );
         }
 

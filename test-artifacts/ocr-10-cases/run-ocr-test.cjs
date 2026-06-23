@@ -9,6 +9,14 @@ const root = path.resolve(__dirname, '..', '..');
 const outDir = __dirname;
 fs.mkdirSync(outDir, { recursive: true });
 
+const mockCloudSummaryConfig = {
+  enabled: true,
+  endpoint: 'https://api.example.test',
+  apiKey: 'sk-test',
+  model: 'mock-model',
+  length: 'medium'
+};
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const cases = [
@@ -631,6 +639,7 @@ async function run() {
     const readability = fs.readFileSync(path.join(root, 'content', 'readability.js'), 'utf8');
     const extractor = fs.readFileSync(path.join(root, 'content', 'content-extract.js'), 'utf8');
     const { generateSummary } = await import(pathToFileURL(path.join(root, 'lib', 'summarizer.js')).href);
+    const { prepareSummaryContent } = await import(pathToFileURL(path.join(root, 'lib', 'summary-content.js')).href);
     const nativeTextDetectorAvailable = await client.eval('typeof globalThis.TextDetector === "function"', 5000).catch(() => false);
     const results = [];
 
@@ -674,11 +683,19 @@ async function run() {
         row.imageOcr = data.imageOcr || null;
         row.ocrText = extractOcrText(data.content || '');
         if (data.success && data.content) {
+          globalThis.fetch = async () => ({
+            ok: true,
+            status: 200,
+            json: async () => ({
+              choices: [{ message: { content: prepareSummaryContent(data.content || '') } }],
+              usage: { total_tokens: 0 }
+            })
+          });
           const summaryResult = await generateSummary(
-            { enabled: false },
+            mockCloudSummaryConfig,
             data.title || testCase.name,
             data.content,
-            { mode: 'tfidf', length: 'medium', pageType: data.pageType || 'unknown' }
+            { mode: 'llm', length: 'medium', pageType: data.pageType || 'unknown' }
           );
           row.summary = summaryResult.success ? summaryResult.summary : '';
           row.summaryMethod = summaryResult.method || '';

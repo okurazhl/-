@@ -4,9 +4,18 @@
 // ============================================================
 
 import { generateSummary } from './lib/summarizer.js';
-import { initStorage, getSettings, createNote } from './lib/storage.js';
+import { callLearningSummaryLLM, selectNoiseWithLLM } from './lib/llm-client.js';
+import { initStorage, getSettings } from './lib/storage.js';
 
 const SIDEPANEL_PATH = 'sidepanel/sidepanel.html';
+const YOUTUBE_BACKEND_TRANSCRIPT_LIMIT = 60000;
+const LOCAL_YOUTUBE_TRANSCRIPT_API = {
+  enabled: true,
+  endpoint: 'http://127.0.0.1:8788/v1/youtube/transcript',
+  apiKey: 'local-dev-transcript-key',
+  preferredLanguages: ['zh-CN', 'zh', 'en'],
+  timeoutMs: 20000
+};
 
 const LAST_ACTIVE_TAB_KEY = 'lastActiveTab';
 let lastActiveTab = null;
@@ -44,21 +53,26 @@ chrome.runtime.onInstalled.addListener(async (details) => {
       { id: 'cat_5', name: '归档', color: '#95A5A6', order: 4 }
     ];
 
-      const defaultSettings = {
-        theme: 'light',
-        autoSummarize: false,
-        defaultCategoryId: 'cat_3',
-        summaryLength: 'medium',
-        exportFormat: 'markdown',
-        fontSize: 14,
-        privacy: {
-          cloudSummaryNoticeAccepted: false
-        },
-        llm: {
-          apiEndpoint: '',
-          apiKey: '',
+    const defaultSettings = {
+      theme: 'light',
+      autoSummarize: false,
+      defaultCategoryId: 'cat_3',
+      summaryLength: 'medium',
+      exportFormat: 'markdown',
+      fontSize: 14,
+      privacy: {
+        cloudSummaryNoticeAccepted: false
+      },
+      llm: {
+        apiEndpoint: '',
+        apiKey: '',
         model: 'gpt-4o-mini',
-        enabled: false
+        enabled: false,
+        noiseSelectionEnabled: false
+      },
+      youtubeTranscriptApi: {
+        ...LOCAL_YOUTUBE_TRANSCRIPT_API,
+        preferredLanguages: [...LOCAL_YOUTUBE_TRANSCRIPT_API.preferredLanguages]
       }
     };
 
@@ -301,7 +315,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     action,
     requestId: message.requestId || null,
     mode: message.mode || message.method || null,
-    contentLength: typeof message.content === 'string' ? message.content.length : 0
+    contentLength: typeof message.content === 'string' ?
+      message.content.length :
+      (typeof message.recordsText === 'string' ? message.recordsText.length : 0)
   });
 
   switch (action) {
@@ -346,7 +362,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       return true;
     }
 
-    // --- 后台总结当前网页并保存摘要笔记 ---
+    // --- 生成本地摘要记录的学习过程总结 ---
+    case 'summarizeLearning': {
+      handleSummarizeLearning(message)
+        .then(result => sendResponse(result))
+        .catch(err => sendResponse({ success: false, error: err.message }));
+      return true;
+    }
+
+    // --- 旧版后台总结入口（已弃用，摘要由 sidepanel 编排云端发送确认） ---
     case 'summarizePageAndSave': {
       handleSummarizePageAndSave(message)
         .then(result => sendResponse(result))
@@ -375,7 +399,28 @@ async function handleExtractPage(tabId) {
     return makeError('NO_TAB', '缺少 tabId 参数');
   }
 
+  let tab = null;
+  let primaryYouTubeTranscriptData = null;
+
   try {
+    try {
+      tab = await chrome.tabs.get(tabId);
+    } catch (err) {
+      console.warn('[SW] 获取提取目标标签页失败，继续使用页面脚本提取:', {
+        tabId,
+        message: err.message || String(err)
+      });
+    }
+
+    primaryYouTubeTranscriptData = await maybeExtractYouTubeTranscriptFromTab(tab);
+    if (isYouTubeTranscriptExtraction(primaryYouTubeTranscriptData)) {
+      const data = await maybeApplyCloudNoiseSelection(primaryYouTubeTranscriptData);
+      return {
+        success: true,
+        data: stripInternalExtractionFields(data)
+      };
+    }
+
     // 注入 Readability 库 + 内容提取脚本
     await ensureScriptsInjected(tabId, [
       'content/readability.js',
@@ -386,21 +431,36 @@ async function handleExtractPage(tabId) {
     const response = await chrome.tabs.sendMessage(tabId, { action: 'extractPage' });
 
     if (response && response.success && response.data && response.data.content) {
+      let data = {
+        title: response.data.title || '',
+        content: response.data.content || '',
+        url: response.data.url || '',
+        sourceTitle: response.data.title || '',
+        excerpt: response.data.excerpt || '',
+        method: response.data.method || '',
+        pageType: response.data.pageType || '',
+        confidence: typeof response.data.confidence === 'number' ? response.data.confidence : null,
+        reason: response.data.reason || '',
+        transcriptAvailable: !!response.data.transcriptAvailable,
+        transcriptSource: response.data.transcriptSource || '',
+        transcriptProvider: response.data.transcriptProvider || '',
+        transcriptAttempts: Array.isArray(response.data.transcriptAttempts) ? response.data.transcriptAttempts : [],
+        youtube: response.data.youtube && typeof response.data.youtube === 'object' ? response.data.youtube : null,
+        qualityWarnings: Array.isArray(response.data.qualityWarnings) ? response.data.qualityWarnings : [],
+        imageOcr: response.data.imageOcr || null,
+        noiseCandidates: Array.isArray(response.data.noiseCandidates) ? response.data.noiseCandidates : []
+      };
+
+      if (hasYouTubeTranscriptApiAttempt(primaryYouTubeTranscriptData)) {
+        data = mergeYouTubeTranscriptApiFallback(data, primaryYouTubeTranscriptData);
+      } else {
+        data = await maybeApplyYouTubeTranscriptApi(data);
+      }
+      data = await maybeApplyCloudNoiseSelection(data);
+
       return {
         success: true,
-        data: {
-          title: response.data.title || '',
-          content: response.data.content || '',
-          url: response.data.url || '',
-          sourceTitle: response.data.title || '',
-          excerpt: response.data.excerpt || '',
-          method: response.data.method || '',
-          pageType: response.data.pageType || '',
-          confidence: typeof response.data.confidence === 'number' ? response.data.confidence : null,
-          reason: response.data.reason || '',
-          qualityWarnings: Array.isArray(response.data.qualityWarnings) ? response.data.qualityWarnings : [],
-          imageOcr: response.data.imageOcr || null
-        }
+        data: stripInternalExtractionFields(data)
       };
     }
 
@@ -415,6 +475,481 @@ async function handleExtractPage(tabId) {
 
     return makeErrorFromInjectionError(err);
   }
+}
+
+async function maybeExtractYouTubeTranscriptFromTab(tab) {
+  const seedData = buildYouTubeTabSeedData(tab);
+  if (!seedData) return null;
+  return maybeApplyYouTubeTranscriptApi(seedData);
+}
+
+function buildYouTubeTabSeedData(tab) {
+  const url = tab?.url || '';
+  if (!url || !isYouTubeUrl(url)) return null;
+
+  const videoId = getYouTubeVideoIdFromUrl(url);
+  if (!videoId) return null;
+
+  const title = cleanYouTubeTabTitle(tab?.title || '') || 'YouTube Video';
+
+  return {
+    title,
+    content: '',
+    url,
+    sourceTitle: title,
+    excerpt: '',
+    method: 'youtube-transcript-api-primary',
+    pageType: 'video',
+    confidence: 0.7,
+    reason: 'youtube-transcript-api-primary',
+    transcriptAvailable: false,
+    transcriptSource: '',
+    transcriptProvider: '',
+    transcriptAttempts: [],
+    youtube: {
+      videoId,
+      title
+    },
+    qualityWarnings: [],
+    imageOcr: null,
+    noiseCandidates: []
+  };
+}
+
+function cleanYouTubeTabTitle(title) {
+  return String(title || '')
+    .replace(/\s+-\s+YouTube\s*$/i, '')
+    .trim();
+}
+
+function isYouTubeTranscriptExtraction(data) {
+  return !!data && data.method === 'youtube-transcript' && !!data.transcriptAvailable && !!String(data.content || '').trim();
+}
+
+function hasYouTubeTranscriptApiAttempt(data) {
+  const attempts = Array.isArray(data?.transcriptAttempts) ? data.transcriptAttempts : [];
+  return attempts.some(attempt => {
+    const provider = String(attempt?.provider || attempt?.source || '');
+    return provider === 'user-youtube-transcript-api' || provider.startsWith('user-transcript-api:');
+  });
+}
+
+function mergeYouTubeTranscriptApiFallback(data, transcriptData) {
+  const attempts = mergeTranscriptAttempts(data?.transcriptAttempts, transcriptData?.transcriptAttempts);
+  return {
+    ...data,
+    transcriptAttempts: attempts,
+    qualityWarnings: uniqueStrings([
+      ...(Array.isArray(data?.qualityWarnings) ? data.qualityWarnings : []),
+      ...(Array.isArray(transcriptData?.qualityWarnings) ? transcriptData.qualityWarnings : [])
+    ]),
+    youtube: {
+      ...(data?.youtube || {}),
+      transcriptAttempts: attempts
+    }
+  };
+}
+
+function mergeTranscriptAttempts(currentAttempts, nextAttempts) {
+  const merged = [];
+  const seen = new Set();
+  for (const attempt of [
+    ...(Array.isArray(currentAttempts) ? currentAttempts : []),
+    ...(Array.isArray(nextAttempts) ? nextAttempts : [])
+  ]) {
+    if (!attempt || typeof attempt !== 'object') continue;
+    const key = [
+      attempt.provider || '',
+      attempt.source || '',
+      attempt.error || '',
+      attempt.ok === true ? 'ok' : 'fail'
+    ].join('|');
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(attempt);
+  }
+  return merged;
+}
+
+async function maybeApplyYouTubeTranscriptApi(data) {
+  if (!shouldTryYouTubeTranscriptApi(data)) {
+    return data;
+  }
+
+  let settings = {};
+  try {
+    await initStorage();
+    settings = getSettings();
+  } catch (err) {
+    console.warn('[SW] 读取 YouTube 字幕后端设置失败，跳过:', err.message || String(err));
+    return data;
+  }
+
+  const config = normalizeYouTubeTranscriptApiConfig(settings.youtubeTranscriptApi);
+  if (!config.enabled || !config.endpoint || !config.apiKey) {
+    return data;
+  }
+
+  const videoId = data.youtube?.videoId || getYouTubeVideoIdFromUrl(data.url);
+  if (!videoId) {
+    return withYouTubeTranscriptApiWarning(data, '未能识别 YouTube videoId');
+  }
+
+  const attempt = {
+    provider: 'user-youtube-transcript-api',
+    ok: false,
+    error: ''
+  };
+
+  try {
+    const result = await callUserYouTubeTranscriptApi(config, {
+      videoId,
+      url: data.url || '',
+      languages: config.preferredLanguages,
+      maxChars: YOUTUBE_BACKEND_TRANSCRIPT_LIMIT
+    });
+
+    if (!result.success || !result.text) {
+      attempt.error = result.message || result.error || result.code || '用户字幕后端未返回可用字幕';
+      return withYouTubeTranscriptApiWarning(appendYouTubeTranscriptAttempt(data, attempt), attempt.error);
+    }
+
+    const backendProvider = result.provider || result.source || 'youtube-transcript-api';
+    const providerLabel = `user-transcript-api:${backendProvider}`;
+    attempt.ok = true;
+    attempt.provider = providerLabel;
+    const transcriptText = truncateText(result.text, YOUTUBE_BACKEND_TRANSCRIPT_LIMIT);
+    const content = buildYouTubeTranscriptContent(data, transcriptText);
+    const warnings = uniqueStrings([
+      ...(Array.isArray(data.qualityWarnings) ? data.qualityWarnings : []),
+      result.warning || '',
+      ...(Array.isArray(result.warnings) ? result.warnings : [])
+    ]);
+
+    return appendYouTubeTranscriptAttempt({
+      ...data,
+      content,
+      excerpt: getTextExcerpt(content, 200),
+      method: 'youtube-transcript',
+      confidence: 0.9,
+      reason: providerLabel,
+      transcriptAvailable: true,
+      transcriptSource: result.language ? `${providerLabel}:${result.language}` : providerLabel,
+      transcriptProvider: providerLabel,
+      qualityWarnings: warnings,
+      youtube: {
+        ...(data.youtube || {}),
+        videoId,
+        transcriptAvailable: true,
+        transcriptSource: result.language ? `${providerLabel}:${result.language}` : providerLabel,
+        transcriptProvider: providerLabel,
+        transcriptApiSource: backendProvider,
+        transcriptLanguage: result.language || '',
+        transcriptIsGenerated: typeof result.isGenerated === 'boolean' ? result.isGenerated : null
+      }
+    }, attempt);
+  } catch (err) {
+    attempt.error = normalizeTranscriptApiError(err);
+    return withYouTubeTranscriptApiWarning(appendYouTubeTranscriptAttempt(data, attempt), attempt.error);
+  }
+}
+
+function shouldTryYouTubeTranscriptApi(data) {
+  if (!data || data.pageType !== 'video') return false;
+  if (data.transcriptAvailable || data.method === 'youtube-transcript') return false;
+  return isYouTubeUrl(data.url || '') || !!data.youtube?.videoId;
+}
+
+function normalizeYouTubeTranscriptApiConfig(config = {}) {
+  const endpoint = normalizeTranscriptEndpoint(config.endpoint || '');
+  const preferredLanguages = Array.isArray(config.preferredLanguages) ?
+    config.preferredLanguages.map(item => String(item || '').trim()).filter(Boolean) :
+    ['zh-CN', 'zh', 'en'];
+  const timeoutMs = Math.max(3000, Math.min(Number(config.timeoutMs) || 20000, 60000));
+
+  return {
+    enabled: !!config.enabled,
+    endpoint,
+    apiKey: String(config.apiKey || '').trim(),
+    preferredLanguages: preferredLanguages.length ? preferredLanguages : ['zh-CN', 'zh', 'en'],
+    timeoutMs
+  };
+}
+
+function normalizeTranscriptEndpoint(endpoint) {
+  const raw = String(endpoint || '').trim();
+  if (!raw) return '';
+
+  try {
+    const url = new URL(raw);
+    const path = url.pathname.replace(/\/+$/, '');
+    if (!path) {
+      url.pathname = '/v1/youtube/transcript';
+    } else if (/^\/v\d+$/i.test(path)) {
+      url.pathname = `${path}/youtube/transcript`;
+    }
+    return url.toString();
+  } catch (err) {
+    return raw;
+  }
+}
+
+async function callUserYouTubeTranscriptApi(config, payload) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), config.timeoutMs);
+
+  try {
+    const response = await fetch(config.endpoint, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.apiKey}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        videoId: payload.videoId,
+        url: payload.url,
+        languages: payload.languages,
+        maxChars: payload.maxChars
+      }),
+      signal: controller.signal,
+      credentials: 'omit'
+    });
+
+    const bodyText = await response.text();
+    let body = {};
+    if (bodyText) {
+      try {
+        body = JSON.parse(bodyText);
+      } catch (err) {
+        body = { success: false, message: bodyText.slice(0, 500) };
+      }
+    }
+
+    if (!response.ok) {
+      return {
+        success: false,
+        code: body.code || `HTTP_${response.status}`,
+        message: body.message || `用户字幕后端返回 HTTP ${response.status}`
+      };
+    }
+
+    return normalizeTranscriptApiResponse(body);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function normalizeTranscriptApiResponse(body = {}) {
+  const segments = Array.isArray(body.segments) ? body.segments : [];
+  const text = typeof body.text === 'string' && body.text.trim() ?
+    body.text :
+    segments.map(segment => String(segment?.text || '').trim()).filter(Boolean).join('\n');
+
+  return {
+    success: body.success !== false && !!text.trim(),
+    text: cleanPlainText(text),
+    language: body.language || body.languageCode || '',
+    provider: body.provider || '',
+    source: body.source || 'youtube-transcript-api',
+    isGenerated: body.isGenerated,
+    warnings: Array.isArray(body.warnings) ? body.warnings : [],
+    warning: body.warning || '',
+    code: body.code || '',
+    message: body.message || body.error || ''
+  };
+}
+
+function buildYouTubeTranscriptContent(data, transcriptText) {
+  const youtube = data.youtube || {};
+  const parts = [];
+  const title = youtube.title || data.title || '';
+  if (title) parts.push(`YouTube 视频标题：${title}`);
+  if (youtube.channel) parts.push(`频道：${youtube.channel}`);
+  parts.push(`字幕/Transcript：\n${transcriptText}`);
+
+  if (youtube.description) {
+    parts.push(`简介：\n${truncateText(youtube.description, 4000)}`);
+  }
+
+  if (Array.isArray(youtube.chapters) && youtube.chapters.length > 0) {
+    parts.push(`章节：\n${youtube.chapters.map((item, index) => {
+      const time = item.time ? `${item.time} ` : '';
+      return `${index + 1}. ${time}${item.title || ''}`.trim();
+    }).join('\n')}`);
+  }
+
+  return cleanPlainText(parts.filter(Boolean).join('\n\n'));
+}
+
+function appendYouTubeTranscriptAttempt(data, attempt) {
+  const attempts = [
+    ...(Array.isArray(data.transcriptAttempts) ? data.transcriptAttempts : []),
+    attempt
+  ];
+
+  return {
+    ...data,
+    transcriptAttempts: attempts,
+    youtube: {
+      ...(data.youtube || {}),
+      transcriptAttempts: attempts
+    }
+  };
+}
+
+function withYouTubeTranscriptApiWarning(data, reason) {
+  return {
+    ...data,
+    qualityWarnings: uniqueStrings([
+      ...(Array.isArray(data.qualityWarnings) ? data.qualityWarnings : []),
+      `YouTube 用户字幕后端不可用，已保留标题、简介和章节降级结果：${reason}`
+    ])
+  };
+}
+
+function isYouTubeUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return /(^|\.)youtube\.com$/i.test(parsed.hostname) || /(^|\.)youtu\.be$/i.test(parsed.hostname);
+  } catch (err) {
+    return false;
+  }
+}
+
+function getYouTubeVideoIdFromUrl(url) {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    if (/(^|\.)youtu\.be$/.test(host)) {
+      return parsed.pathname.split('/').filter(Boolean)[0] || '';
+    }
+    if (/(^|\.)youtube\.com$/.test(host)) {
+      if (parsed.pathname === '/watch') return parsed.searchParams.get('v') || '';
+      const parts = parsed.pathname.split('/').filter(Boolean);
+      if (['shorts', 'live', 'embed'].includes(parts[0])) return parts[1] || '';
+    }
+  } catch (err) {
+    return '';
+  }
+  return '';
+}
+
+function cleanPlainText(text) {
+  return String(text || '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\r/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+
+function truncateText(text, maxLength) {
+  const value = String(text || '').trim();
+  if (value.length <= maxLength) return value;
+  return `${value.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
+function normalizeTranscriptApiError(err) {
+  if (err?.name === 'AbortError') {
+    return '用户字幕后端请求超时';
+  }
+  return err?.message || String(err || '用户字幕后端请求失败');
+}
+
+async function maybeApplyCloudNoiseSelection(data) {
+  if (!data || !Array.isArray(data.noiseCandidates) || data.noiseCandidates.length === 0) {
+    return data;
+  }
+
+  let settings = {};
+  try {
+    await initStorage();
+    settings = getSettings();
+  } catch (err) {
+    console.warn('[SW] 读取云端判噪设置失败，跳过:', err.message || String(err));
+    return data;
+  }
+
+  if (!shouldUseCloudNoiseSelection(settings, data)) {
+    return data;
+  }
+
+  const requestId = `noise_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const llmConfig = buildLlmConfigFromSettings(settings);
+
+  try {
+    const result = await selectNoiseWithLLM(llmConfig, data, { requestId });
+    if (!result || !result.success || !result.content) {
+      return withNoiseSelectionWarning(data, result?.error || '云端正文去噪未返回可用结果');
+    }
+
+    console.log('[SW] 云端正文去噪成功:', {
+      requestId,
+      selectedCandidateIds: result.selectedCandidateIds || []
+    });
+
+    return {
+      ...data,
+      content: result.content,
+      excerpt: getTextExcerpt(result.content, 200),
+      method: 'llm-noise-select',
+      confidence: typeof result.confidence === 'number' ? result.confidence : data.confidence,
+      reason: result.reason || 'llm-noise-selection',
+      originalExtractionMethod: data.method || '',
+      noiseSelectionMethod: result.method || 'llm-noise-select',
+      noiseSelectionConfidence: typeof result.confidence === 'number' ? result.confidence : null,
+      noiseSelectionReason: result.reason || '',
+      selectedCandidateIds: Array.isArray(result.selectedCandidateIds) ? result.selectedCandidateIds : [],
+      discardedCandidateIds: Array.isArray(result.discardedCandidateIds) ? result.discardedCandidateIds : [],
+      qualityWarnings: uniqueStrings([
+        ...(Array.isArray(data.qualityWarnings) ? data.qualityWarnings : []),
+        '已使用云端模型从本地候选块中选择正文。'
+      ])
+    };
+  } catch (err) {
+    console.warn('[SW] 云端正文去噪异常，回退本地结果:', err.message || String(err));
+    return withNoiseSelectionWarning(data, err.message || '云端正文去噪异常');
+  }
+}
+
+function shouldUseCloudNoiseSelection(settings, data) {
+  const llm = settings?.llm || {};
+  if (!llm.enabled || !llm.noiseSelectionEnabled || !llm.apiEndpoint || !llm.apiKey) return false;
+  if (!Array.isArray(data.noiseCandidates) || data.noiseCandidates.length < 2) return false;
+  if (data.method === 'llm-noise-select') return false;
+
+  const content = String(data.content || '').trim();
+  const warnings = (Array.isArray(data.qualityWarnings) ? data.qualityWarnings : []).join('\n');
+  const confidence = typeof data.confidence === 'number' ? data.confidence : 1;
+  const pageType = data.pageType || 'unknown';
+  const method = data.method || '';
+
+  return confidence < 0.75 ||
+    /噪声|导航|控件|重复文本|通用回退|页面类型不明确/.test(warnings) ||
+    (method === 'fallback' && pageType !== 'article') ||
+    content.length < 120 ||
+    content.length > 30000;
+}
+
+function withNoiseSelectionWarning(data, reason) {
+  return {
+    ...data,
+    qualityWarnings: uniqueStrings([
+      ...(Array.isArray(data.qualityWarnings) ? data.qualityWarnings : []),
+      `云端正文去噪未生效，已保留本地提取结果：${reason}`
+    ])
+  };
+}
+
+function stripInternalExtractionFields(data) {
+  const { noiseCandidates, selectedCandidateIds, discardedCandidateIds, ...safeData } = data || {};
+  return safeData;
 }
 
 // ========== 获取选中文本 ==========
@@ -479,15 +1014,24 @@ async function handleGetPageInfo(tabId) {
 // ========== 摘要生成 ==========
 async function handleSummarize(payload) {
   const { requestId, noteId, content, title, method, mode, config, pageType } = payload;
+  const summaryMode = mode || method || 'llm';
 
   console.log('[SW] 摘要请求:', {
     requestId: requestId || null,
     noteId,
     method,
-    mode,
+    mode: summaryMode,
     pageType: pageType || '',
     contentLength: content?.length || 0
   });
+
+  if (summaryMode !== 'llm') {
+    return {
+      success: false,
+      error: '当前版本仅支持云端 LLM 摘要',
+      method: 'none'
+    };
+  }
 
   if (!content || !content.trim()) {
     return { success: false, error: '内容为空，无法生成摘要' };
@@ -505,7 +1049,7 @@ async function handleSummarize(payload) {
       content,
       {
         length: config?.length || 'medium',
-        mode: mode || method || 'auto',
+        mode: 'llm',
         requestId,
         pageType: pageType || 'article',
         signal: controller.signal
@@ -525,7 +1069,7 @@ async function handleSummarize(payload) {
     return {
       success: false,
       code: result.code,
-      error: result.error || '所有摘要方案均失败',
+      error: result.error || '云端摘要生成失败',
       method: result.method || 'none'
     };
   } catch (err) {
@@ -544,132 +1088,106 @@ async function handleSummarize(payload) {
   }
 }
 
-async function handleSummarizePageAndSave(payload) {
-  const { tabId, requestId } = payload;
+async function handleSummarizeLearning(payload) {
+  const {
+    requestId,
+    recordsText,
+    periodLabel,
+    rangeLabel,
+    noteCount,
+    selectedCount
+  } = payload || {};
 
-  if (!tabId) {
-    return makeError('NO_TAB', '缺少 tabId 参数');
-  }
-
-  const summaryRequestId = requestId || `page_sum_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-  const controller = new AbortController();
-  activeSummaryRequests.set(summaryRequestId, controller);
-
-  console.log('[SW] 后台网页摘要请求:', {
-    requestId: summaryRequestId,
-    tabId
+  console.log('[SW] 学习总结请求:', {
+    requestId: requestId || null,
+    periodLabel: periodLabel || '',
+    rangeLabel: rangeLabel || '',
+    noteCount: noteCount || 0,
+    selectedCount: selectedCount || 0,
+    contentLength: recordsText?.length || 0
   });
 
+  if (!recordsText || !String(recordsText).trim()) {
+    return { success: false, error: '摘要记录为空，无法生成学习总结', method: 'llm-learning' };
+  }
+
+  const controller = new AbortController();
+  if (requestId) {
+    activeSummaryRequests.set(requestId, controller);
+  }
+
   try {
-    await initStorage();
-
-    let tab = null;
-    try {
-      tab = await chrome.tabs.get(tabId);
-    } catch (err) {
-      console.warn('[SW] 获取摘要目标标签页失败:', { tabId, message: err.message || String(err) });
+    let llmConfig = payload.config || {};
+    if (!llmConfig.endpoint && !llmConfig.apiKey) {
+      try {
+        await initStorage();
+        llmConfig = buildLlmConfigFromSettings(getSettings());
+      } catch (err) {
+        console.warn('[SW] 读取学习总结 LLM 设置失败:', err.message || String(err));
+      }
     }
 
-    const extracted = await handleExtractPage(tabId);
-    if (!extracted || !extracted.success || !extracted.data) {
-      return extracted || makeError('NO_CONTENT', '提取页面内容失败');
-    }
-
-    if (controller.signal.aborted) {
-      return { success: false, code: 'CANCELLED', error: '已取消生成', method: 'none' };
-    }
-
-    const data = extracted.data;
-    const settings = getSettings();
-    const llmConfig = buildLlmConfigFromSettings(settings);
-    const title = data.title || tab?.title || '未命名页面';
-    const sourceUrl = data.url || tab?.url || '';
-    const sourceTitle = data.sourceTitle || data.title || tab?.title || sourceUrl;
-    const pageType = data.pageType || 'article';
-
-    const summaryResult = await generateSummary(
+    const result = await callLearningSummaryLLM(
       llmConfig,
-      title,
-      data.content || '',
       {
-        length: llmConfig.length || 'medium',
-        mode: 'auto',
-        requestId: summaryRequestId,
-        pageType,
+        period: payload.period || '',
+        periodLabel: periodLabel || '本周期',
+        rangeLabel: rangeLabel || '',
+        noteCount: noteCount || 0,
+        selectedCount: selectedCount || noteCount || 0,
+        omittedCount: payload.omittedCount || 0,
+        recordsText: String(recordsText || '')
+      },
+      {
+        requestId,
         signal: controller.signal
       }
     );
 
-    if (!summaryResult || !summaryResult.success || !summaryResult.summary) {
+    if (result.success && result.summary) {
+      console.log('[SW] 学习总结生成成功:', { requestId: requestId || null, method: result.method });
       return {
-        success: false,
-        code: summaryResult?.code,
-        error: summaryResult?.error || '网页摘要生成失败',
-        method: summaryResult?.method || 'none'
+        success: true,
+        summary: result.summary,
+        method: result.method || 'llm-learning',
+        usage: result.usage || null
       };
     }
 
-    if (controller.signal.aborted) {
-      return { success: false, code: 'CANCELLED', error: '已取消生成', method: 'none' };
-    }
-
-    const summary = String(summaryResult.summary || '').trim();
-    const savedAt = Date.now();
-    const note = await createNote({
-      type: 'summarized',
-      title,
-      content: '',
-      summary,
-      excerpt: getSummaryExcerpt(summary),
-      url: sourceUrl,
-      sourceTitle,
-      pageType,
-      extractionMethod: data.method || '',
-      extractionConfidence: typeof data.confidence === 'number' ? data.confidence : null,
-      extractionReason: data.reason || '',
-      qualityWarnings: Array.isArray(data.qualityWarnings) ? data.qualityWarnings : [],
-      imageOcr: data.imageOcr || null,
-      summaryMethod: summaryResult.method || '',
-      summaryStatus: 'saved',
-      summarySavedAt: savedAt,
-      summaryUsage: summaryResult.usage || null
-    });
-
-    console.log('[SW] 后台网页摘要已保存:', {
-      requestId: summaryRequestId,
-      noteId: note.id,
-      method: summaryResult.method || ''
-    });
-
     return {
-      success: true,
-      data: {
-        noteId: note.id,
-        title: note.title,
-        summary: note.summary,
-        url: note.url,
-        sourceTitle: note.sourceTitle,
-        saved: true,
-        savedAt,
-        method: note.summaryMethod,
-        pageType: note.pageType,
-        qualityWarnings: note.qualityWarnings || [],
-        usage: note.summaryUsage || null
-      }
+      success: false,
+      code: result.code,
+      error: result.error || '学习总结生成失败',
+      method: result.method || 'llm-learning'
     };
   } catch (err) {
-    console.error('[SW] 后台网页摘要失败:', {
-      requestId: summaryRequestId,
-      tabId,
+    console.error('[SW] 学习总结异常:', {
+      requestId: requestId || null,
       message: err.message || String(err)
     });
     return {
       success: false,
-      error: `网页摘要失败: ${err.message || String(err)}`
+      error: `学习总结生成失败: ${err.message}`,
+      method: 'llm-learning'
     };
   } finally {
-    activeSummaryRequests.delete(summaryRequestId);
+    if (requestId) {
+      activeSummaryRequests.delete(requestId);
+    }
   }
+}
+
+async function handleSummarizePageAndSave(payload) {
+  console.warn('[SW] summarizePageAndSave 已弃用:', {
+    requestId: payload?.requestId || null,
+    tabId: payload?.tabId || null
+  });
+  return {
+    success: false,
+    code: 'DEPRECATED',
+    error: '当前版本仅支持由侧边栏确认发送内容后调用云端 LLM 摘要',
+    method: 'none'
+  };
 }
 
 function buildLlmConfigFromSettings(settings = {}) {
@@ -678,14 +1196,27 @@ function buildLlmConfigFromSettings(settings = {}) {
     apiKey: settings.llm?.apiKey || '',
     model: settings.llm?.model || 'gpt-4o-mini',
     enabled: settings.llm?.enabled || false,
+    noiseSelectionEnabled: settings.llm?.noiseSelectionEnabled || false,
     length: settings.summaryLength || 'medium'
   };
 }
 
-function getSummaryExcerpt(summary, maxLength = 150) {
-  const value = String(summary || '').replace(/\s+/g, ' ').trim();
+function getTextExcerpt(text, maxLength = 150) {
+  const value = String(text || '').replace(/\s+/g, ' ').trim();
   if (value.length <= maxLength) return value;
   return `${value.slice(0, maxLength - 1).trim()}…`;
+}
+
+function uniqueStrings(items) {
+  const seen = new Set();
+  const result = [];
+  for (const item of Array.isArray(items) ? items : []) {
+    const value = String(item || '').trim();
+    if (!value || seen.has(value)) continue;
+    seen.add(value);
+    result.push(value);
+  }
+  return result;
 }
 
 async function handleCancelSummarize(requestId) {

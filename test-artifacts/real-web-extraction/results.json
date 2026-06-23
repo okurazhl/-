@@ -1,0 +1,2075 @@
+{
+  "generatedAt": "2026-06-22T05:41:55.208Z",
+  "browser": {
+    "started": true,
+    "port": 52459,
+    "browserPath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+  },
+  "criteria": [
+    {
+      "id": "ordinary_article_noise_filtering",
+      "title": "普通文章正文提取并过滤导航、广告、页脚、评论、推荐",
+      "status": "pass",
+      "items": [
+        {
+          "id": "article-webdev-render-tree",
+          "status": "pass",
+          "evidence": "正文命中预期关键词，未命中导航/页脚/评论/推荐类禁词。"
+        },
+        {
+          "id": "article-chrome-docs",
+          "status": "pass",
+          "evidence": "正文命中预期关键词，未命中导航/页脚/评论/推荐类禁词。"
+        },
+        {
+          "id": "readability_uses_clean_document_clone",
+          "status": "pass",
+          "evidence": "Readability 使用清理后的 document clone，避免修改真实页面并减少噪声。"
+        }
+      ]
+    },
+    {
+      "id": "generic_video_transcript",
+      "title": "普通视频页优先提取可见 Transcript 或 HTML 字幕轨道",
+      "status": "pass",
+      "items": [
+        {
+          "id": "generic-video-track-vtt",
+          "status": "pass",
+          "evidence": "generic transcript extracted; source=html-track:en"
+        },
+        {
+          "id": "generic-video-visible-transcript",
+          "status": "pass",
+          "evidence": "generic transcript extracted; source=visible-transcript"
+        }
+      ]
+    },
+    {
+      "id": "youtube_transcript_preferred",
+      "title": "YouTube 视频页优先提取字幕/Transcript",
+      "status": "fail",
+      "items": [
+        {
+          "id": "youtube-transcript-preferred",
+          "status": "fail",
+          "evidence": "method=youtube-metadata, transcript=false, fallback=true, uiNoise="
+        },
+        {
+          "id": "youtube-fixture-player-caption-track",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-transcript; source=player-response:en; fetches=1"
+        },
+        {
+          "id": "youtube-fixture-partial-visible-prefers-caption",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-transcript; source=player-response:en; fetches=1"
+        },
+        {
+          "id": "youtube-fixture-youtubei-caption-track",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-transcript; source=youtubei-player:en; fetches=2"
+        },
+        {
+          "id": "youtube-fixture-scrollable-transcript-panel",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-transcript; source=youtube-visible-transcript-scroll; fetches=1"
+        },
+        {
+          "id": "youtube-fixture-get-transcript-endpoint",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-transcript; source=youtube-get-transcript; fetches=2"
+        },
+        {
+          "id": "sw_user_transcript_api_success",
+          "status": "pass",
+          "evidence": "Service Worker 使用用户后端字幕升级 YouTube 内容，并清洗 HTML payload。"
+        },
+        {
+          "id": "youtube_transcript_provider_pipeline",
+          "status": "pass",
+          "evidence": "YouTube 字幕提取已整理为 provider 管线，可继续接入可选外部 provider。"
+        },
+        {
+          "id": "youtube_user_transcript_api_static",
+          "status": "pass",
+          "evidence": "Service Worker 已接入可选用户 YouTube 字幕后端，后端以 yt-dlp 为第一 provider。"
+        }
+      ]
+    },
+    {
+      "id": "youtube_fallback_when_transcript_unavailable",
+      "title": "YouTube 字幕不可用时降级标题、简介、章节并明确提示",
+      "status": "pass",
+      "items": [
+        {
+          "id": "youtube-caption-blocked-fallback",
+          "status": "pass",
+          "evidence": "YouTube 使用专用提取路径，未把整页 body 文本作为摘要主体。"
+        },
+        {
+          "id": "youtube-fixture-partial-visible-fallback",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-metadata; source=-; fetches=1"
+        },
+        {
+          "id": "youtube-fixture-short-description-fallback",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-metadata; source=-; fetches=1"
+        },
+        {
+          "id": "youtube-fixture-generic-meta-description",
+          "status": "pass",
+          "evidence": "fixture passed; method=youtube-metadata; source=-; fetches=1"
+        },
+        {
+          "id": "sw_user_transcript_api_failure_fallback",
+          "status": "pass",
+          "evidence": "用户字幕后端失败时保留 YouTube metadata fallback，并明确提示用户。"
+        }
+      ]
+    },
+    {
+      "id": "youtube_no_body_innertext",
+      "title": "YouTube 不使用整页 document.body.innerText 作为主要总结内容",
+      "status": "pass",
+      "items": [
+        {
+          "id": "youtube_no_body_innertext_main_path",
+          "status": "pass",
+          "evidence": "YouTube 专用分支不以 document.body.innerText 作为主体内容来源。"
+        }
+      ]
+    },
+    {
+      "id": "long_page_length_control",
+      "title": "长网页有长度控制",
+      "status": "pass",
+      "items": [
+        {
+          "id": "prompt_content_limit",
+          "status": "pass",
+          "evidence": "requestBodyLength=8735"
+        }
+      ]
+    },
+    {
+      "id": "dynamic_reextract_after_load",
+      "title": "动态网页加载后可重新提取",
+      "status": "pass",
+      "items": [
+        {
+          "id": "youtube-dynamic-reextract",
+          "status": "pass",
+          "evidence": "initialLength=270, afterLength=270, method=youtube-metadata"
+        }
+      ]
+    },
+    {
+      "id": "model_request_minimal_content",
+      "title": "模型请求只包含必要内容和摘要输入",
+      "status": "pass",
+      "items": [
+        {
+          "id": "sw_user_transcript_api_minimal_request",
+          "status": "pass",
+          "evidence": "用户字幕后端请求只包含 videoId/url/languages/maxChars，密钥只在 Authorization header。"
+        },
+        {
+          "id": "request_no_api_key_in_body",
+          "status": "pass",
+          "evidence": "API Key 只能出现在 Authorization header，不能进入 JSON prompt body。"
+        },
+        {
+          "id": "image_url_stripped_before_prompt",
+          "status": "pass",
+          "evidence": "prepareSummaryContent 应移除图片 URL 噪声。"
+        },
+        {
+          "id": "extract_removes_forms_and_passwords",
+          "status": "pass",
+          "evidence": "提取前 DOM clone 清理 form/input/textarea，并识别 password/login 页面。"
+        },
+        {
+          "id": "extract_does_not_read_cookie",
+          "status": "pass",
+          "evidence": "提取、摘要和 LLM 客户端源码不得读取 document.cookie。"
+        },
+        {
+          "id": "webpage_summary_uses_extracted_content_only",
+          "status": "pass",
+          "evidence": "总结当前网页时使用提取正文生成摘要，保存摘要笔记时正文为空，不把历史/手写笔记拼进网页摘要请求。"
+        }
+      ]
+    },
+    {
+      "id": "prompt_injection_defense",
+      "title": "Prompt 明确把网页内容和字幕视为不可信输入",
+      "status": "pass",
+      "items": [
+        {
+          "id": "prompt_untrusted_boundary",
+          "status": "pass",
+          "evidence": "系统 prompt 和用户 prompt 必须声明网页内容/字幕/Transcript 不可信，并要求简体中文输出。"
+        }
+      ]
+    },
+    {
+      "id": "xss_safe_rendering",
+      "title": "模型返回内容安全渲染防 XSS",
+      "status": "pass",
+      "items": [
+        {
+          "id": "llm_response_captured_for_xss_check",
+          "status": "pass",
+          "evidence": "假模型返回 HTML payload，后续由 UI 静态断言确认使用 textContent/value 渲染。"
+        },
+        {
+          "id": "summary_render_uses_textcontent",
+          "status": "pass",
+          "evidence": "摘要结果使用 textContent，编辑器 textarea 使用 value，列表 HTML 插值经过 escapeHtml。"
+        }
+      ]
+    }
+  ],
+  "realPages": [
+    {
+      "id": "article-webdev-render-tree",
+      "criterion": "ordinary_article_noise_filtering",
+      "name": "web.dev Render-tree construction",
+      "url": "https://web.dev/articles/critical-rendering-path/render-tree-construction",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://web.dev/articles/critical-rendering-path/render-tree-construction?hl=zh-cn",
+      "docTitle": "渲染树构建、布局和绘制  |  Articles  |  web.dev",
+      "title": "渲染树构建、布局和绘制",
+      "method": "readability",
+      "pageType": "article",
+      "contentLength": 1921,
+      "contentPreview": "渲染树构建、布局和绘制 Ilya Grigorik 发布时间：2014 年 3 月 31 日 CSSOM 树和 DOM 树会合并为渲染树，然后用于计算每个可见元素的布局，并作为绘制流程的输入，将像素渲染到屏幕上。 优化这些步骤中的每一个对于实现最佳渲染性能至关重要。 在上一节中，我们基于 HTML 和 CSS 输入构建了 DOM 和 CSSOM 树。 不过，这两者都是独立的对象，分别捕获文档的不同方面：一个描述内容，另一个描述需要应用于",
+      "qualityWarnings": [],
+      "error": "",
+      "bodyTextLength": 2841,
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [],
+      "youtube": null,
+      "expectedHits": [
+        "CSSOM",
+        "DOM"
+      ],
+      "forbiddenHits": [],
+      "evidence": "正文命中预期关键词，未命中导航/页脚/评论/推荐类禁词。",
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\screenshots\\article-webdev-render-tree.png"
+    },
+    {
+      "id": "article-chrome-docs",
+      "criterion": "ordinary_article_noise_filtering",
+      "name": "Chrome Extensions Get started",
+      "url": "https://developer.chrome.com/docs/extensions/get-started",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://developer.chrome.com/docs/extensions/get-started?hl=zh-cn",
+      "docTitle": "扩展程序 / 开始使用  |  Get started  |  Chrome for Developers",
+      "title": "扩展程序 / 开始使用",
+      "method": "readability",
+      "pageType": "article",
+      "contentLength": 1151,
+      "contentPreview": "开始使用 欢迎开始学习 Chrome 扩展程序开发。 了解开始构建和分发首个 Chrome 扩展程序所需的一切信息。 概览 什么是扩展程序？ Chrome 扩展程序可通过自定义界面、监控浏览器事件和修改网页来提升浏览体验。 如需查看更多扩展程序功能示例，请访问 Chrome 应用商店。 它们是如何构建的？ 您可以使用创建 Web 应用时所用的 Web 技术构建扩展程序：HTML、CSS 和 JavaScript。 他们可以做些什么？ 除",
+      "qualityWarnings": [],
+      "error": "",
+      "bodyTextLength": 1844,
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [],
+      "youtube": null,
+      "expectedHits": [
+        "manifest",
+        "service worker"
+      ],
+      "forbiddenHits": [],
+      "evidence": "正文命中预期关键词，未命中导航/页脚/评论/推荐类禁词。",
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\screenshots\\article-chrome-docs.png"
+    },
+    {
+      "id": "youtube-transcript-preferred",
+      "criterion": "youtube_transcript_preferred",
+      "name": "YouTube transcript available",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "fail",
+      "passed": false,
+      "actualUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "docTitle": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) - YouTube",
+      "title": "Rick Astley",
+      "method": "youtube-metadata",
+      "pageType": "video",
+      "contentLength": 2244,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Rick Astley 频道：Rick Astley 简介： The official video for “Never Gonna Give You Up” by Rick Astley. Never: The Autobiography 📚 OUT NOW! Follow this link t",
+      "qualityWarnings": [
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；captionTracks 返回为空；页面未暴露可用 captionTracks；get_transcript 请求失败 HTTP 400；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "bodyTextLength": 2870,
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 829,
+          "error": "captionTracks 返回为空",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 208,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 325,
+          "error": "get_transcript 请求失败 HTTP 400",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "visible-transcript-panel-click",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2436,
+          "error": "页面未找到可点击的 Transcript 入口",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "dQw4w9WgXcQ",
+        "title": "Rick Astley",
+        "channel": "Rick Astley",
+        "description": "The official video for “Never Gonna Give You Up” by Rick Astley.\nNever: The Autobiography 📚 OUT NOW!\nFollow this link to get your copy and listen to Rick’s ‘Never’ playlist ❤️ #RickAstleyNever\n“Never Gonna Give You Up” was a global smash on its release in July 1987, topping the charts in 25 countries including Rick’s native UK and the US Billboard Hot 100. It also won the Brit Award for Best single in 1988. Stock Aitken and Waterman wrote and produced the track which was the lead-off single and lead track from Rick’s debut LP “Whenever You Need Somebody”. The album was itself a UK number one and would go on to sell over 15 million copies worldwide.\nThe legendary video was directed by Simon West – who later went on to make Hollywood blockbusters such as Con Air, Lara Croft – Tomb Raider and The Expendables 2. The video passed the 1bn YouTube views milestone on 28 July 2021.\nSubscribe to the official Rick Astley YouTube channel: https://RickAstley.lnk.to/YTSubID\nFollow Rick Astley:\nFacebook: https://RickAstley.lnk.to/FBFollowID\nTwitter: https://RickAstley.lnk.to/TwitterID\nInstagram: https://RickAstley.lnk.to/InstagramID\nWebsite: https://RickAstley.lnk.to/storeID\nTikTok: https://RickAstley.lnk.to/TikTokID\nListen to Rick Astley:\nSpotify: https://RickAstley.lnk.to/SpotifyID\nApple Music: https://RickAstley.lnk.to/AppleMusicID\nAmazon Music: https://RickAstley.lnk.to/AmazonMusicID\nDeezer: https://RickAstley.lnk.to/DeezerID\nLyrics:\nWe’re no strangers to love\nYou know the rules and so do I\nA full commitment’s what I’m thinking of\nYou wouldn’t get this from any other guy\nI just wanna tell you how I’m feeling\nGotta make you understand\nNever gonna give you up\nNever gonna let you down\nNever gonna run around and desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie and hurt you\nWe’ve known each other for so long\nYour heart’s been aching but you’re too shy to say it\nInside we both know what’s been going on\nWe know the game and we’re gonna play it\nAnd if you ask me how I’m feeling\nDon’t tell me you’re too blind to see\nNever gonna give you up\nNever gonna let you down\nNever gonna run around and desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie and hurt you\n#RickAstley #NeverGonnaGiveYouUp #WheneverYouNeedSomebody #OfficialMusicVideo",
+        "chapters": [],
+        "transcriptAvailable": false,
+        "transcriptSource": "",
+        "transcriptProvider": "",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 829,
+            "error": "captionTracks 返回为空",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 208,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 325,
+            "error": "get_transcript 请求失败 HTTP 400",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "visible-transcript-panel-click",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2436,
+            "error": "页面未找到可点击的 Transcript 入口",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 0,
+        "durationSeconds": 213
+      },
+      "checks": {
+        "youtubeMethod": true,
+        "notBodyDump": true,
+        "uiNoise": [],
+        "hasTranscript": false,
+        "hasFallback": true
+      },
+      "evidence": "method=youtube-metadata, transcript=false, fallback=true, uiNoise=",
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\screenshots\\youtube-transcript-preferred.png"
+    },
+    {
+      "id": "youtube-caption-blocked-fallback",
+      "criterion": "youtube_fallback_when_transcript_unavailable",
+      "name": "YouTube transcript blocked fallback",
+      "url": "https://www.youtube.com/watch?v=arj7oStGLkU",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=arj7oStGLkU",
+      "docTitle": "Inside the Mind of a Master Procrastinator | Tim Urban | TED - YouTube",
+      "title": "Inside the Mind of a Master Procrastinator",
+      "method": "youtube-metadata",
+      "pageType": "video",
+      "contentLength": 1787,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Inside the Mind of a Master Procrastinator 频道：TED 简介： Tim Urban knows that procrastination doesn't make sense, but he's never been able to shake his ha",
+      "qualityWarnings": [
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；Failed to fetch；页面未暴露可用 captionTracks；get_transcript 请求失败 HTTP 400；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "bodyTextLength": 5966,
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 8,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2,
+          "error": "Failed to fetch",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 424,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 260,
+          "error": "get_transcript 请求失败 HTTP 400",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "visible-transcript-panel-click",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2306,
+          "error": "页面未找到可点击的 Transcript 入口",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "arj7oStGLkU",
+        "title": "Inside the Mind of a Master Procrastinator",
+        "channel": "TED",
+        "description": "Tim Urban knows that procrastination doesn't make sense, but he's never been able to shake his habit of waiting until the last minute to get things done. In this hilarious and insightful talk, Urban takes us on a journey through YouTube binges, Wikipedia rabbit holes and bouts of staring out the window -- and encourages us to think harder about what we're really procrastinating on, before we run out of time.\nFor more from Tim Urban, visit Wait But Why: http://www.waitbutwhy.com/\nVisit http://TED.com to get our entire library of TED Talks, transcripts, translations, personalized talk recommendations and more.\nThe TED Talks channel features the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and more. You're welcome to link to or embed these videos, forward them to others and share these ideas with people you know.\nFollow TED on Twitter: http://twitter.com/TEDTalks\nLike TED on Facebook: http://facebook.com/TED\nSubscribe to our channel: http://youtube.com/TED\nTED's videos may be used for non-commercial purposes under a Creative Commons License, Attribution–Non Commercial–No Derivatives (or the CC BY – NC – ND 4.0 International) and in accordance with our TED Talks Usage Policy https://www.ted.com/about/our-organization/our-policies-terms/ted-talks-usage-policy. For more information on using TED for commercial purposes (e.g. employee learning, in a film or online course), please submit a Media Request at https://media-requests.ted.com",
+        "chapters": [],
+        "transcriptAvailable": false,
+        "transcriptSource": "",
+        "transcriptProvider": "",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 8,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2,
+            "error": "Failed to fetch",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 424,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 260,
+            "error": "get_transcript 请求失败 HTTP 400",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "visible-transcript-panel-click",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2306,
+            "error": "页面未找到可点击的 Transcript 入口",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 0,
+        "durationSeconds": 844
+      },
+      "checks": {
+        "youtubeMethod": true,
+        "notBodyDump": true,
+        "uiNoise": [],
+        "hasTranscript": false,
+        "hasFallback": true
+      },
+      "evidence": "YouTube 使用专用提取路径，未把整页 body 文本作为摘要主体。",
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\screenshots\\youtube-caption-blocked-fallback.png"
+    },
+    {
+      "id": "youtube-dynamic-reextract",
+      "criterion": "dynamic_reextract_after_load",
+      "name": "YouTube dynamic re-extract",
+      "url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+      "docTitle": "Me at the zoo - YouTube",
+      "title": "Me at the zoo",
+      "method": "youtube-metadata",
+      "pageType": "video",
+      "contentLength": 270,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Me at the zoo 频道：jawed 简介： Microplastics are accumulating in human brains at an alarming rate “Nanoplastics and Human Health” with Matthew J Campen, Ph",
+      "qualityWarnings": [
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；captionTracks 返回为空；页面未暴露可用 captionTracks；get_transcript 请求失败 HTTP 400；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "bodyTextLength": 4250,
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 6,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 526,
+          "error": "captionTracks 返回为空",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 676,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 220,
+          "error": "get_transcript 请求失败 HTTP 400",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "visible-transcript-panel-click",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2264,
+          "error": "页面未找到可点击的 Transcript 入口",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "jNQXAC9IVRw",
+        "title": "Me at the zoo",
+        "channel": "jawed",
+        "description": "Microplastics are accumulating in human brains at an alarming rate\n“Nanoplastics and Human Health” with Matthew J Campen, PhD, MSPH\n00:00 Intro\n00:05 The cool thing\n00:17 End",
+        "chapters": [],
+        "transcriptAvailable": false,
+        "transcriptSource": "",
+        "transcriptProvider": "",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 6,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 526,
+            "error": "captionTracks 返回为空",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 676,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 220,
+            "error": "get_transcript 请求失败 HTTP 400",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "visible-transcript-panel-click",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2264,
+            "error": "页面未找到可点击的 Transcript 入口",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 0,
+        "durationSeconds": 19
+      },
+      "initialContentLength": 270,
+      "evidence": "initialLength=270, afterLength=270, method=youtube-metadata",
+      "screenshot": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\screenshots\\youtube-dynamic-reextract.png"
+    }
+  ],
+  "youtubeFixtures": [
+    {
+      "id": "youtube-fixture-player-caption-track",
+      "criterion": "youtube_transcript_preferred",
+      "name": "YouTube fixture: playerResponse captionTracks",
+      "url": "https://www.youtube.com/watch?v=fixturepl01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturepl01",
+      "title": "Fixture transcript video",
+      "method": "youtube-transcript",
+      "pageType": "video",
+      "contentLength": 314,
+      "contentPreview": "YouTube 视频标题：Fixture transcript video 频道：Fixture Channel 字幕/Transcript： Opening fixture transcript line from player response. Second transcript line that proves subtitles are the primary source. 简介： Fixture description t",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": true,
+      "transcriptSource": "player-response:en",
+      "transcriptProvider": "player-response-caption-tracks",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response:en",
+          "success": true,
+          "textLength": 122,
+          "elapsedMs": 6,
+          "error": "",
+          "lineCount": 2,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturepl01",
+        "title": "Fixture transcript video",
+        "channel": "Fixture Channel",
+        "description": "Fixture description that should remain available after transcript extraction.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": true,
+        "transcriptSource": "player-response:en",
+        "transcriptProvider": "player-response-caption-tracks",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response:en",
+            "success": true,
+            "textLength": 122,
+            "elapsedMs": 6,
+            "error": "",
+            "lineCount": 2,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/api/timedtext?v=fixturepl01&lang=en&fmt=json3",
+          "method": "GET",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-transcript; source=player-response:en; fetches=1"
+    },
+    {
+      "id": "youtube-fixture-partial-visible-prefers-caption",
+      "criterion": "youtube_transcript_preferred",
+      "name": "YouTube fixture: partial visible transcript prefers captionTracks",
+      "url": "https://www.youtube.com/watch?v=fixturepv01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturepv01",
+      "title": "Fixture partial visible transcript with full captions",
+      "method": "youtube-transcript",
+      "pageType": "video",
+      "contentLength": 449,
+      "contentPreview": "YouTube 视频标题：Fixture partial visible transcript with full captions 频道：Fixture Channel 字幕/Transcript： Full caption opening line proves the partial visible transcript was not trusted. Full caption second line provides enou",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": true,
+      "transcriptSource": "player-response:en",
+      "transcriptProvider": "player-response-caption-tracks",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "youtube-visible-transcript-probe",
+          "success": false,
+          "textLength": 22,
+          "elapsedMs": 1,
+          "error": "可见 Transcript DOM 仅作为候选探测，优先使用完整字幕来源",
+          "lineCount": 2,
+          "partial": true,
+          "reason": "visible transcript appears partial"
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response:en",
+          "success": true,
+          "textLength": 236,
+          "elapsedMs": 1,
+          "error": "",
+          "lineCount": 3,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturepv01",
+        "title": "Fixture partial visible transcript with full captions",
+        "channel": "Fixture Channel",
+        "description": "Description should remain secondary when full captions are available.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": true,
+        "transcriptSource": "player-response:en",
+        "transcriptProvider": "player-response-caption-tracks",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "youtube-visible-transcript-probe",
+            "success": false,
+            "textLength": 22,
+            "elapsedMs": 1,
+            "error": "可见 Transcript DOM 仅作为候选探测，优先使用完整字幕来源",
+            "lineCount": 2,
+            "partial": true,
+            "reason": "visible transcript appears partial"
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response:en",
+            "success": true,
+            "textLength": 236,
+            "elapsedMs": 1,
+            "error": "",
+            "lineCount": 3,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/api/timedtext?v=fixturepv01&lang=en&fmt=json3",
+          "method": "GET",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-transcript; source=player-response:en; fetches=1"
+    },
+    {
+      "id": "youtube-fixture-youtubei-caption-track",
+      "criterion": "youtube_transcript_preferred",
+      "name": "YouTube fixture: youtubei/player captionTracks",
+      "url": "https://www.youtube.com/watch?v=fixtureyi01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixtureyi01",
+      "title": "Fixture youtubei transcript video",
+      "method": "youtube-transcript",
+      "pageType": "video",
+      "contentLength": 305,
+      "contentPreview": "YouTube 视频标题：Fixture youtubei transcript video 频道：Fixture Channel 字幕/Transcript： Transcript line returned by mocked youtubei player metadata. This line verifies the secondary caption discovery path. 简介： Fixture descripti",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": true,
+      "transcriptSource": "youtubei-player:en",
+      "transcriptProvider": "youtubei-player-caption-tracks",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 1,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player:en",
+          "success": true,
+          "textLength": 117,
+          "elapsedMs": 2,
+          "error": "",
+          "lineCount": 2,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixtureyi01",
+        "title": "Fixture youtubei transcript video",
+        "channel": "Fixture Channel",
+        "description": "Fixture description for youtubei fallback transcript extraction.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": true,
+        "transcriptSource": "youtubei-player:en",
+        "transcriptProvider": "youtubei-player-caption-tracks",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 1,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player:en",
+            "success": true,
+            "textLength": 117,
+            "elapsedMs": 2,
+            "error": "",
+            "lineCount": 2,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/youtubei/v1/player?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        },
+        {
+          "url": "https://www.youtube.com/api/timedtext?v=fixtureyi01&lang=en&fmt=json3",
+          "method": "GET",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-transcript; source=youtubei-player:en; fetches=2"
+    },
+    {
+      "id": "youtube-fixture-partial-visible-fallback",
+      "criterion": "youtube_fallback_when_transcript_unavailable",
+      "name": "YouTube fixture: partial visible transcript falls back to metadata",
+      "url": "https://www.youtube.com/watch?v=fixturepv02",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturepv02",
+      "title": "Fixture partial visible transcript fallback",
+      "method": "youtube-metadata",
+      "pageType": "video",
+      "contentLength": 274,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Fixture partial visible transcript fallback 频道：Fixture Channel 简介： Fallback description should be used because the visible transcript is only a tiny re",
+      "qualityWarnings": [
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "检测到局部字幕，未作为完整视频摘要依据。",
+        "YouTube 字幕读取失败：可见 Transcript DOM 仅作为候选探测，优先使用完整字幕来源；页面未暴露可用 captionTracks；页面未暴露 getTranscriptEndpoint；可见 Transcript 片段未达到完整性门槛，疑似只包含当前渲染区域",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "youtube-visible-transcript-probe",
+          "success": false,
+          "textLength": 22,
+          "elapsedMs": 0,
+          "error": "可见 Transcript DOM 仅作为候选探测，优先使用完整字幕来源",
+          "lineCount": 2,
+          "partial": true,
+          "reason": "visible transcript appears partial"
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript-endpoint",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露 getTranscriptEndpoint",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "youtube-visible-transcript-scroll",
+          "success": false,
+          "textLength": 22,
+          "elapsedMs": 185,
+          "error": "可见 Transcript 片段未达到完整性门槛，疑似只包含当前渲染区域",
+          "lineCount": 2,
+          "partial": true,
+          "reason": "visible transcript appears partial"
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturepv02",
+        "title": "Fixture partial visible transcript fallback",
+        "channel": "Fixture Channel",
+        "description": "Fallback description should be used because the visible transcript is only a tiny rendered fragment.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": false,
+        "transcriptSource": "",
+        "transcriptProvider": "",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "youtube-visible-transcript-probe",
+            "success": false,
+            "textLength": 22,
+            "elapsedMs": 0,
+            "error": "可见 Transcript DOM 仅作为候选探测，优先使用完整字幕来源",
+            "lineCount": 2,
+            "partial": true,
+            "reason": "visible transcript appears partial"
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript-endpoint",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露 getTranscriptEndpoint",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "youtube-visible-transcript-scroll",
+            "success": false,
+            "textLength": 22,
+            "elapsedMs": 185,
+            "error": "可见 Transcript 片段未达到完整性门槛，疑似只包含当前渲染区域",
+            "lineCount": 2,
+            "partial": true,
+            "reason": "visible transcript appears partial"
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/youtubei/v1/player?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-metadata; source=-; fetches=1"
+    },
+    {
+      "id": "youtube-fixture-scrollable-transcript-panel",
+      "criterion": "youtube_transcript_preferred",
+      "name": "YouTube fixture: scrollable transcript panel",
+      "url": "https://www.youtube.com/watch?v=fixturesc01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturesc01",
+      "title": "Fixture scrollable transcript panel video",
+      "method": "youtube-transcript",
+      "pageType": "video",
+      "contentLength": 894,
+      "contentPreview": "YouTube 视频标题：Fixture scrollable transcript panel video 频道：Fixture Channel 字幕/Transcript： Scrollable transcript opening line with enough detail to identify the beginning. Scrollable transcript second line explains the fir",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": true,
+      "transcriptSource": "youtube-visible-transcript-scroll",
+      "transcriptProvider": "visible-transcript-panel-click",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 1,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript-endpoint",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露 getTranscriptEndpoint",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "youtube-visible-transcript-scroll",
+          "success": true,
+          "textLength": 681,
+          "elapsedMs": 2791,
+          "error": "",
+          "lineCount": 9,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturesc01",
+        "title": "Fixture scrollable transcript panel video",
+        "channel": "Fixture Channel",
+        "description": "Scrollable panel description should remain available after transcript extraction.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": true,
+        "transcriptSource": "youtube-visible-transcript-scroll",
+        "transcriptProvider": "visible-transcript-panel-click",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 1,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript-endpoint",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露 getTranscriptEndpoint",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "youtube-visible-transcript-scroll",
+            "success": true,
+            "textLength": 681,
+            "elapsedMs": 2791,
+            "error": "",
+            "lineCount": 9,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/youtubei/v1/player?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-transcript; source=youtube-visible-transcript-scroll; fetches=1"
+    },
+    {
+      "id": "youtube-fixture-get-transcript-endpoint",
+      "criterion": "youtube_transcript_preferred",
+      "name": "YouTube fixture: get_transcript endpoint",
+      "url": "https://www.youtube.com/watch?v=fixturegt01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturegt01",
+      "title": "Fixture transcript endpoint video",
+      "method": "youtube-transcript",
+      "pageType": "video",
+      "contentLength": 293,
+      "contentPreview": "YouTube 视频标题：Fixture transcript endpoint video 频道：Fixture Channel 字幕/Transcript： This line verifies the transcript panel endpoint path. Transcript line returned by mocked get transcript endpoint. 简介： Fixture description ",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": true,
+      "transcriptSource": "youtube-get-transcript",
+      "transcriptProvider": "youtube-get-transcript-endpoint",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 1,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript",
+          "success": true,
+          "textLength": 114,
+          "elapsedMs": 1,
+          "error": "",
+          "lineCount": 2,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturegt01",
+        "title": "Fixture transcript endpoint video",
+        "channel": "Fixture Channel",
+        "description": "Fixture description for transcript endpoint extraction.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": true,
+        "transcriptSource": "youtube-get-transcript",
+        "transcriptProvider": "youtube-get-transcript-endpoint",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 1,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript",
+            "success": true,
+            "textLength": 114,
+            "elapsedMs": 1,
+            "error": "",
+            "lineCount": 2,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/youtubei/v1/player?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        },
+        {
+          "url": "https://www.youtube.com/youtubei/v1/get_transcript?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-transcript; source=youtube-get-transcript; fetches=2"
+    },
+    {
+      "id": "youtube-fixture-short-description-fallback",
+      "criterion": "youtube_fallback_when_transcript_unavailable",
+      "name": "YouTube fixture: metadata fallback with description",
+      "url": "https://www.youtube.com/watch?v=fixturefb01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturefb01",
+      "title": "Fixture metadata fallback video",
+      "method": "youtube-metadata",
+      "pageType": "video",
+      "contentLength": 234,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Fixture metadata fallback video 频道：Fixture Channel 简介： Fallback description that should be used when subtitles are unavailable. 章节： 1. 1:15 Key point 2",
+      "qualityWarnings": [
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 1,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript-endpoint",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 1,
+          "error": "页面未暴露 getTranscriptEndpoint",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "visible-transcript-panel-click",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2160,
+          "error": "页面未找到可点击的 Transcript 入口",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturefb01",
+        "title": "Fixture metadata fallback video",
+        "channel": "Fixture Channel",
+        "description": "Fallback description that should be used when subtitles are unavailable.",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": false,
+        "transcriptSource": "",
+        "transcriptProvider": "",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 1,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript-endpoint",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 1,
+            "error": "页面未暴露 getTranscriptEndpoint",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "visible-transcript-panel-click",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2160,
+            "error": "页面未找到可点击的 Transcript 入口",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": true,
+        "descriptionSource": "videoDetails.shortDescription",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/youtubei/v1/player?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-metadata; source=-; fetches=1"
+    },
+    {
+      "id": "youtube-fixture-generic-meta-description",
+      "criterion": "youtube_fallback_when_transcript_unavailable",
+      "name": "YouTube fixture: generic meta description ignored",
+      "url": "https://www.youtube.com/watch?v=fixturegm01",
+      "status": "pass",
+      "passed": true,
+      "actualUrl": "https://www.youtube.com/watch?v=fixturegm01",
+      "title": "Fixture generic metadata video",
+      "method": "youtube-metadata",
+      "pageType": "video",
+      "contentLength": 156,
+      "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Fixture generic metadata video 频道：Fixture Channel 章节： 1. 1:15 Key point 2. 0:00 Opening",
+      "qualityWarnings": [
+        "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+        "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；页面未暴露可用 captionTracks；页面未暴露 getTranscriptEndpoint；页面未找到可点击的 Transcript 入口",
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "error": "",
+      "transcriptAvailable": false,
+      "transcriptSource": "",
+      "transcriptProvider": "",
+      "transcriptAttempts": [
+        {
+          "provider": "visible-transcript-dom",
+          "source": "visible-transcript-dom",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未显示可读取的 Transcript DOM",
+          "lineCount": 0
+        },
+        {
+          "provider": "player-response-caption-tracks",
+          "source": "player-response",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtubei-player-caption-tracks",
+          "source": "youtubei-player",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 1,
+          "error": "页面未暴露可用 captionTracks",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "youtube-get-transcript-endpoint",
+          "source": "youtube-get-transcript-endpoint",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 0,
+          "error": "页面未暴露 getTranscriptEndpoint",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        },
+        {
+          "provider": "visible-transcript-panel-click",
+          "source": "visible-transcript-panel-click",
+          "success": false,
+          "textLength": 0,
+          "elapsedMs": 2158,
+          "error": "页面未找到可点击的 Transcript 入口",
+          "lineCount": 0,
+          "partial": false,
+          "reason": ""
+        }
+      ],
+      "youtube": {
+        "videoId": "fixturegm01",
+        "title": "Fixture generic metadata video",
+        "channel": "Fixture Channel",
+        "description": "",
+        "chapters": [
+          {
+            "title": "Key point",
+            "time": "1:15"
+          },
+          {
+            "title": "Opening",
+            "time": "0:00"
+          }
+        ],
+        "transcriptAvailable": false,
+        "transcriptSource": "",
+        "transcriptProvider": "",
+        "transcriptAttempts": [
+          {
+            "provider": "visible-transcript-dom",
+            "source": "visible-transcript-dom",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未显示可读取的 Transcript DOM",
+            "lineCount": 0
+          },
+          {
+            "provider": "player-response-caption-tracks",
+            "source": "player-response",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtubei-player-caption-tracks",
+            "source": "youtubei-player",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 1,
+            "error": "页面未暴露可用 captionTracks",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "youtube-get-transcript-endpoint",
+            "source": "youtube-get-transcript-endpoint",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 0,
+            "error": "页面未暴露 getTranscriptEndpoint",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          },
+          {
+            "provider": "visible-transcript-panel-click",
+            "source": "visible-transcript-panel-click",
+            "success": false,
+            "textLength": 0,
+            "elapsedMs": 2158,
+            "error": "页面未找到可点击的 Transcript 入口",
+            "lineCount": 0,
+            "partial": false,
+            "reason": ""
+          }
+        ],
+        "hasDescription": false,
+        "descriptionSource": "",
+        "chapterCount": 2,
+        "durationSeconds": 600
+      },
+      "fetchCalls": [
+        {
+          "url": "https://www.youtube.com/youtubei/v1/player?key=fixture-api-key",
+          "method": "POST",
+          "credentials": "omit"
+        }
+      ],
+      "evidence": "fixture passed; method=youtube-metadata; source=-; fetches=1"
+    }
+  ],
+  "genericVideoFixtures": [
+    {
+      "id": "generic-video-track-vtt",
+      "criterion": "generic_video_transcript",
+      "name": "Generic video fixture: HTML track VTT",
+      "url": "https://example.com/generic-video-track",
+      "status": "pass",
+      "passed": true,
+      "title": "Generic Video With Captions",
+      "method": "video-transcript",
+      "pageType": "video",
+      "contentLength": 175,
+      "contentPreview": "字幕/Transcript： Generic fixture caption line one. Generic fixture caption line two proves track subtitles are used. 简介： A fixture video page with captions for extraction tests.",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "transcriptAvailable": true,
+      "transcriptSource": "html-track:en",
+      "evidence": "generic transcript extracted; source=html-track:en"
+    },
+    {
+      "id": "generic-video-visible-transcript",
+      "criterion": "generic_video_transcript",
+      "name": "Generic video fixture: visible transcript",
+      "url": "https://example.com/generic-visible-transcript",
+      "status": "pass",
+      "passed": true,
+      "title": "Generic Video With Visible Transcript",
+      "method": "video-transcript",
+      "pageType": "video",
+      "contentLength": 176,
+      "contentPreview": "字幕/Transcript： Visible transcript line one from the page.Visible transcript line two from the transcript container. 简介： A fixture video page with captions for extraction tests.",
+      "qualityWarnings": [
+        "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+      ],
+      "transcriptAvailable": true,
+      "transcriptSource": "visible-transcript",
+      "evidence": "generic transcript extracted; source=visible-transcript"
+    }
+  ],
+  "userTranscriptApi": [
+    {
+      "id": "sw_user_transcript_api_success",
+      "name": "Service Worker user transcript API success",
+      "criterion": "youtube_transcript_preferred",
+      "status": "pass",
+      "passed": true,
+      "method": "youtube-transcript",
+      "transcriptAvailable": true,
+      "evidence": "Service Worker 使用用户后端字幕升级 YouTube 内容，并清洗 HTML payload。"
+    },
+    {
+      "id": "sw_user_transcript_api_minimal_request",
+      "name": "Service Worker user transcript API minimal request",
+      "criterion": "model_request_minimal_content",
+      "status": "pass",
+      "passed": true,
+      "evidence": "用户字幕后端请求只包含 videoId/url/languages/maxChars，密钥只在 Authorization header。"
+    },
+    {
+      "id": "sw_user_transcript_api_failure_fallback",
+      "name": "Service Worker user transcript API failure fallback",
+      "criterion": "youtube_fallback_when_transcript_unavailable",
+      "status": "pass",
+      "passed": true,
+      "method": "youtube-metadata",
+      "transcriptAvailable": false,
+      "evidence": "用户字幕后端失败时保留 YouTube metadata fallback，并明确提示用户。"
+    }
+  ],
+  "promptRequests": [
+    {
+      "id": "prompt_untrusted_boundary",
+      "criterion": "prompt_injection_defense",
+      "status": "pass",
+      "evidence": "系统 prompt 和用户 prompt 必须声明网页内容/字幕/Transcript 不可信，并要求简体中文输出。",
+      "passed": true
+    },
+    {
+      "id": "prompt_content_limit",
+      "criterion": "long_page_length_control",
+      "status": "pass",
+      "evidence": "requestBodyLength=8735",
+      "passed": true
+    },
+    {
+      "id": "request_no_api_key_in_body",
+      "criterion": "model_request_minimal_content",
+      "status": "pass",
+      "evidence": "API Key 只能出现在 Authorization header，不能进入 JSON prompt body。",
+      "passed": true
+    },
+    {
+      "id": "image_url_stripped_before_prompt",
+      "criterion": "model_request_minimal_content",
+      "status": "pass",
+      "evidence": "prepareSummaryContent 应移除图片 URL 噪声。",
+      "passed": true
+    },
+    {
+      "id": "llm_response_captured_for_xss_check",
+      "criterion": "xss_safe_rendering",
+      "status": "pass",
+      "evidence": "假模型返回 HTML payload，后续由 UI 静态断言确认使用 textContent/value 渲染。",
+      "passed": true
+    }
+  ],
+  "staticSafety": [
+    {
+      "id": "extract_removes_forms_and_passwords",
+      "criterion": "model_request_minimal_content",
+      "status": "pass",
+      "evidence": "提取前 DOM clone 清理 form/input/textarea，并识别 password/login 页面。",
+      "passed": true
+    },
+    {
+      "id": "extract_does_not_read_cookie",
+      "criterion": "model_request_minimal_content",
+      "status": "pass",
+      "evidence": "提取、摘要和 LLM 客户端源码不得读取 document.cookie。",
+      "passed": true
+    },
+    {
+      "id": "webpage_summary_uses_extracted_content_only",
+      "criterion": "model_request_minimal_content",
+      "status": "pass",
+      "evidence": "总结当前网页时使用提取正文生成摘要，保存摘要笔记时正文为空，不把历史/手写笔记拼进网页摘要请求。",
+      "passed": true
+    },
+    {
+      "id": "readability_uses_clean_document_clone",
+      "criterion": "ordinary_article_noise_filtering",
+      "status": "pass",
+      "evidence": "Readability 使用清理后的 document clone，避免修改真实页面并减少噪声。",
+      "passed": true
+    },
+    {
+      "id": "summary_render_uses_textcontent",
+      "criterion": "xss_safe_rendering",
+      "status": "pass",
+      "evidence": "摘要结果使用 textContent，编辑器 textarea 使用 value，列表 HTML 插值经过 escapeHtml。",
+      "passed": true
+    },
+    {
+      "id": "youtube_no_body_innertext_main_path",
+      "criterion": "youtube_no_body_innertext",
+      "status": "pass",
+      "evidence": "YouTube 专用分支不以 document.body.innerText 作为主体内容来源。",
+      "passed": true
+    },
+    {
+      "id": "youtube_transcript_provider_pipeline",
+      "criterion": "youtube_transcript_preferred",
+      "status": "pass",
+      "evidence": "YouTube 字幕提取已整理为 provider 管线，可继续接入可选外部 provider。",
+      "passed": true
+    },
+    {
+      "id": "youtube_user_transcript_api_static",
+      "criterion": "youtube_transcript_preferred",
+      "status": "pass",
+      "evidence": "Service Worker 已接入可选用户 YouTube 字幕后端，后端以 yt-dlp 为第一 provider。",
+      "passed": true
+    }
+  ],
+  "youtubeConclusion": [
+    "YouTube transcript available: fail; method=youtube-metadata; transcript=no; method=youtube-metadata, transcript=false, fallback=true, uiNoise=",
+    "YouTube transcript blocked fallback: pass; method=youtube-metadata; transcript=no; YouTube 使用专用提取路径，未把整页 body 文本作为摘要主体。",
+    "YouTube dynamic re-extract: pass; method=youtube-metadata; transcript=no; initialLength=270, afterLength=270, method=youtube-metadata",
+    "YouTube fixture: playerResponse captionTracks: pass; method=youtube-transcript; transcript=yes; fixture passed; method=youtube-transcript; source=player-response:en; fetches=1",
+    "YouTube fixture: partial visible transcript prefers captionTracks: pass; method=youtube-transcript; transcript=yes; fixture passed; method=youtube-transcript; source=player-response:en; fetches=1",
+    "YouTube fixture: youtubei/player captionTracks: pass; method=youtube-transcript; transcript=yes; fixture passed; method=youtube-transcript; source=youtubei-player:en; fetches=2",
+    "YouTube fixture: partial visible transcript falls back to metadata: pass; method=youtube-metadata; transcript=no; fixture passed; method=youtube-metadata; source=-; fetches=1",
+    "YouTube fixture: scrollable transcript panel: pass; method=youtube-transcript; transcript=yes; fixture passed; method=youtube-transcript; source=youtube-visible-transcript-scroll; fetches=1",
+    "YouTube fixture: get_transcript endpoint: pass; method=youtube-transcript; transcript=yes; fixture passed; method=youtube-transcript; source=youtube-get-transcript; fetches=2",
+    "YouTube fixture: metadata fallback with description: pass; method=youtube-metadata; transcript=no; fixture passed; method=youtube-metadata; source=-; fetches=1",
+    "YouTube fixture: generic meta description ignored: pass; method=youtube-metadata; transcript=no; fixture passed; method=youtube-metadata; source=-; fetches=1",
+    "Service Worker user transcript API success: pass; method=youtube-transcript; transcript=yes; Service Worker 使用用户后端字幕升级 YouTube 内容，并清洗 HTML payload。",
+    "Service Worker user transcript API failure fallback: pass; method=youtube-metadata; transcript=no; 用户字幕后端失败时保留 YouTube metadata fallback，并明确提示用户。"
+  ],
+  "artifacts": {
+    "resultsJson": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\results.json",
+    "resultsMd": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\results.md",
+    "screenshotDir": "C:\\Users\\okura\\Desktop\\code\\chrome插件日记\\test-artifacts\\real-web-extraction\\screenshots"
+  }
+}

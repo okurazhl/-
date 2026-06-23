@@ -386,7 +386,7 @@ async function startSidepanelServer(extractedResults) {
         window.__messages.push(message);
         if (message.action === 'getActiveTab') return { success: true, data: payload.tab };
         if (message.action === 'extractPage') return payload.extractResponse;
-        if (message.action === 'summarize') return { success: true, summary: '测试摘要', method: 'tfidf' };
+        if (message.action === 'summarize') return { success: true, summary: '测试摘要', method: 'llm' };
         return { success: false, error: 'unknown action ' + message.action };
       }
     },

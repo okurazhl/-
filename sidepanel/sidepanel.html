@@ -14,11 +14,8 @@
         <div class="brand-mark">记</div>
         <div class="brand-copy">
           <div class="brand-title">网页笔记助手</div>
-          <div class="brand-subtitle">提取、整理、总结当前网页</div>
+          <div class="brand-subtitle">打开网页后，一键总结并保存到本地</div>
         </div>
-      </div>
-      <div class="toolbar-row">
-        <input type="text" id="searchInput" class="search-input" placeholder="搜索笔记..." />
         <div class="toolbar-actions">
           <select id="exportSelect" class="toolbar-btn" title="导出">
             <option value="" disabled selected>导出 ▼</option>
@@ -30,57 +27,145 @@
           <button id="settingsBtn" class="toolbar-btn" title="设置">⚙</button>
         </div>
       </div>
-      <!-- 快捷操作按钮 -->
-      <div class="toolbar-row action-row">
-        <button id="extractPageBtn" class="action-btn primary" disabled aria-disabled="true">📄 提取页面</button>
-        <button id="summarizePageBtn" class="action-btn primary" disabled aria-disabled="true">✨ 总结当前网页</button>
-        <button id="quickUrlBtn" class="action-btn" disabled aria-disabled="true">🔗 快速添加 URL</button>
-        <button id="quickSelectionBtn" class="action-btn" disabled aria-disabled="true">✂ 添加选中文本</button>
-      </div>
-      <div id="pageStatus" class="page-status warning" role="status" aria-live="polite">
-        <span id="pageStatusIcon" class="page-status-icon">!</span>
-        <div class="page-status-body">
-          <div id="pageStatusTitle" class="page-status-title">未绑定网页</div>
-          <div id="pageStatusDetail" class="page-status-detail">请在目标网页点击扩展图标打开侧边栏</div>
-        </div>
-      </div>
+      <nav id="mainPageTabs" class="main-page-tabs" role="tablist" aria-label="侧边栏页面">
+        <button id="savedPageTab" class="main-page-tab active" type="button" role="tab"
+                aria-selected="true" aria-controls="savedPage">
+          摘要/笔记
+        </button>
+        <button id="extractPageTab" class="main-page-tab" type="button" role="tab"
+                aria-selected="false" aria-controls="extractPage">
+          提取
+        </button>
+      </nav>
     </header>
 
-    <!-- 筛选栏 -->
-    <div id="filterBar">
-      <select id="categoryFilter" class="filter-select">
-        <option value="">全部分类</option>
-      </select>
-      <select id="sortOrder" class="filter-select">
-        <option value="newest">最新优先</option>
-        <option value="oldest">最早优先</option>
-        <option value="updated">最近更新</option>
-        <option value="title">标题排序</option>
-      </select>
-      <button id="newNoteBtn" class="action-btn primary">+ 新建笔记</button>
-    </div>
+    <section id="extractPage" class="main-page extract-page hidden" role="tabpanel" aria-labelledby="extractPageTab">
+      <section class="page-workflow" aria-label="当前网页摘要">
+        <div class="workflow-primary">
+          <div id="pageStatus" class="page-status warning" role="status" aria-live="polite">
+            <span id="pageStatusIcon" class="page-status-icon">!</span>
+            <div class="page-status-body">
+              <div id="pageStatusTitle" class="page-status-title">未绑定网页</div>
+              <div id="pageStatusDetail" class="page-status-detail">请在目标网页点击扩展图标打开侧边栏</div>
+            </div>
+          </div>
+          <button id="summarizePageBtn" class="action-btn primary main-summary-btn" disabled aria-disabled="true">
+            总结并自动保存
+          </button>
+        </div>
+        <div class="workflow-facts" aria-live="polite">
+          <div class="workflow-fact">
+            <span>摘要来源</span>
+            <strong id="summarySourceHint">等待检测</strong>
+          </div>
+          <div class="workflow-fact">
+            <span>摘要服务</span>
+            <strong id="apiConfigHint">检查配置中</strong>
+          </div>
+          <div class="workflow-fact">
+            <span>保存状态</span>
+            <strong id="summarySaveHint">生成后自动保存</strong>
+          </div>
+        </div>
+        <div id="workflowAdvice" class="workflow-advice hidden">
+          <span id="workflowAdviceText"></span>
+          <button id="openApiSettingsBtn" class="toolbar-btn hidden" type="button">去设置</button>
+        </div>
+        <div class="toolbar-row action-row secondary-action-row">
+          <button id="extractPageBtn" class="action-btn" disabled aria-disabled="true">提取成笔记</button>
+          <button id="quickSelectionBtn" class="action-btn" disabled aria-disabled="true">保存选中文字</button>
+          <button id="quickUrlBtn" class="action-btn" disabled aria-disabled="true">保存链接</button>
+        </div>
+      </section>
+    </section>
 
-    <!-- 笔记列表 -->
-    <main id="noteList">
-      <div id="emptyState" class="empty-state">
-        <div class="empty-icon">📝</div>
-        <p>还没有笔记</p>
-        <p class="empty-hint">点击上方按钮开始记录</p>
+    <section id="savedPage" class="main-page saved-page" role="tabpanel" aria-labelledby="savedPageTab">
+      <div class="toolbar-row search-row">
+        <input type="text" id="searchInput" class="search-input" placeholder="搜索已保存的笔记..." />
+        <button id="toggleLearningSummaryBtn" class="toolbar-btn learning-summary-toggle" type="button"
+                aria-expanded="false" aria-controls="learningSummaryPanel" title="展开学习总结">
+          复盘
+        </button>
       </div>
-    </main>
+
+      <section id="learningSummaryPanel" class="learning-summary-panel hidden" aria-label="学习总结">
+        <div class="learning-summary-head">
+          <div class="learning-summary-title">学习总结</div>
+          <div id="learningSummaryStatus" class="learning-summary-status" role="status" aria-live="polite">
+            选择周期后生成学习过程总结
+          </div>
+          <button id="collapseLearningSummaryBtn" class="toolbar-btn learning-summary-collapse" type="button">
+            收起
+          </button>
+        </div>
+        <div class="learning-summary-controls">
+          <div id="learningPeriodTabs" class="learning-period-tabs" role="group" aria-label="学习总结周期">
+            <button class="learning-period-tab active" type="button" data-learning-period="day" aria-pressed="true">本日</button>
+            <button class="learning-period-tab" type="button" data-learning-period="week" aria-pressed="false">本周</button>
+            <button class="learning-period-tab" type="button" data-learning-period="month" aria-pressed="false">本月</button>
+          </div>
+          <button id="summarizeLearningBtn" class="action-btn primary" type="button">生成总结</button>
+        </div>
+      </section>
+
+      <!-- 筛选栏 -->
+      <div id="filterBar">
+        <select id="categoryFilter" class="filter-select">
+          <option value="">全部分类</option>
+        </select>
+        <select id="sortOrder" class="filter-select">
+          <option value="updated" selected>最近更新</option>
+          <option value="newest">最新创建</option>
+          <option value="oldest">最早创建</option>
+        </select>
+        <button id="newNoteBtn" class="action-btn primary">+ 新建笔记</button>
+      </div>
+
+      <!-- 笔记列表 -->
+      <main id="noteList">
+        <div id="emptyState" class="empty-state">
+          <div class="empty-icon">📝</div>
+          <p>还没有笔记</p>
+          <p class="empty-hint">点击上方按钮开始记录</p>
+        </div>
+      </main>
+    </section>
 
     <!-- 网页摘要结果（默认隐藏） -->
     <div id="summaryResultPanel" class="summary-result-panel hidden">
       <div class="summary-result-header">
         <button id="closeSummaryResultBtn" class="toolbar-btn">← 返回列表</button>
-        <button id="openSavedSummaryBtn" class="action-btn">打开保存的摘要</button>
+        <div class="summary-result-heading">
+          <div id="summaryResultStateTitle" class="summary-result-state-title">摘要已保存</div>
+          <div id="summaryResultStateDetail" class="summary-result-state-detail">摘要和你的补充笔记分开保存。</div>
+        </div>
+        <div class="summary-result-actions">
+          <button id="saveSummaryResultNoteBtn" class="action-btn">保存我的笔记</button>
+          <button id="openSavedSummaryBtn" class="action-btn">打开摘要</button>
+        </div>
       </div>
       <div class="summary-result-body">
-        <div id="summaryResultSavedStatus" class="summary-save-status">已保存到本地</div>
-        <div id="summaryResultText" class="summary-result-text"></div>
-        <div id="summaryResultSource" class="summary-result-source hidden">
-          来源：<a id="summaryResultLink" href="#" target="_blank"></a>
+        <div class="summary-save-row">
+          <div id="summaryResultSavedStatus" class="summary-save-status">已保存到本地</div>
+          <span id="summaryResultSourceBadge" class="source-badge">网页正文</span>
         </div>
+        <div id="summaryResultSource" class="summary-source-panel hidden">
+          <div id="summaryResultTitle" class="summary-source-title"></div>
+          <div class="summary-source-link-row">
+            <a id="summaryResultLink" href="#" target="_blank"></a>
+            <span id="summaryResultHost" class="summary-source-host"></span>
+          </div>
+        </div>
+        <div id="summaryResultNotice" class="friendly-notice hidden" role="status" aria-live="polite"></div>
+        <section class="summary-display-section">
+          <div class="section-kicker">摘要</div>
+          <div id="summaryResultText" class="summary-result-text"></div>
+        </section>
+        <section class="summary-note-section">
+          <label for="summaryResultNote" class="summary-label">我的笔记</label>
+          <textarea id="summaryResultNote" class="summary-result-note" placeholder="在这里补充你的想法；不会覆盖上方摘要。"></textarea>
+          <div class="summary-note-hint">摘要已自动保存到本地；这里保存的是你的个人笔记。</div>
+        </section>
       </div>
     </div>
 
@@ -91,7 +176,7 @@
         <div class="editor-header-actions">
           <button id="saveNoteBtn" class="action-btn primary">💾 保存</button>
           <button id="previewSummaryPayloadBtn" class="action-btn hidden">查看发送内容</button>
-          <button id="insertSummaryBtn" class="action-btn hidden">插入到正文</button>
+          <button id="insertSummaryBtn" class="action-btn hidden">追加摘要到正文</button>
           <button id="summarizeNoteBtn" class="action-btn">✨ 生成摘要</button>
           <button id="cancelSummaryBtn" class="action-btn hidden">取消生成</button>
         </div>
@@ -107,18 +192,23 @@
             <input type="checkbox" id="notePinned" /> 📌 置顶
           </label>
         </div>
-        <textarea id="noteContent" class="editor-content" placeholder="在此输入笔记内容..."></textarea>
-        <div id="noteQualityWarnings" class="quality-warnings hidden" role="status" aria-live="polite"></div>
-        <div id="editorContentFooter" class="editor-content-footer">
-          <span id="charCount" class="char-count">0 字</span>
-          <span id="autoSaveIndicator" class="auto-save-indicator hidden">已自动保存</span>
-        </div>
         <div class="editor-summary-section">
-          <label class="summary-label">摘要（可直接编辑）：</label>
+          <label class="summary-label">摘要</label>
           <textarea id="noteSummary" class="editor-summary" placeholder="摘要尚未生成，点击“生成摘要”按钮..."></textarea>
         </div>
+        <div id="protectedContentNotice" class="protected-content-notice hidden"></div>
+        <div id="editorContentBlock" class="editor-content-section">
+          <label id="editorContentLabel" for="noteContent" class="summary-label">笔记正文</label>
+          <textarea id="noteContent" class="editor-content" placeholder="在此输入笔记内容..."></textarea>
+          <div id="editorContentFooter" class="editor-content-footer">
+            <span id="charCount" class="char-count">0 字</span>
+            <span id="autoSaveIndicator" class="auto-save-indicator hidden">已自动保存</span>
+          </div>
+        </div>
+        <div id="noteQualityWarnings" class="quality-warnings hidden" role="status" aria-live="polite"></div>
         <div id="noteSource" class="note-source hidden">
-          来源：<a id="sourceLink" href="#" target="_blank"></a>
+          <span id="noteSourceBadge" class="source-badge">网页正文</span>
+          <span>来源：</span><a id="sourceLink" href="#" target="_blank"></a>
         </div>
       </div>
     </div>
@@ -132,10 +222,14 @@
       <div class="settings-body">
         <div class="setting-group">
           <h4>LLM API 配置</h4>
-          <p class="setting-hint">配置云端大模型进行文章摘要（兼容 OpenAI 接口）</p>
+          <p class="setting-hint">摘要仅使用云端 LLM（兼容 OpenAI 接口）；未配置时不会生成本地摘要。</p>
           <label class="checkbox-label">
             <input type="checkbox" id="llmEnabled" /> 启用云端摘要
           </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="llmNoiseSelectionEnabled" /> 启用云端正文去噪（仅在提取质量较差时使用）
+          </label>
+          <p class="setting-hint">正文去噪只发送本地候选正文块，不发送完整 DOM、历史笔记或完整本地数据；默认关闭。</p>
           <label>API 地址</label>
           <input type="text" id="llmEndpoint" placeholder="https://api.deepseek.com/chat/completions" />
           <label>API 密钥</label>
@@ -147,6 +241,24 @@
           <p class="setting-note">⚠ 密钥仅保存在本地浏览器中；调用云端摘要时会作为 Authorization 发送给你配置的 API 地址，且该接口需要允许浏览器扩展跨域访问。</p>
           <label>模型名称</label>
           <input type="text" id="llmModel" placeholder="gpt-4o-mini" />
+        </div>
+        <div class="setting-group">
+          <h4>YouTube 字幕后端</h4>
+          <p class="setting-hint">当页面内 YouTube 字幕不可用时，调用你自建的 youtube-transcript-api 后端；只发送视频 ID、URL 和语言偏好。</p>
+          <label class="checkbox-label">
+            <input type="checkbox" id="youtubeTranscriptApiEnabled" /> 启用 YouTube 字幕后端
+          </label>
+          <label>后端地址</label>
+          <input type="text" id="youtubeTranscriptApiEndpoint" placeholder="http://127.0.0.1:8788/v1/youtube/transcript" />
+          <label>后端密钥</label>
+          <div class="api-key-row">
+            <input type="password" id="youtubeTranscriptApiKey" placeholder="transcript-api-key" />
+            <button id="toggleTranscriptApiKeyVisibility" class="toolbar-btn" type="button">👁</button>
+            <button id="clearTranscriptApiKeyBtn" class="toolbar-btn" type="button">清除</button>
+          </div>
+          <label>语言偏好</label>
+          <input type="text" id="youtubeTranscriptLanguages" placeholder="zh-CN, zh, en" />
+          <p class="setting-note">⚠ 字幕后端密钥仅保存在本地；密钥只作为 Authorization 请求头发送，不会进入请求正文或模型 prompt。</p>
         </div>
         <div class="setting-group">
           <h4>显示</h4>

@@ -27,7 +27,7 @@
     "contentPreview": "Using the Fetch APIThe Fetch API provides a JavaScript interface for making HTTP requests and processing the responses.Fetch is the modern replacement for XMLHttpRequest: unlike XMLHttpRequest, which uses callbacks, Fetch is promise-based and is integrated with features of the modern web such as service workers and Cro",
     "error": "",
     "errorCode": "",
-    "extractionMs": 3155,
+    "extractionMs": 4541,
     "display": {
       "statusTitle": "已提取当前页面内容",
       "statusDetail": "Using the Fetch API",
@@ -39,7 +39,7 @@
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 Using the Fetch API 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 13813 字 已",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ✓ 已提取当前页面内容 Using the Fetch API 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录",
       "messages": [
         {
           "action": "getActiveTab"
@@ -86,15 +86,15 @@
     "classifyReason": "no-strong-signal",
     "qualityWarnings": [
       "页面类型不明确，已使用通用正文提取。",
-      "页面正文可能主要在图片中；当前只记录了图片信息，未读取图片文字。",
-      "当前页面未匹配专用提取器，已使用通用回退提取。"
+      "当前页面未匹配专用提取器，已使用通用回退提取。",
+      "检测到正文图片，但当前浏览器未提供可用 OCR 能力，已保留图片信息。"
     ],
     "contentLength": 240,
     "excerpt": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶\n习近平党建思想内涵要义\n共产党员网\n打印\n纠错\n请先登录\n微信扫一扫\n×\n收听本文\n00:00/00:00\n图片内容：\n- 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/conte",
     "contentPreview": "发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 习近平党建思想内涵要义 共产党员网 打印 纠错 请先登录 微信扫一扫 × 收听本文 00:00/00:00 发布时间：2026年06月15日 17:10 来源：新华社 编辑：徐瑶 图片内容： - 图片 1（1000x4071）: https://p5.img.cctvpic.com/photoworkspace/contentimg/2026/06/15/2026061517005871012.jpg",
     "error": "",
     "errorCode": "",
-    "extractionMs": 3744,
+    "extractionMs": 2924,
     "display": {
       "statusTitle": "已提取部分页面内容",
       "statusDetail": "习近平党建思想内涵要义",
@@ -106,7 +106,7 @@
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": true,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 已提取部分页面内容 习近平党建思想内涵要义 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 提取质量提示 页面类型不明确，已使",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ! 已提取部分页面内容 习近平党建思想内涵要义 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 ",
       "messages": [
         {
           "action": "getActiveTab"
@@ -137,7 +137,7 @@
     "url": "https://en.wikipedia.org/wiki/Readability",
     "actualUrl": "https://en.wikipedia.org/wiki/Readability",
     "docTitle": "Readability - Wikipedia",
-    "bodySample": "Jump to content Main menu Search Donate Create account Log in Contents hide (Top) Definition Applications History Toggle History subsection Early research Reading ease Readability ",
+    "bodySample": "Jump to content Main menu Search Donate Create account Log in We owe you an explanation. June 22: An important update for readers in Japan. You deserve an explanation, so please do",
     "rawSuccess": true,
     "uxStatus": "usable",
     "okForUx": true,
@@ -152,24 +152,24 @@
     "confidence": 0.72,
     "classifyReason": "article-structure",
     "qualityWarnings": [],
-    "contentLength": 50791,
+    "contentLength": 50191,
     "excerpt": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with whi",
     "contentPreview": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with which a reader can understand a written text. The concept exists in both natural language and programming languages, though",
     "error": "",
     "errorCode": "",
-    "extractionMs": 3724,
+    "extractionMs": 6993,
     "display": {
       "statusTitle": "已提取当前页面内容",
       "statusDetail": "Readability",
       "editorOpen": true,
       "noteTitle": "Readability",
-      "noteContentLength": 50791,
+      "noteContentLength": 50191,
       "noteContentPreview": "ReadabilityFrom Wikipedia, the free encyclopediaFor the website, see Readability (service). For code readability, see Computer programming § Readability of source code.Readability is the ease with which a reader can unde",
       "hasHorizontalOverflow": false,
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 Readability 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 50791 字 已自动保存 摘要（",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ✓ 已提取当前页面内容 Readability 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 ",
       "messages": [
         {
           "action": "getActiveTab"
@@ -222,7 +222,7 @@
     "contentPreview": "Example DomainThis domain is for use in documentation examples without needing permission. Avoid use in operations.",
     "error": "",
     "errorCode": "",
-    "extractionMs": 2417,
+    "extractionMs": 2566,
     "display": {
       "statusTitle": "已提取部分页面内容",
       "statusDetail": "Example Domain",
@@ -234,7 +234,7 @@
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": true,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 已提取部分页面内容 Example Domain 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 提取质量提示 页面类型不明确",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ! 已提取部分页面内容 Example Domain 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回",
       "messages": [
         {
           "action": "getActiveTab"
@@ -265,7 +265,7 @@
     "url": "https://news.ycombinator.com/",
     "actualUrl": "https://news.ycombinator.com/",
     "docTitle": "Hacker News",
-    "bodySample": "Hacker Newsnew | past | comments | ask | show | jobs | submit login 1. I Stored a Website in a Favicon (timwehrle.de) 68 points by theanonymousone 2 hours ago | hide | 25 comments ",
+    "bodySample": "Hacker Newsnew | past | comments | ask | show | jobs | submit login 1. Deno Desktop (deno.com) 316 points by GeneralMaximus 3 hours ago | hide | 121 comments 2. GLM 5.2 vs. Opus (t",
     "rawSuccess": true,
     "uxStatus": "usable-with-warning",
     "okForUx": true,
@@ -281,24 +281,24 @@
     "qualityWarnings": [
       "当前页面更像列表/聚合页，摘要基于页面条目而非具体文章全文。"
     ],
-    "contentLength": 1497,
-    "excerpt": "页面类型：列表/聚合页\n页面标题：Hacker News\n以下为页面中的主要列表条目：\n1. I Stored a Website in a Favicon\n说明：68 points · 25 comments\n2. Data Compression Explained (2012)\n说明：92 points · 7 comments\n3. There are no instances in AT",
-    "contentPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目： 1. I Stored a Website in a Favicon 说明：68 points · 25 comments 2. Data Compression Explained (2012) 说明：92 points · 7 comments 3. There are no instances in ATProto 说明：416 points · 216 comments 4. The discovery that changed how scientists think about memory 说明：31 points · 3 comm",
+    "contentLength": 1468,
+    "excerpt": "页面类型：列表/聚合页\n页面标题：Hacker News\n以下为页面中的主要列表条目：\n1. Deno Desktop\n说明：316 points · 121 comments\n2. GLM 5.2 vs. Opus\n说明：105 points · 64 comments\n3. Codex logging bug may write TBs to local SSDs\n说明：59 points ·",
+    "contentPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目： 1. Deno Desktop 说明：316 points · 121 comments 2. GLM 5.2 vs. Opus 说明：105 points · 64 comments 3. Codex logging bug may write TBs to local SSDs 说明：59 points · 30 comments 4. Help I accidentally a wigglegram 说明：218 points · 38 comments 5. Did my old job only exist because of fra",
     "error": "",
     "errorCode": "",
-    "extractionMs": 3224,
+    "extractionMs": 3556,
     "display": {
       "statusTitle": "已提取部分页面内容",
       "statusDetail": "Hacker News",
       "editorOpen": true,
       "noteTitle": "Hacker News",
-      "noteContentLength": 1497,
-      "noteContentPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目： 1. I Stored a Website in a Favicon 说明：68 points · 25 comments 2. Data Compression Explained (2012) 说明：92 points · 7 comments 3. There are no instances in ATProto 说明：416 points ",
+      "noteContentLength": 1468,
+      "noteContentPreview": "页面类型：列表/聚合页 页面标题：Hacker News 以下为页面中的主要列表条目： 1. Deno Desktop 说明：316 points · 121 comments 2. GLM 5.2 vs. Opus 说明：105 points · 64 comments 3. Codex logging bug may write TBs to local SSDs 说明：59 points · 30 comments 4. Help",
       "hasHorizontalOverflow": false,
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": true,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 已提取部分页面内容 Hacker News 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 提取质量提示 当前页面更像列表/聚",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ! 已提取部分页面内容 Hacker News 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 ",
       "messages": [
         {
           "action": "getActiveTab"
@@ -349,7 +349,7 @@
     "contentPreview": "I have a few qualms with this app:1. For a Linux user, you can already build such a system yourself quite trivially by getting an FTP account, mounting it locally with curlftpfs, and then using SVN or CVS on the mounted filesystem. From Windows or Mac, this FTP account could be accessed through built-in software.2. It ",
     "error": "",
     "errorCode": "",
-    "extractionMs": 2933,
+    "extractionMs": 2872,
     "display": {
       "statusTitle": "已提取当前页面内容",
       "statusDetail": "My YC app: Dropbox",
@@ -361,7 +361,7 @@
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 My YC app: Dropbox 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 23810 字 已自",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ✓ 已提取当前页面内容 My YC app: Dropbox 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ",
       "messages": [
         {
           "action": "getActiveTab"
@@ -392,7 +392,7 @@
     "url": "https://github.com/openai/codex",
     "actualUrl": "https://github.com/openai/codex",
     "docTitle": "GitHub - openai/codex: Lightweight coding agent that runs in your terminal · GitHub",
-    "bodySample": "Skip to content Navigation Menu Platform Solutions Resources Open Source Enterprise Pricing Sign in Sign up openai / codex Public Notifications Fork 13.6k Star 92.2k Code Issues 5k",
+    "bodySample": "Skip to content Navigation Menu Platform Solutions Resources Open Source Enterprise Pricing Sign in Sign up openai / codex Public Notifications Fork 13.7k Star 92.6k Code Issues 5k",
     "rawSuccess": true,
     "uxStatus": "usable",
     "okForUx": true,
@@ -408,11 +408,11 @@
     "classifyReason": "github-readme",
     "qualityWarnings": [],
     "contentLength": 1916,
-    "excerpt": "仓库：openai/codex\n\nCodex CLI is a coding agent from OpenAI that runs locally on your computer.\nIf you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE.\nIf you want the des",
+    "excerpt": "仓库：openai/codex\nCodex CLI is a coding agent from OpenAI that runs locally on your computer.\nIf you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE.\nIf you want the des",
     "contentPreview": "仓库：openai/codex Codex CLI is a coding agent from OpenAI that runs locally on your computer. If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE. If you want the desktop app experience, run codex app or visit the Codex App page. If you are looking for the cloud-based agent from OpenAI,",
     "error": "",
     "errorCode": "",
-    "extractionMs": 4970,
+    "extractionMs": 8162,
     "display": {
       "statusTitle": "已提取当前页面内容",
       "statusDetail": "openai/codex",
@@ -424,7 +424,7 @@
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 openai/codex 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 1916 字 已自动保存 摘要（",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ✓ 已提取当前页面内容 openai/codex 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表",
       "messages": [
         {
           "action": "getActiveTab"
@@ -453,38 +453,44 @@
     "category": "视频页",
     "userTask": "用户想总结视频页，应明确没有字幕时只能总结页面可见信息",
     "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "actualUrl": "https://www.google.com/sorry/index?continue=https://www.youtube.com/watch%3Fv%3DdQw4w9WgXcQ&q=EgQ0TsD3GO2F2dEGIjCCev2osJ3Jeda8eXcy7JUWb090CxfbcB-B_Ox6aLm2hjAUxlAsityyMwvCNmVeLzYyAnJSWgFD",
-    "docTitle": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "bodySample": "关于此网页 我们的系统检测到您的计算机网络中存在异常流量。此网页用于确认这些请求是由您而不是自动程序发出的。为什么会这样？ IP 地址：52.78.192.247 时间：2026-06-20T07:36:14Z 网址：https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "rawSuccess": false,
-    "uxStatus": "failed",
-    "okForUx": false,
-    "extractionReason": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
-    "expectHits": [],
-    "actualTitle": "https://www.youtube.com/watch? v=dQw4w9WgXcQ",
-    "method": "login",
-    "pageType": "login",
-    "confidence": 0.84,
-    "classifyReason": "login-or-captcha",
-    "qualityWarnings": [],
-    "contentLength": 0,
-    "excerpt": "",
-    "contentPreview": "",
-    "error": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "actualUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "docTitle": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) - YouTube",
+    "bodySample": "JP 跳过导航 登录 Rick Astley-Are We There Yet? 0:03 / 3:33 Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) Rick Astley 451万位订阅者 订阅 1917万 分享 保存 17亿次观看 16年前 #RickAstle",
+    "rawSuccess": true,
+    "uxStatus": "partial",
+    "okForUx": true,
+    "extractionReason": "possible-boilerplate-or-gate-text",
+    "expectHits": [
+      "YouTube"
+    ],
+    "actualTitle": "Rick Astley",
+    "method": "youtube-metadata",
+    "pageType": "video",
+    "confidence": 0.76,
+    "classifyReason": "youtube-metadata-fallback",
+    "qualityWarnings": [
+      "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。",
+      "YouTube 字幕读取失败：页面未显示可读取的 Transcript DOM；captionTracks 返回为空；页面未暴露可用 captionTracks；get_transcript 请求失败 HTTP 400；页面未找到可点击的 Transcript 入口",
+      "当前页面可能是视频/音频页；如果没有字幕或简介，正文提取可能不完整。"
+    ],
+    "contentLength": 2244,
+    "excerpt": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。\nYouTube 视频标题：Rick Astley\n频道：Rick Astley\n简介：\nThe official video for “Never Gonna Give You Up” by Rick Astley.\nNever: The Autobiography 📚 OUT NOW",
+    "contentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Rick Astley 频道：Rick Astley 简介： The official video for “Never Gonna Give You Up” by Rick Astley. Never: The Autobiography 📚 OUT NOW! Follow this link to get your copy and listen to Rick’s ‘Never’ playlist ❤️ #RickAstleyNever “Never Gonna Give You Up” ",
+    "error": "",
     "errorCode": "",
-    "extractionMs": 4278,
+    "extractionMs": 12411,
     "display": {
-      "statusTitle": "提取失败",
-      "statusDetail": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
-      "editorOpen": false,
-      "noteTitle": "",
-      "noteContentLength": 0,
-      "noteContentPreview": "",
+      "statusTitle": "已提取部分页面内容",
+      "statusDetail": "Rick Astley",
+      "editorOpen": true,
+      "noteTitle": "Rick Astley",
+      "noteContentLength": 2244,
+      "noteContentPreview": "未能获取 YouTube 字幕/Transcript；摘要只能基于标题、简介和章节信息，不能代表完整视频内容。 YouTube 视频标题：Rick Astley 频道：Rick Astley 简介： The official video for “Never Gonna Give You Up” by Rick Astley. Never: The Autobiography 📚 OUT NOW! Follow this link t",
       "hasHorizontalOverflow": false,
       "actionRowOverflows": false,
       "toolbarOverflows": false,
-      "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 提取失败 当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 0 ",
+      "warningVisible": true,
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ! 已提取部分页面内容 Rick Astley 总结并自动保存 摘要来源 优先 YouTube 字幕；无字幕时用描述 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ←",
       "messages": [
         {
           "action": "getActiveTab"
@@ -535,7 +541,7 @@
     "contentPreview": "Buy MacBook Air starting at $999 with education savings.ShopFrom $1099 or $91.58/mo. for 12 mo.The M5 chip isn’t just an upgrade, it’s a game changer, delivering phenomenal performance. Prepare for liftoff.Up to 18 hours of battery life. Won’t call it a day until you do.A powerful platform for AI. And Apple Intelligenc",
     "error": "",
     "errorCode": "",
-    "extractionMs": 3769,
+    "extractionMs": 4070,
     "display": {
       "statusTitle": "已提取当前页面内容",
       "statusDetail": "MacBook Air 13-inch and MacBook Air 15-inch",
@@ -547,7 +553,7 @@
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ✓ 已提取当前页面内容 MacBook Air 13-inch and MacBook Air 15-inch 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ✓ 已提取当前页面内容 MacBook Air 13-inch and MacBook Air 15-inch 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 ",
       "messages": [
         {
           "action": "getActiveTab"
@@ -577,37 +583,40 @@
     "userTask": "用户遇到防护页时，应得到可理解、可行动的提示",
     "url": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-306.html",
     "actualUrl": "https://www.ruanyifeng.com/blog/2024/06/weekly-issue-306.html",
-    "docTitle": "请稍候…",
-    "bodySample": "www.ruanyifeng.com 正在进行安全验证 本网站使用安全服务防护恶意自动程序。在验证您不是自动程序期间，将显示此页面。 Ray ID: a0e91a1fd959d946 由 Cloudflare 提供的性能和安全服务 隐私",
-    "rawSuccess": false,
-    "uxStatus": "expected-failure",
+    "docTitle": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾 - 阮一峰的网络日志",
+    "bodySample": "阮一峰的网络日志 » 首页 » 档案 上一篇：科技爱好者周刊（第 3 下一篇：AI 编程助手测评：G 分类： 周刊 科技爱好者周刊（第 306 期）：信息就像糖一样上瘾 作者： 阮一峰 日期： 2024年6月28日 这里记录每周值得分享的科技内容，周五发布。 本杂志开源，欢迎投稿。另有《谁在招人》服务，发布程序员招聘信息。合作请邮件联系（yifeng.rua",
+    "rawSuccess": true,
+    "uxStatus": "usable",
     "okForUx": true,
-    "extractionReason": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
-    "expectHits": [],
-    "actualTitle": "请稍候…",
-    "method": "login",
-    "pageType": "login",
-    "confidence": 0.84,
-    "classifyReason": "login-or-captcha",
+    "extractionReason": "usable",
+    "expectHits": [
+      "科技爱好者",
+      "周刊"
+    ],
+    "actualTitle": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾",
+    "method": "readability",
+    "pageType": "article",
+    "confidence": 0.72,
+    "classifyReason": "article-structure",
     "qualityWarnings": [],
-    "contentLength": 0,
-    "excerpt": "",
-    "contentPreview": "",
-    "error": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
+    "contentLength": 4699,
+    "excerpt": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾作者： 阮一峰这里记录每周值得分享的科技内容，周五发布。 本杂志开源，欢迎投稿。 另有《谁在招人》服务，发布程序员招聘信息。 合作请邮件联系（yifeng.ruan@gmail.com）。 封面图香港屯门码头，海边的夜色。 （via）信息就像糖一样上瘾工业革命有一个很少人提到的后果，就是人类可以大量生产糖了。 古时候，糖主要来自甘蔗和蜂蜜，难以大",
+    "contentPreview": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾作者： 阮一峰这里记录每周值得分享的科技内容，周五发布。 本杂志开源，欢迎投稿。 另有《谁在招人》服务，发布程序员招聘信息。 合作请邮件联系（yifeng.ruan@gmail.com）。 封面图香港屯门码头，海边的夜色。 （via）信息就像糖一样上瘾工业革命有一个很少人提到的后果，就是人类可以大量生产糖了。 古时候，糖主要来自甘蔗和蜂蜜，难以大量生产。 所以，古人的菜肴不放糖，主要依靠食物本身的甜味。 可以想象，古代的大部分食物，尤其是日常食品，应该是不好吃的。 一旦糖大量生产，人类就疯狂地爱上了它。 我们喜欢糖，喜欢到现在的大部分食物，都必须添加糖，比如饮料、糕点、奶制品，甚至",
+    "error": "",
     "errorCode": "",
-    "extractionMs": 2959,
+    "extractionMs": 7894,
     "display": {
-      "statusTitle": "提取失败",
-      "statusDetail": "当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取",
-      "editorOpen": false,
-      "noteTitle": "",
-      "noteContentLength": 0,
-      "noteContentPreview": "",
+      "statusTitle": "已提取当前页面内容",
+      "statusDetail": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾",
+      "editorOpen": true,
+      "noteTitle": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾",
+      "noteContentLength": 4699,
+      "noteContentPreview": "科技爱好者周刊（第 306 期）：信息就像糖一样上瘾作者： 阮一峰这里记录每周值得分享的科技内容，周五发布。 本杂志开源，欢迎投稿。 另有《谁在招人》服务，发布程序员招聘信息。 合作请邮件联系（yifeng.ruan@gmail.com）。 封面图香港屯门码头，海边的夜色。 （via）信息就像糖一样上瘾工业革命有一个很少人提到的后果，就是人类可以大量生产糖了。 古时候，糖主要来自甘蔗和蜂蜜，难以大量生产。 所以，古人的菜肴不放糖，主要依",
       "hasHorizontalOverflow": false,
       "actionRowOverflows": false,
       "toolbarOverflows": false,
       "warningVisible": false,
-      "bodyTextPreview": "记 网页笔记助手 提取、整理、总结当前网页 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ 📄 提取页面 ✨ 总结当前网页 🔗 快速添加 URL ✂ 添加选中文本 ! 提取失败 当前页面像登录、验证码或权限页面，请登录后打开具体内容页再提取 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上方按钮开始记录 ← 返回列表 💾 保存 查看发送内容 插入到正文 ✨ 生成摘要 取消生成 选择分类工作个人学习灵感归档 📌 置顶 0 ",
+      "bodyTextPreview": "记 网页笔记助手 打开网页后，一键总结并保存到本地 导出 ▼ 导出 Markdown 导出 JSON 导出 CSV 导出纯文本 ⚙ ✓ 已提取当前页面内容 科技爱好者周刊（第 306 期）：信息就像糖一样上瘾 总结并自动保存 摘要来源 网页正文；有选区时优先选中文字 摘要服务 未启用 保存状态 生成后自动保存 请在设置中启用云端摘要，配置后即可使用“总结并自动保存”。 去设置 提取成笔记 保存选中文字 保存链接 全部分类工作个人学习灵感归档 最新优先 最早优先 最近更新 标题排序 + 新建笔记 📝还没有笔记点击上",
       "messages": [
         {
           "action": "getActiveTab"
