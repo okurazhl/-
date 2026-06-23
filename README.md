@@ -26,6 +26,84 @@
 
 修改代码后，在 `chrome://extensions` 页面点击该扩展的刷新图标即可重新加载。
 
+## 部署和运行
+
+### 1. 获取项目
+
+```powershell
+git clone https://github.com/okurazhl/-.git chrome-note-extension
+cd chrome-note-extension
+```
+
+如果你已经有本地项目目录，直接进入现有目录即可。
+
+### 2. 运行 Chrome 扩展
+
+扩展本身不需要安装依赖，也不需要构建：
+
+1. 打开 `chrome://extensions`
+2. 开启“开发者模式”
+3. 点击“加载已解压的扩展程序”
+4. 选择项目根目录，也就是包含 `manifest.json` 的目录
+5. 打开任意网页，点击扩展图标打开侧边栏
+
+运行成功后，侧边栏会显示“摘要/笔记”和“提取”两个页面。若按钮不可用，请确认当前标签页是普通网页，而不是 Chrome 内置页面、扩展页面或商店页面。
+
+### 3. 配置云端摘要
+
+进入侧边栏“设置”，完成以下配置：
+
+- 勾选“启用云端摘要”
+- 填写 OpenAI 兼容接口地址
+- 填写 API 密钥
+- 填写模型名称
+
+保存后回到网页，点击“提取”页里的“总结并自动保存”。摘要会保存到本地笔记列表。
+
+### 4. 可选：运行 YouTube 字幕后端
+
+只有在需要更稳定地获取 YouTube 字幕时才需要启动后端。
+
+```powershell
+cd backend\youtube-transcript-api
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+```
+
+编辑 `.env`：
+
+```env
+TRANSCRIPT_API_KEY=change-me
+CORS_ALLOW_ORIGIN=chrome-extension://your-extension-id
+```
+
+按扩展默认端口启动：
+
+```powershell
+uvicorn app:app --host 127.0.0.1 --port 8788
+```
+
+然后在扩展设置中启用“YouTube 字幕后端”，填写：
+
+```text
+http://127.0.0.1:8788/v1/youtube/transcript
+```
+
+后端密钥填写 `.env` 中的 `TRANSCRIPT_API_KEY`。
+
+### 5. 更新代码后的重载
+
+修改扩展源码后：
+
+1. 回到 `chrome://extensions`
+2. 点击“网页笔记助手”卡片上的刷新图标
+3. 刷新目标网页
+4. 重新打开侧边栏测试
+
+修改 YouTube 后端源码后，停止并重新启动 `uvicorn`。
+
 ## LLM 摘要配置
 
 当前版本摘要功能只调用云端 LLM，不再执行本地摘要回退。打开侧边栏后进入“设置”，填写：
